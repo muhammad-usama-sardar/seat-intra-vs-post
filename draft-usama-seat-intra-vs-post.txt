@@ -76,6 +76,7 @@ Table of Contents
    4.  Intra-handshake Attestation
      4.1.  Benefits
        4.1.1.  No Changes at Application Layer
+       4.1.2.  Avoids Extra Round Trips
      4.2.  Limitations
        4.2.1.  Limited Claims Availability
        4.2.2.  Invasive Changes in TLS
@@ -92,12 +93,15 @@ Table of Contents
        5.2.1.  Changes at Application Layer
    6.  Need for Post-handshake Attestation
      6.1.  IoT Constraints
-   7.  Security Considerations
-     7.1.  Exploit of Sensitive Hardware-level Information
-   8.  IANA Considerations
-   9.  References
-     9.1.  Normative References
-     9.2.  Informative References
+   7.  Existing Implementations
+     7.1.  Intra-handshake Attestation
+     7.2.  Post-handshake Attestation
+   8.  Security Considerations
+     8.1.  Exploit of Sensitive Hardware-level Information
+   9.  IANA Considerations
+   10. References
+     10.1.  Normative References
+     10.2.  Informative References
    Acknowledgments
    Author's Address
 
@@ -120,7 +124,7 @@ Table of Contents
    We note that:
 
    |  Remote attestation provides guarantees about the state of Attester
-   |  only at the time at which signing of Claims is done to generate
+   |  *only* at the time at which signing of Claims is done to generate
    |  Evidence [Tech-Concepts].
 
 2.  Conventions and Definitions
@@ -135,13 +139,13 @@ Table of Contents
 
    In addition, we define three temporal terms:
 
-   *  Evidence Generation Time: Time when Evidence is generated (more
+   *  *Evidence Generation Time*: Time when Evidence is generated (more
       specifically when Claims are signed)
 
-   *  Connection Establishment Time: Time at which TLS handshake is
+   *  *Connection Establishment Time*: Time at which TLS handshake is
       performed
 
-   *  Lifetime of Connection: Time period starting from Evidence
+   *  *Lifetime of Connection*: Time period starting from Evidence
       Generation Time until the connection exists.
 
 3.  Pre-handshake Attestation
@@ -162,6 +166,11 @@ Table of Contents
 4.1.1.  No Changes at Application Layer
 
    It does not require any changes in application layer.
+
+4.1.2.  Avoids Extra Round Trips
+
+   It avoids extra round trips for use cases which require remote
+   attestation only once during Connection Establishment Time.
 
 4.2.  Limitations
 
@@ -240,7 +249,9 @@ Table of Contents
 
 5.2.1.  Changes at Application Layer
 
-   It requires changes in application layer.
+   It may require changes in application layer.  Note that changes in
+   application layer does not necessarily mean changes in application
+   logic itself.
 
 6.  Need for Post-handshake Attestation
 
@@ -258,10 +269,16 @@ Table of Contents
 
 6.1.  IoT Constraints
 
-   [SEAT-Charter] includes TLS client as RATS Attester.  Hence, we make
-   some observations from LAKE WG:
+   [SEAT-Charter] includes TLS client as RATS Attester.  Client could be
+   a low-power IoT device.  There are use cases where periodic or on-
+   demand attestation is required, such as periodic attestation for
+   long-lived, low-power IoT devices or in IoT swarms that need to
+   synchronize software versions before coordinated operations or after
+   configuration updates.
 
-   Michael Richarson observes [MCR-LAKE]:
+   Moreover, we note some observations from LAKE WG:
+
+   Michael Richardson shares his insight [MCR-LAKE]:
 
    |  I have a half-written document on putting EAT into the full BRSKI
    |  protocol.  A reason that I stopped is that I realized that doing
@@ -277,45 +294,59 @@ Table of Contents
    |  stage, for whatever reason, e.g. key rotation, it should be
    |  possible to repeat the attestation procedure.
 
-7.  Security Considerations
+7.  Existing Implementations
 
-   Almost the whole document is about security considerations.  Also,
+7.1.  Intra-handshake Attestation
+
+   Prominent implementations of intra-handshake attestation are all
+   vulnerable to relay attacks [RelayAttacks].  Some of them are abusing
+   the extensions of TLS, such as SNI and ALPN, for conveyance of
+   attestation nonce [RelayAttacks].
+
+7.2.  Post-handshake Attestation
+
+   Google [Keith-STET-CCC], Microsoft [Stunes-vTPM-CCC], and SCONE
+   [SoK-Attestation] are all using post-handshake attestation.
+
+8.  Security Considerations
+
+   Most of the document is about security considerations.  Also,
    Security Considerations of [RFC9334] and [I-D.ietf-tls-rfc8446bis]
    apply.  In addition:
 
-   *  Pre-handshake attestation is vulnerable to replay [RA-TLS] and
-      diversion [ID-Crisis] attacks.
+   *  Pre-handshake attestation is vulnerable to *replay* [RA-TLS] and
+      *diversion* [ID-Crisis] attacks.
 
    *  Without significant changes to the TLS protocol: Intra-handshake
-      attestation is vulnerable to diversion attacks [ID-Crisis].  It
+      attestation is vulnerable to *diversion* attacks [ID-Crisis].  It
       also does not bind the Evidence to the application traffic
-      secrets, resulting in relay attacks [RelayAttacks].
+      secrets, resulting in *relay* attacks [RelayAttacks].
 
    *  No attacks on post-handshake attestation are currently known.
       Post-handshake attestation avoids replay attacks by using fresh
       attestation nonce.  Moreover, it avoids diversion and relay
       attacks by binding the Evidence to the underlying TLS connection.
 
-7.1.  Exploit of Sensitive Hardware-level Information
+8.1.  Exploit of Sensitive Hardware-level Information
 
    From the view of the TLS server, post-handshake attestation offers
    better security than intra-handshake attestation when the server acts
    as the Attester.  In intra-handshake attestation, due to the inherent
    asymmetry of the TLS protocol, a malicious TLS client could
    potentially retrieve sensitive hardware-level information from the
-   Evidence without the client's trustworthiness (i.e., authentication)
-   first being established by the server.  This information (e.g.,
+   Evidence *without the client's trustworthiness (i.e., authentication)
+   first being established by the server*. This information (e.g.,
    vulnerable firmware version) can be exploited for attacks.  In post-
    handshake attestation, the server can ask for client authentication
    and only send the Evidence after successful client authentication.
 
-8.  IANA Considerations
+9.  IANA Considerations
 
    This document has no IANA actions.
 
-9.  References
+10.  References
 
-9.1.  Normative References
+10.1.  Normative References
 
    [RFC2119]  Bradner, S., "Key words for use in RFCs to Indicate
               Requirement Levels", BCP 14, RFC 2119,
@@ -326,7 +357,7 @@ Table of Contents
               2119 Key Words", BCP 14, RFC 8174, DOI 10.17487/RFC8174,
               May 2017, <https://www.rfc-editor.org/rfc/rfc8174>.
 
-9.2.  Informative References
+10.2.  Informative References
 
    [Goran-LAKE]
               Göran Selander, "Comments for remote attestation over
@@ -354,6 +385,12 @@ Table of Contents
               TLS", November 2025, <https://www.researchgate.net/publica
               tion/398839141_Identity_Crisis_in_Confidential_Computing_F
               ormal_Analysis_of_Attested_TLS>.
+
+   [Keith-STET-CCC]
+              Keith Moyer, "Split-Trust Encryption Tool Attested Session
+              Handling", March 2022, <https://github.com/CCC-
+              Attestation/meetings/blob/main/materials/
+              KeithMoyer_STET.pdf>.
 
    [MCR-LAKE] Michael Richardson, "Comments for remote attestation over
               EDHOC", May 2024,
@@ -383,6 +420,16 @@ Table of Contents
               Charter for Working Group",
               <https://datatracker.ietf.org/wg/seat/about/>.
 
+   [SoK-Attestation]
+              Sardar, M. U., Fossati, T., and S. Frost, "SoK:
+              Attestation in Confidential Computing", January 2023,
+              <https://www.researchgate.net/publication/367284929_SoK_At
+              testation_in_Confidential_Computing>.
+
+   [Stunes-vTPM-CCC]
+              Mike Stunes, "Azure vTPM Attestation and Binding", July
+              2025, <https://www.youtube.com/watch?v=J7SibeZmQsE>.
+
    [Tech-Concepts]
               Sardar, M. U., "Perspicuity of Attestation Mechanisms in
               Confidential Computing: Technical Concepts", October 2025,
@@ -392,7 +439,8 @@ Table of Contents
 
 Acknowledgments
 
-   TODO acknowledge.
+   We gratefully thank Peg Jones and Pavel Nikonorov for review and
+   useful feedback.
 
 Author's Address
 
