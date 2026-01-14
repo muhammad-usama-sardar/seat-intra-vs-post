@@ -75,8 +75,8 @@ Table of Contents
    3.  Pre-handshake Attestation
    4.  Intra-handshake Attestation
      4.1.  Benefits
-       4.1.1.  No Changes at Application Layer
-       4.1.2.  Avoids Extra Round Trips
+       4.1.1.  No Additional Application-Level Protocol
+       4.1.2.  Avoids Extra Round Trips for One-time Attestation
      4.2.  Limitations
        4.2.1.  Limited Claims Availability
        4.2.2.  Invasive Changes in TLS
@@ -90,7 +90,7 @@ Table of Contents
        5.1.4.  Standard Handshake Latency
        5.1.5.  Avoids Extra Round Trips
      5.2.  Limitations
-       5.2.1.  Changes at Application Layer
+       5.2.1.  Impact on Application Layer
    6.  Need for Post-handshake Attestation
      6.1.  IoT Constraints
    7.  Existing Implementations
@@ -103,6 +103,7 @@ Table of Contents
      10.1.  Normative References
      10.2.  Informative References
    Acknowledgments
+   Contributors
    Author's Address
 
 1.  Introduction
@@ -121,7 +122,9 @@ Table of Contents
    the reverse.  Intra-handshake attestation requires the signing of
    Claims to be done within the TLS handshake protocol.
 
-   We note that:
+   In this version, we analyze the three categories (without
+   combinations) with a focus on the last two.  Regarding remote
+   attestation, we note that:
 
    |  Remote attestation provides guarantees about the state of Attester
    |  *only* at the time at which signing of Claims is done to generate
@@ -135,7 +138,9 @@ Table of Contents
    BCP 14 [RFC2119] [RFC8174] when, and only when, they appear in all
    capitals, as shown here.
 
-   We use terminology from [RFC9334] and [I-D.ietf-tls-rfc8446bis].
+   We use terminology from [RFC9334] and [I-D.ietf-tls-rfc8446bis]
+   slightly loosely (intentionally) for readability.  Future versions
+   will tighten it.
 
    In addition, we define three temporal terms:
 
@@ -159,15 +164,27 @@ Table of Contents
 4.  Intra-handshake Attestation
 
    Intra-handshake attestation improves the situation where Evidence
-   Generation Time is the same as Evidence Generation Time.
+   Generation Time is the same as Connection Establishment Time.
+
+   In following subsections, we present the benefits and limitations of
+   intra-handshake attestation.
 
 4.1.  Benefits
 
-4.1.1.  No Changes at Application Layer
+4.1.1.  No Additional Application-Level Protocol
 
-   It does not require any changes in application layer.
+   Intra-handshake attestation does not require a new application-layer
+   protocol or message exchange.  Evidence and related metadata are
+   conveyed within handshake via TLS extensions.  TLS is responsible for
+   conveyance of the Evidence; it does not perform appraisal of Evidence
+   or authorization.  Appraisal of Evidence, policy evaluation, and
+   trust decisions are performed by application-level components that
+   consume the attestation properties exposed by the TLS stack.  As a
+   result, while no new application-layer protocol is required,
+   applications do incorporate additional trust logic to interpret
+   attested connection properties and make security-relevant decisions.
 
-4.1.2.  Avoids Extra Round Trips
+4.1.2.  Avoids Extra Round Trips for One-time Attestation
 
    It avoids extra round trips for use cases which require remote
    attestation only once during Connection Establishment Time.
@@ -210,6 +227,9 @@ Table of Contents
    Establishment Time, and Relying Party (RP) [RFC9334] MUST not send
    any secure data until Evidence is successfully appraised.
 
+   In following subsections, we present the benefits and limitations of
+   post-handshake attestation.
+
 5.1.  Benefits
 
    In general, it allows re-authentication and re-attestation without
@@ -247,11 +267,21 @@ Table of Contents
 
 5.2.  Limitations
 
-5.2.1.  Changes at Application Layer
+5.2.1.  Impact on Application Layer
 
-   It may require changes in application layer.  Note that changes in
-   application layer does not necessarily mean changes in application
-   logic itself.
+   Post-handshake attestation may require changes at the application
+   layer.  However, changes at the application layer do not necessarily
+   imply modifications to application business logic or data exchange
+   protocols.  Attestation-related functionality may be realized via
+   application-level signalling (Exported Authenticators [RFC9261]) and
+   trust logic, which may be implemented in intermediary components
+   (e.g., proxies, sidecars, or middleware) on both client and server
+   sides.  These components are responsible for exchanging and
+   appraising attestation evidence and enforcing trust or authorization
+   decisions before application data is processed.  This is analogous to
+   common production deployments in which TLS termination and
+   certificate handling are performed by a fronting proxy, while the
+   application itself remains unchanged and resides behind it.
 
 6.  Need for Post-handshake Attestation
 
@@ -325,7 +355,10 @@ Table of Contents
    *  No attacks on post-handshake attestation are currently known.
       Post-handshake attestation avoids replay attacks by using fresh
       attestation nonce.  Moreover, it avoids diversion and relay
-      attacks by binding the Evidence to the underlying TLS connection.
+      attacks by binding the Evidence to the underlying TLS connection,
+      such as using Exported Keying Material (EKM)
+      [I-D.ietf-tls-rfc8446bis].  [RFC9261] and [RFC9266] provides
+      mechanisms for such bindings.
 
 8.1.  Exploit of Sensitive Hardware-level Information
 
@@ -410,6 +443,14 @@ Table of Contents
               2026, <https://mailarchive.ietf.org/arch/msg/seat/
               x3eQxFjQFJLceae6l4_NgXnmsDY/>.
 
+   [RFC9261]  Sullivan, N., "Exported Authenticators in TLS", RFC 9261,
+              DOI 10.17487/RFC9261, July 2022,
+              <https://www.rfc-editor.org/rfc/rfc9261>.
+
+   [RFC9266]  Whited, S., "Channel Bindings for TLS 1.3", RFC 9266,
+              DOI 10.17487/RFC9266, July 2022,
+              <https://www.rfc-editor.org/rfc/rfc9266>.
+
    [RFC9334]  Birkholz, H., Thaler, D., Richardson, M., Smith, N., and
               W. Pan, "Remote ATtestation procedureS (RATS)
               Architecture", RFC 9334, DOI 10.17487/RFC9334, January
@@ -439,8 +480,12 @@ Table of Contents
 
 Acknowledgments
 
-   We gratefully thank Peg Jones and Pavel Nikonorov for review and
-   useful feedback.
+   We gratefully thank Peg Jones for review.
+
+Contributors
+
+   Pavel Nikonorov (GENXT / IIAP NAS RA) contributed text in
+   Section 4.1.1 and Section 5.2.1.
 
 Author's Address
 
