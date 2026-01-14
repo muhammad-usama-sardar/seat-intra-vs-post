@@ -110,7 +110,7 @@ informative:
 --- abstract
 
 This document presents a taxonomy of extending TLS protocol with remote attestation,
-referred to as attested TLS. It also presents high-level analysis of the three potential options for
+referred to as attested TLS. It also presents high-level analysis of the three potential categories for
 attested TLS, namely pre-handshake
 attestation, intra-handshake
 attestation and post-handshake attestation.
