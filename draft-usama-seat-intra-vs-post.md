@@ -33,6 +33,8 @@ normative:
 
 informative:
   RFC9334: rfc9334
+  RFC9261: rfc9261
+  RFC9266: rfc9266
   Tech-Concepts:
      title: "Perspicuity of Attestation Mechanisms in Confidential Computing: Technical Concepts"
      date: October 2025,
@@ -130,7 +132,8 @@ TLS handshake, while post-handshake attestation applies the reverse.
 Intra-handshake attestation requires the signing of Claims to
 be done within the TLS handshake protocol.
 
-We note that:
+In this version, we analyze the three categories (without combinations) with a focus on the last two.
+Regarding remote attestation, we note that:
 
 {:quote}
 >  Remote attestation provides guarantees about the state of
@@ -142,7 +145,8 @@ is done to generate Evidence {{Tech-Concepts}}.
 
 {::boilerplate bcp14-tagged}
 
-We use terminology from {{-rfc9334}} and {{I-D.ietf-tls-rfc8446bis}}.
+We use terminology from {{-rfc9334}} and {{I-D.ietf-tls-rfc8446bis}} slightly loosely (intentionally)
+for readability. Future versions will tighten it.
 
 In addition, we define three temporal terms:
 
@@ -162,18 +166,29 @@ at the Evidence Generation Time and during the Lifetime of Connection.
 
 # Intra-handshake Attestation
 Intra-handshake attestation improves the situation where Evidence Generation Time
-is the same as Evidence Generation Time.
+is the same as Connection Establishment Time.
 
+In following subsections, we present the benefits and limitations of intra-handshake attestation.
 
 [comment]: <> (If RA appraisal succeeds, client and server agree on current transcript hash. We do not have all guarantees about authentication and security of the connection at the point at which the Evidence is conveyed.)
 
 
 ## Benefits
 
-### No Changes at Application Layer
-It does not require any changes in application layer.
+### No Additional Application-Level Protocol
+{: #sec-intra-app-changes }
+[comment2]: <> (It may not require any changes in application layer.)
 
-### Avoids Extra Round Trips
+Intra-handshake attestation does not require a new application-layer protocol or message exchange.
+Evidence and related metadata are conveyed within handshake via TLS extensions.
+TLS is responsible for conveyance of the Evidence; it does not perform appraisal of Evidence or authorization.
+Appraisal of Evidence, policy evaluation, and trust decisions are performed by application-level components that
+consume the attestation properties exposed by the TLS stack. As a result, while no new application-layer protocol
+is required, applications do incorporate additional trust logic to interpret attested connection properties
+and make security-relevant decisions.
+
+
+### Avoids Extra Round Trips for One-time Attestation
 It avoids extra round trips for use cases which require remote attestation only once
 during Connection Establishment Time.
 
@@ -208,6 +223,8 @@ For post-handshake attestation, first round of remote attestation MUST be done
 immediately after Connection Establishment Time, and Relying Party (RP)
 {{-rfc9334}} MUST not send any secure data until Evidence is successfully appraised.
 
+In following subsections, we present the benefits and limitations of post-handshake attestation.
+
 ## Benefits
 
 In general, it allows re-authentication and re-attestation without tearing down the connection.
@@ -235,10 +252,17 @@ intra-handshake attestation (one round trip), which requires re-establishing the
 
 ## Limitations
 
-### Changes at Application Layer
-It may require changes in application layer. Note that changes in application layer does not
-necessarily mean changes in application logic itself.
-
+### Impact on Application Layer
+{: #sec-post-app-changes }
+Post-handshake attestation may require changes at the application layer. However, changes at
+the application layer do not necessarily imply modifications to application business logic
+or data exchange protocols. Attestation-related functionality may be realized via application-level
+signalling (Exported Authenticators {{-rfc9261}}) and trust logic, which may be implemented in
+intermediary components (e.g., proxies, sidecars, or middleware) on both client and server sides.
+These components are responsible for exchanging and appraising attestation evidence and enforcing
+trust or authorization decisions before application data is processed. This is analogous to common
+production deployments in which TLS termination and certificate handling are performed by a
+fronting proxy, while the application itself remains unchanged and resides behind it.
 
 # Need for Post-handshake Attestation
 We argue that post-handshake attestation is unavoidable (e.g., re-attestation to
@@ -304,7 +328,8 @@ vulnerable to **diversion** attacks {{ID-Crisis}}. It also does not bind the Evi
 to the application traffic secrets, resulting in **relay** attacks {{RelayAttacks}}.
 * No attacks on post-handshake attestation are currently known. Post-handshake attestation
 avoids replay attacks by using fresh attestation nonce. Moreover, it avoids diversion and relay attacks
-by binding the Evidence to the underlying TLS connection.
+by binding the Evidence to the underlying TLS connection, such as using Exported Keying Material (EKM)
+{{I-D.ietf-tls-rfc8446bis}}. {{-rfc9261}} and {{-rfc9266}} provides mechanisms for such bindings.
 
 ## Exploit of Sensitive Hardware-level Information
 
@@ -328,4 +353,11 @@ This document has no IANA actions.
 # Acknowledgments
 {:numbered="false"}
 
-We gratefully thank Peg Jones and Pavel Nikonorov for review and useful feedback.
+We gratefully thank Peg Jones for review.
+
+# Contributors
+{:numbered="false"}
+
+Pavel Nikonorov (GENXT / IIAP NAS RA) contributed text in {{sec-intra-app-changes}} and {{sec-post-app-changes}}.
+
+
