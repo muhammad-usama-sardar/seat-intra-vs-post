@@ -82,6 +82,26 @@ informative:
      target: https://mailarchive.ietf.org/arch/msg/lake/Bb3eTcQxDA-F1AYJ0hZZy3p9wpQ/
      author:
       - ins: Göran Selander
+  Keith-STET-CCC:
+     title: "Split-Trust Encryption Tool Attested Session Handling"
+     date: 15 March 2022,
+     target: https://github.com/CCC-Attestation/meetings/blob/main/materials/KeithMoyer_STET.pdf
+     author:
+      - ins: Keith Moyer
+  Stunes-vTPM-CCC:
+     title: "Azure vTPM Attestation and Binding"
+     date: 29 July 2025,
+     target: https://www.youtube.com/watch?v=J7SibeZmQsE
+     author:
+      - ins: Mike Stunes
+  SoK-Attestation:
+    title: "SoK: Attestation in Confidential Computing"
+    date: January 2023,
+    target: https://www.researchgate.net/publication/367284929_SoK_Attestation_in_Confidential_Computing
+    author:
+      - ins: M. U. Sardar
+      - ins: T. Fossati
+      - ins: S. Frost
 
 ...
 
@@ -114,7 +134,7 @@ We note that:
 
 {:quote}
 >  Remote attestation provides guarantees about the state of
-Attester only at the time at which signing of Claims
+Attester **only** at the time at which signing of Claims
 is done to generate Evidence {{Tech-Concepts}}.
 
 
@@ -126,11 +146,11 @@ We use terminology from {{-rfc9334}} and {{I-D.ietf-tls-rfc8446bis}}.
 
 In addition, we define three temporal terms:
 
-* Evidence Generation Time: Time when Evidence is generated (more specifically when Claims are signed)
+* **Evidence Generation Time**: Time when Evidence is generated (more specifically when Claims are signed)
 
-* Connection Establishment Time: Time at which TLS handshake is performed
+* **Connection Establishment Time**: Time at which TLS handshake is performed
 
-* Lifetime of Connection: Time period starting from Evidence Generation Time until the connection exists.
+* **Lifetime of Connection**: Time period starting from Evidence Generation Time until the connection exists.
 
 
 # Pre-handshake Attestation
@@ -152,6 +172,11 @@ is the same as Evidence Generation Time.
 
 ### No Changes at Application Layer
 It does not require any changes in application layer.
+
+### Avoids Extra Round Trips
+It avoids extra round trips for use cases which require remote attestation only once
+during Connection Establishment Time.
+
 
 ## Limitations
 
@@ -211,7 +236,8 @@ intra-handshake attestation (one round trip), which requires re-establishing the
 ## Limitations
 
 ### Changes at Application Layer
-It requires changes in application layer.
+It may require changes in application layer. Note that changes in application layer does not
+necessarily mean changes in application logic itself.
 
 
 # Need for Post-handshake Attestation
@@ -227,10 +253,17 @@ but not the other way around.
 
 ## IoT Constraints
 
-{{SEAT-Charter}} includes TLS client as RATS Attester. Hence, we make some
-observations from LAKE WG:
+{{SEAT-Charter}} includes TLS client as RATS Attester. Client could be a low-power IoT device.
+There are use cases where periodic
+or on-demand attestation is required, such as periodic
+attestation for long-lived, low-power IoT devices or in IoT
+swarms that need to synchronize software versions before
+coordinated operations or after configuration updates.
 
-Michael Richarson observes {{MCR-LAKE}}:
+
+Moreover, we note some observations from LAKE WG:
+
+Michael Richardson shares his insight {{MCR-LAKE}}:
 
 {:quote}
 >  I have a half-written document on putting EAT into the full BRSKI protocol.
@@ -247,18 +280,28 @@ Göran Selander observes {{Goran-LAKE}}:
 >  Indeed, if the authentication procedure is repeated at a later stage, for
 whatever reason, e.g. key rotation, it should be possible to repeat the attestation procedure.
 
+# Existing Implementations
+
+## Intra-handshake Attestation
+Prominent implementations of intra-handshake attestation are all vulnerable to
+relay attacks {{RelayAttacks}}. Some of them are abusing the extensions of TLS, such as
+SNI and ALPN, for conveyance of attestation nonce {{RelayAttacks}}.
+
+## Post-handshake Attestation
+Google {{Keith-STET-CCC}}, Microsoft {{Stunes-vTPM-CCC}}, and SCONE {{SoK-Attestation}}
+are all using post-handshake attestation.
 
 
 # Security Considerations
 
-Almost the whole document is about security considerations. Also,
+Most of the document is about security considerations. Also,
 Security Considerations of {{-rfc9334}} and {{I-D.ietf-tls-rfc8446bis}} apply. In addition:
 
-* Pre-handshake attestation is vulnerable to replay {{RA-TLS}} and diversion
+* Pre-handshake attestation is vulnerable to **replay** {{RA-TLS}} and **diversion**
 {{ID-Crisis}} attacks.
 * Without significant changes to the TLS protocol: Intra-handshake attestation is
-vulnerable to diversion attacks {{ID-Crisis}}. It also does not bind the Evidence
-to the application traffic secrets, resulting in relay attacks {{RelayAttacks}}.
+vulnerable to **diversion** attacks {{ID-Crisis}}. It also does not bind the Evidence
+to the application traffic secrets, resulting in **relay** attacks {{RelayAttacks}}.
 * No attacks on post-handshake attestation are currently known. Post-handshake attestation
 avoids replay attacks by using fresh attestation nonce. Moreover, it avoids diversion and relay attacks
 by binding the Evidence to the underlying TLS connection.
@@ -268,8 +311,8 @@ by binding the Evidence to the underlying TLS connection.
 From the view of the TLS server, post-handshake attestation offers better security
 than intra-handshake attestation when the server acts as the Attester. In intra-handshake
 attestation, due to the inherent asymmetry of the TLS protocol, a malicious TLS client
-could potentially retrieve sensitive hardware-level information from the Evidence without
-the client's trustworthiness (i.e., authentication) first being established by the server.
+could potentially retrieve sensitive hardware-level information from the Evidence **without
+the client's trustworthiness (i.e., authentication) first being established by the server**.
 This information (e.g., vulnerable firmware version) can be exploited for attacks.
 In post-handshake attestation, the server can ask for client authentication and only
 send the Evidence after successful client authentication.
@@ -285,4 +328,4 @@ This document has no IANA actions.
 # Acknowledgments
 {:numbered="false"}
 
-TODO acknowledge.
+We gratefully thank Peg Jones and Pavel Nikonorov for review and useful feedback.
