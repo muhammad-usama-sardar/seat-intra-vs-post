@@ -130,14 +130,28 @@ TLS handshake, while post-handshake attestation applies the reverse.
 Intra-handshake attestation requires the signing of Claims to
 be done within the TLS handshake protocol.
 
+## Scope
+
 In this version, we analyze the three categories (without combinations) with a focus on the last two.
+
+The current scope of this draft is existing specifications and real-world implementations pointed in the
+given references. Any theoretical solutions are currently out of scope until some specification or
+implementation emerges.
+
+For simplicity, we consider simple Attester with only one Attesting Environment and only one Target
+Environment {{-rfc9334}}. That is, complicated scenarios such as Composite Device
+{{-rfc9334}} etc. are out of scope in this version.
+
+From RATS perspective, we consider Background Check Model {{-rfc9334}}. Future versions will add
+Passport Model {{-rfc9334}}.
+
+## Note
 Regarding remote attestation, we note that:
 
 {:quote}
 >  Remote attestation provides guarantees about the state of
 Attester **only** at the time at which signing of Claims
 is done to generate Evidence {{Tech-Concepts}}.
-
 
 # Conventions and Definitions
 
@@ -204,7 +218,8 @@ schedule and adding or modifying existing handshake messages {{ID-Crisis}}.
 ### State After Connection Establishment Not Covered
 It provides no guarantees about the state of Attester during the lifetime
 of connection. This is a security concern in long-lived connections where
-state of Attester may change after Connection Establishment Time.
+state of Attester may change after Connection Establishment Time. Note that session
+resumption is a new connection {{I-D.ietf-tls-rfc8446bis}}.
 
 ### High Handshake Latency
 Because of signature in Evidence generation and verification of signatures during appraisal,
@@ -266,7 +281,7 @@ fronting proxy, while the application itself remains unchanged and resides behin
 We argue that post-handshake attestation is unavoidable (e.g., re-attestation to
 track changes after Connection Establishment Time for long-lived connections).
 Use cases where pre-handshake attestation and intra-handshake attestation are
-insufficient include include AI agents/agentic AI {{I-D.jiang-seat-dynamic-attestation}}.
+insufficient include AI agents/agentic AI {{I-D.jiang-seat-dynamic-attestation}}.
 
 Intra-handshake attestation only adds unnecessary complexity which is avoidable.
 All use cases of intra-handshake attestation can be covered by post-handshake
