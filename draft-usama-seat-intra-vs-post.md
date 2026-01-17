@@ -1,6 +1,6 @@
 ---
 title: "Pre-, Intra- and Post-handshake Attestation"
-abbrev: "TODO - Abbreviation"
+abbrev: "Intra-vs-post"
 category: info
 
 docname: draft-usama-seat-intra-vs-post-latest
@@ -76,6 +76,12 @@ informative:
      title: "Comments for remote attestation over EDHOC"
      date: 25 May 2024,
      target: https://mailarchive.ietf.org/arch/msg/lake/RseQknOug41sTzW7xBJ60oRdvq0/
+     author:
+      - ins: Michael Richardson
+  MCR-LAKE2:
+     title: "Evaluation of attestation results by EDHOC clients"
+     date: 5 June 2024,
+     target: https://mailarchive.ietf.org/arch/msg/lake/o2oujiDacHm2m9a5y7W50oUsY7o/
      author:
       - ins: Michael Richardson
   Goran-LAKE:
@@ -201,9 +207,17 @@ and make security-relevant decisions.
 
 
 ### Avoids Extra Round Trips for One-time Attestation
-It avoids extra round trips for use cases which require remote attestation only once
+Proponents of intra-handshake claim that it avoids extra round trips
+for use cases which require remote attestation only once
 during Connection Establishment Time.
 
+However, Markus Rudy shares his practical experience:
+
+{:quote}
+>  I don't think saving extra roundtrips is an appropriate design
+goal when attestation is required. Generating evidence alone takes
+much longer than normal network roundtrip times, not even speaking
+of verification.
 
 ## Limitations
 
@@ -225,6 +239,66 @@ resumption is a new connection {{I-D.ietf-tls-rfc8446bis}}.
 Because of signature in Evidence generation and verification of signatures during appraisal,
 this leads to high handshake latency. This may not be desirable for some applications.
 
+Markus Rudy shares his practical experience:
+
+{:quote}
+>  Conveying the evidence is not enough, it needs to be verified as well
+in order to end up with a trustworthy channel. We decided to integrate
+verification into the handshake, too, but that has massive drawbacks:
+Verification can take orders of magnitude longer than normal TLS handshakes,
+and usually involves remote calls, affecting all sorts of timeouts.
+However, doing the verification at the application level would require
+forwarding information from the handshake (e.g. nonce), at which point
+the application needs to be fully aware of the handshake protocol in
+order to verify it, breaking the intended layering.
+
+
+### Maturity of TEEs
+With several attacks, such as TEE.fail, Wiretap.fail, BadRAM, attestation in
+TEEs may not yet be mature enough to be integrated within TLS handshake.
+
+Ayoub Benaissa remarks:
+
+{:quote}
+>  TLS might not be well suited to include this in its protocol. Not sure
+TEEs are even as mature for the people to see that it should be included
+right now. The plan to make it a post-handshake protocol makes more sense
+right now. A future where it's incorporated into TLS might exist, but I
+don't think there is enough motivation right now.
+
+### Amount of Effort
+
+Markus Rudy shares his practical experience:
+
+{:quote}
+>  "Keeping attestation out of the application logic" is not as straightforward
+as it sounds. In the background-check model, the attester needs to collect
+evidence in response to the relying party's challenge (nonce). We were
+lucky that the Golang TLS stack can be supplied with arbitrary closures
+that are called during the handshake, but in my experience this is a rare
+design choice and may also be difficult to implement in other languages.
+
+Ayoub Benaissa remarks:
+
+{:quote}
+>  An intra-handshake requires much more work compared to a post-handshake.
+People need to agree on how to add this as optional in TLS (we can't force
+everyone to use it of course), the standard needs to be implemented by
+major libraries, and then it will be available in major client/server
+applications. If any of the prior steps doesn't go through, it means you
+have to patch your components to make it work, which is not convenient /
+less secure.
+
+### Difficulty of Debugging Attestation
+
+Markus Rudy shares his practical experience:
+
+{:quote}
+>  There's only so much information in a TLS alert message, and it's
+definitely not enough to understand remote verification failures.
+While I understand this to be a deliberate design choice by TLS,
+I found this to be a hindrance for operating and debugging a large
+number of services in practice.
 
 # Post-handshake Attestation
 
@@ -262,6 +336,40 @@ happen after Connection Establishment Time, there is no additional latency.
 Except for first round of remote attestation, post-handshake attestation outperforms the
 intra-handshake attestation (one round trip), which requires re-establishing the connection
 (1.5 round trip).
+
+### Ease of Implementation
+Ayoub Benaissa remarks:
+
+{:quote}
+>  We already implemented a post-handshake protocol and have a full demo
+working. We were able to do this in a matter of weeks. That's because you
+don't need to modify any TLS implementation, but only add a few
+verification steps after the usual TLS handshake. This is almost the same
+on the client and server side.
+
+### General Solution for Other Protocols
+In post-handshake attestation, design, verification and audit effort
+will be one-time and any protocol
+(e.g., Noise) which has support for exporters can then use it without
+changing each and every protocol.
+
+Markus Rudy shares this requirement:
+
+{:quote}
+>  It should be possible to port the general shape of a post-handshake
+attested TLS protocol to other protocols that provide secure channels
+and session binding (Noise comes to mind).
+
+### Ease of Verification and Audit
+Post-handshake attestation has relatively easier formal analysis. The
+same may apply to audit.
+
+Markus Rudy remarks:
+
+{:quote}
+>  (Formal) verification of a protocol and audit of its implementations
+might be much easier if it ran on top of TLS. Existing proofs and
+certifications would not need to be reevaluated.
 
 ## Limitations
 
@@ -310,6 +418,19 @@ regularly.  So having a protocol used at onboarding time and another one
 during normal operation meant that the onboarding one would have bugs that
 never get fixed, since the code only runs once.
 
+He further shares {{MCR-LAKE2}}:
+
+{:quote}
+>  My contention, which I think the group agreed with, is that one probably
+wants to do continuous assurance, that is, to repeat the remote attestation.
+
+{:quote}
+>  Do you want to have two protocols and two code paths? (redundant code in a
+constrained device?).  I suggested that *maybe* the remote attestation should
+use it's own /.well-known Path, and that it would just occur after
+onboarding, and regularly onwards.  Maybe it's weird to onboard a device only
+to kick it out again immediately because it failed remote attestation, but
+given continuous assurance, this could happen at any time.
 
 Göran Selander observes {{Goran-LAKE}}:
 
@@ -342,7 +463,7 @@ to the application traffic secrets, resulting in **relay** attacks {{RelayAttack
 * No attacks on post-handshake attestation are currently known. Post-handshake attestation
 avoids replay attacks by using fresh attestation nonce. Moreover, it avoids diversion and relay attacks
 by binding the Evidence to the underlying TLS connection, such as using Exported Keying Material (EKM)
-{{I-D.ietf-tls-rfc8446bis}}. {{-rfc9261}} and {{-rfc9266}} provides mechanisms for such bindings.
+{{I-D.ietf-tls-rfc8446bis}}. {{-rfc9261}} and {{-rfc9266}} provide mechanisms for such bindings.
 
 ## Exploit of Sensitive Hardware-level Information
 
@@ -366,11 +487,18 @@ This document has no IANA actions.
 # Acknowledgments
 {:numbered="false"}
 
-We gratefully thank Peg Jones for review.
+We gratefully thank Peg Jones, Paul Wouters, Ayoub Benaissa and Markus Rudy for review.
 
 # Contributors
 {:numbered="false"}
 
 Pavel Nikonorov (GENXT / IIAP NAS RA) contributed text in {{sec-intra-app-changes}} and {{sec-post-app-changes}}.
 
+# History
+{:numbered="false"}
 
+-01
+
+* Added scope section to address comments of Paul Wouters
+* Added comments of Ayoub Benaissa as quotes
+* Added comments of Markus Rudy as quotes
