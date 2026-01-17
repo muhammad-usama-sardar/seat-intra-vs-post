@@ -217,7 +217,7 @@ Table of Contents
    for use cases which require remote attestation only once during
    Connection Establishment Time.
 
-   However, Markus Rudy shares his practical experience:
+   However, Markus Rudy shares his practical experience [Markus-16Jan]:
 
    |  I don't think saving extra roundtrips is an appropriate design
    |  goal when attestation is required.  Generating evidence alone
@@ -252,7 +252,7 @@ Table of Contents
    signatures during appraisal, this leads to high handshake latency.
    This may not be desirable for some applications.
 
-   Markus Rudy shares his practical experience:
+   Markus Rudy shares his practical experience [Markus-16Jan]:
 
    |  Conveying the evidence is not enough, it needs to be verified as
    |  well in order to end up with a trustworthy channel.  We decided to
@@ -271,7 +271,7 @@ Table of Contents
    attestation in TEEs may not yet be mature enough to be integrated
    within TLS handshake.
 
-   Ayoub Benaissa remarks:
+   Ayoub Benaissa remarks [Ayoub-16Jan]:
 
    |  TLS might not be well suited to include this in its protocol.  Not
    |  sure TEEs are even as mature for the people to see that it should
@@ -282,7 +282,7 @@ Table of Contents
 
 4.2.6.  Amount of Effort
 
-   Markus Rudy shares his practical experience:
+   Markus Rudy shares his practical experience [Markus-16Jan]:
 
    |  "Keeping attestation out of the application logic" is not as
    |  straightforward as it sounds.  In the background-check model, the
@@ -292,7 +292,7 @@ Table of Contents
    |  during the handshake, but in my experience this is a rare design
    |  choice and may also be difficult to implement in other languages.
 
-   Ayoub Benaissa remarks:
+   Ayoub Benaissa remarks [Ayoub-16Jan]:
 
    |  An intra-handshake requires much more work compared to a post-
    |  handshake.  People need to agree on how to add this as optional in
@@ -304,7 +304,7 @@ Table of Contents
 
 4.2.7.  Difficulty of Debugging Attestation
 
-   Markus Rudy shares his practical experience:
+   Markus Rudy shares his practical experience [Markus-16Jan]:
 
    |  There's only so much information in a TLS alert message, and it's
    |  definitely not enough to understand remote verification failures.
@@ -363,7 +363,7 @@ Table of Contents
 
 5.1.6.  Ease of Implementation
 
-   Ayoub Benaissa remarks:
+   Ayoub Benaissa remarks [Ayoub-16Jan]:
 
    |  We already implemented a post-handshake protocol and have a full
    |  demo working.  We were able to do this in a matter of weeks.
@@ -377,7 +377,7 @@ Table of Contents
    will be one-time and any protocol (e.g., Noise) which has support for
    exporters can then use it without changing each and every protocol.
 
-   Markus Rudy shares this requirement:
+   Markus Rudy shares this requirement [Markus-16Jan]:
 
    |  It should be possible to port the general shape of a post-
    |  handshake attested TLS protocol to other protocols that provide
@@ -385,10 +385,10 @@ Table of Contents
 
 5.1.8.  Ease of Verification and Audit
 
-   Post-handshake attestation has relatively easier formal analysis.
-   The same may apply to audit.
+   Post-handshake attestation has relatively easier formal analysis and
+   verification.  The same may apply to audit.
 
-   Markus Rudy remarks:
+   Markus Rudy remarks [Markus-16Jan]:
 
    |  (Formal) verification of a protocol and audit of its
    |  implementations might be much easier if it ran on top of TLS.
@@ -536,6 +536,12 @@ Table of Contents
 
 10.2.  Informative References
 
+   [Ayoub-16Jan]
+              Ayoub Benaissa, "New Version Notification for draft-usama-
+              seat-intra-vs-post-00.txt", January 2026,
+              <https://mailarchive.ietf.org/arch/msg/seat/8eynK9ky5F-
+              TcnL_UPbSRDKuK1E/>.
+
    [Goran-LAKE]
               Göran Selander, "Comments for remote attestation over
               EDHOC", May 2024,
@@ -568,6 +574,12 @@ Table of Contents
               Handling", March 2022, <https://github.com/CCC-
               Attestation/meetings/blob/main/materials/
               KeithMoyer_STET.pdf>.
+
+   [Markus-16Jan]
+              Markus Rudy, "New Version Notification for draft-usama-
+              seat-intra-vs-post-00.txt", January 2026,
+              <https://mailarchive.ietf.org/arch/msg/seat/
+              Pxr_12v6MIQIzGFTUdx04aVZYpM/>.
 
    [MCR-LAKE] Michael Richardson, "Comments for remote attestation over
               EDHOC", May 2024,

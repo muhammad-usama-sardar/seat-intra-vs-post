@@ -1432,7 +1432,7 @@ and make security-relevant decisions.<a href="#section-4.1.1-1" class="pilcrow">
 <p id="section-4.1.2-1">Proponents of intra-handshake claim that it avoids extra round trips
 for use cases which require remote attestation only once
 during Connection Establishment Time.<a href="#section-4.1.2-1" class="pilcrow">¶</a></p>
-<p id="section-4.1.2-2">However, Markus Rudy shares his practical experience:<a href="#section-4.1.2-2" class="pilcrow">¶</a></p>
+<p id="section-4.1.2-2">However, Markus Rudy shares his practical experience <span>[<a href="#Markus-16Jan" class="cite xref">Markus-16Jan</a>]</span>:<a href="#section-4.1.2-2" class="pilcrow">¶</a></p>
 <blockquote id="section-4.1.2-3">
             <p id="section-4.1.2-3.1">I don't think saving extra roundtrips is an appropriate design
 goal when attestation is required. Generating evidence alone takes
@@ -1484,7 +1484,7 @@ resumption is a new connection <span>[<a href="#I-D.ietf-tls-rfc8446bis" class="
           </h4>
 <p id="section-4.2.4-1">Because of signature in Evidence generation and verification of signatures during appraisal,
 this leads to high handshake latency. This may not be desirable for some applications.<a href="#section-4.2.4-1" class="pilcrow">¶</a></p>
-<p id="section-4.2.4-2">Markus Rudy shares his practical experience:<a href="#section-4.2.4-2" class="pilcrow">¶</a></p>
+<p id="section-4.2.4-2">Markus Rudy shares his practical experience <span>[<a href="#Markus-16Jan" class="cite xref">Markus-16Jan</a>]</span>:<a href="#section-4.2.4-2" class="pilcrow">¶</a></p>
 <blockquote id="section-4.2.4-3">
             <p id="section-4.2.4-3.1">Conveying the evidence is not enough, it needs to be verified as well
 in order to end up with a trustworthy channel. We decided to integrate
@@ -1505,7 +1505,7 @@ order to verify it, breaking the intended layering.<a href="#section-4.2.4-3.1" 
           </h4>
 <p id="section-4.2.5-1">With several attacks, such as TEE.fail, Wiretap.fail, BadRAM, attestation in
 TEEs may not yet be mature enough to be integrated within TLS handshake.<a href="#section-4.2.5-1" class="pilcrow">¶</a></p>
-<p id="section-4.2.5-2">Ayoub Benaissa remarks:<a href="#section-4.2.5-2" class="pilcrow">¶</a></p>
+<p id="section-4.2.5-2">Ayoub Benaissa remarks <span>[<a href="#Ayoub-16Jan" class="cite xref">Ayoub-16Jan</a>]</span>:<a href="#section-4.2.5-2" class="pilcrow">¶</a></p>
 <blockquote id="section-4.2.5-3">
             <p id="section-4.2.5-3.1">TLS might not be well suited to include this in its protocol. Not sure
 TEEs are even as mature for the people to see that it should be included
@@ -1520,7 +1520,7 @@ don't think there is enough motivation right now.<a href="#section-4.2.5-3.1" cl
           <h4 id="name-amount-of-effort">
 <a href="#section-4.2.6" class="section-number selfRef">4.2.6. </a><a href="#name-amount-of-effort" class="section-name selfRef">Amount of Effort</a>
           </h4>
-<p id="section-4.2.6-1">Markus Rudy shares his practical experience:<a href="#section-4.2.6-1" class="pilcrow">¶</a></p>
+<p id="section-4.2.6-1">Markus Rudy shares his practical experience <span>[<a href="#Markus-16Jan" class="cite xref">Markus-16Jan</a>]</span>:<a href="#section-4.2.6-1" class="pilcrow">¶</a></p>
 <blockquote id="section-4.2.6-2">
             <p id="section-4.2.6-2.1">"Keeping attestation out of the application logic" is not as straightforward
 as it sounds. In the background-check model, the attester needs to collect
@@ -1529,7 +1529,7 @@ lucky that the Golang TLS stack can be supplied with arbitrary closures
 that are called during the handshake, but in my experience this is a rare
 design choice and may also be difficult to implement in other languages.<a href="#section-4.2.6-2.1" class="pilcrow">¶</a></p>
 </blockquote>
-<p id="section-4.2.6-3">Ayoub Benaissa remarks:<a href="#section-4.2.6-3" class="pilcrow">¶</a></p>
+<p id="section-4.2.6-3">Ayoub Benaissa remarks <span>[<a href="#Ayoub-16Jan" class="cite xref">Ayoub-16Jan</a>]</span>:<a href="#section-4.2.6-3" class="pilcrow">¶</a></p>
 <blockquote id="section-4.2.6-4">
             <p id="section-4.2.6-4.1">An intra-handshake requires much more work compared to a post-handshake.
 People need to agree on how to add this as optional in TLS (we can't force
@@ -1546,7 +1546,7 @@ less secure.<a href="#section-4.2.6-4.1" class="pilcrow">¶</a></p>
           <h4 id="name-difficulty-of-debugging-att">
 <a href="#section-4.2.7" class="section-number selfRef">4.2.7. </a><a href="#name-difficulty-of-debugging-att" class="section-name selfRef">Difficulty of Debugging Attestation</a>
           </h4>
-<p id="section-4.2.7-1">Markus Rudy shares his practical experience:<a href="#section-4.2.7-1" class="pilcrow">¶</a></p>
+<p id="section-4.2.7-1">Markus Rudy shares his practical experience <span>[<a href="#Markus-16Jan" class="cite xref">Markus-16Jan</a>]</span>:<a href="#section-4.2.7-1" class="pilcrow">¶</a></p>
 <blockquote id="section-4.2.7-2">
             <p id="section-4.2.7-2.1">There's only so much information in a TLS alert message, and it's
 definitely not enough to understand remote verification failures.
@@ -1630,7 +1630,7 @@ intra-handshake attestation (one round trip), which requires re-establishing the
           <h4 id="name-ease-of-implementation">
 <a href="#section-5.1.6" class="section-number selfRef">5.1.6. </a><a href="#name-ease-of-implementation" class="section-name selfRef">Ease of Implementation</a>
           </h4>
-<p id="section-5.1.6-1">Ayoub Benaissa remarks:<a href="#section-5.1.6-1" class="pilcrow">¶</a></p>
+<p id="section-5.1.6-1">Ayoub Benaissa remarks <span>[<a href="#Ayoub-16Jan" class="cite xref">Ayoub-16Jan</a>]</span>:<a href="#section-5.1.6-1" class="pilcrow">¶</a></p>
 <blockquote id="section-5.1.6-2">
             <p id="section-5.1.6-2.1">We already implemented a post-handshake protocol and have a full demo
 working. We were able to do this in a matter of weeks. That's because you
@@ -1649,7 +1649,7 @@ on the client and server side.<a href="#section-5.1.6-2.1" class="pilcrow">¶</a
 will be one-time and any protocol
 (e.g., Noise) which has support for exporters can then use it without
 changing each and every protocol.<a href="#section-5.1.7-1" class="pilcrow">¶</a></p>
-<p id="section-5.1.7-2">Markus Rudy shares this requirement:<a href="#section-5.1.7-2" class="pilcrow">¶</a></p>
+<p id="section-5.1.7-2">Markus Rudy shares this requirement <span>[<a href="#Markus-16Jan" class="cite xref">Markus-16Jan</a>]</span>:<a href="#section-5.1.7-2" class="pilcrow">¶</a></p>
 <blockquote id="section-5.1.7-3">
             <p id="section-5.1.7-3.1">It should be possible to port the general shape of a post-handshake
 attested TLS protocol to other protocols that provide secure channels
@@ -1662,9 +1662,9 @@ and session binding (Noise comes to mind).<a href="#section-5.1.7-3.1" class="pi
           <h4 id="name-ease-of-verification-and-au">
 <a href="#section-5.1.8" class="section-number selfRef">5.1.8. </a><a href="#name-ease-of-verification-and-au" class="section-name selfRef">Ease of Verification and Audit</a>
           </h4>
-<p id="section-5.1.8-1">Post-handshake attestation has relatively easier formal analysis. The
-same may apply to audit.<a href="#section-5.1.8-1" class="pilcrow">¶</a></p>
-<p id="section-5.1.8-2">Markus Rudy remarks:<a href="#section-5.1.8-2" class="pilcrow">¶</a></p>
+<p id="section-5.1.8-1">Post-handshake attestation has relatively easier formal analysis and
+verification. The same may apply to audit.<a href="#section-5.1.8-1" class="pilcrow">¶</a></p>
+<p id="section-5.1.8-2">Markus Rudy remarks <span>[<a href="#Markus-16Jan" class="cite xref">Markus-16Jan</a>]</span>:<a href="#section-5.1.8-2" class="pilcrow">¶</a></p>
 <blockquote id="section-5.1.8-3">
             <p id="section-5.1.8-3.1">(Formal) verification of a protocol and audit of its implementations
 might be much easier if it ran on top of TLS. Existing proofs and
@@ -1858,6 +1858,10 @@ send the Evidence after successful client authentication.<a href="#section-8.1-1
 <a href="#section-10.2" class="section-number selfRef">10.2. </a><a href="#name-informative-references" class="section-name selfRef">Informative References</a>
         </h3>
 <dl class="references">
+<dt id="Ayoub-16Jan">[Ayoub-16Jan]</dt>
+        <dd>
+<span class="refAuthor">Ayoub Benaissa</span>, <span class="refTitle">"New Version Notification for draft-usama-seat-intra-vs-post-00.txt"</span>, <time datetime="2026-01" class="refDate">January 2026</time>, <span>&lt;<a href="https://mailarchive.ietf.org/arch/msg/seat/8eynK9ky5F-TcnL_UPbSRDKuK1E/">https://mailarchive.ietf.org/arch/msg/seat/8eynK9ky5F-TcnL_UPbSRDKuK1E/</a>&gt;</span>. </dd>
+<dd class="break"></dd>
 <dt id="Goran-LAKE">[Goran-LAKE]</dt>
         <dd>
 <span class="refAuthor">Göran Selander</span>, <span class="refTitle">"Comments for remote attestation over EDHOC"</span>, <time datetime="2024-05" class="refDate">May 2024</time>, <span>&lt;<a href="https://mailarchive.ietf.org/arch/msg/lake/Bb3eTcQxDA-F1AYJ0hZZy3p9wpQ/">https://mailarchive.ietf.org/arch/msg/lake/Bb3eTcQxDA-F1AYJ0hZZy3p9wpQ/</a>&gt;</span>. </dd>
@@ -1877,6 +1881,10 @@ send the Evidence after successful client authentication.<a href="#section-8.1-1
 <dt id="Keith-STET-CCC">[Keith-STET-CCC]</dt>
         <dd>
 <span class="refAuthor">Keith Moyer</span>, <span class="refTitle">"Split-Trust Encryption Tool Attested Session Handling"</span>, <time datetime="2022-03" class="refDate">March 2022</time>, <span>&lt;<a href="https://github.com/CCC-Attestation/meetings/blob/main/materials/KeithMoyer_STET.pdf">https://github.com/CCC-Attestation/meetings/blob/main/materials/KeithMoyer_STET.pdf</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="Markus-16Jan">[Markus-16Jan]</dt>
+        <dd>
+<span class="refAuthor">Markus Rudy</span>, <span class="refTitle">"New Version Notification for draft-usama-seat-intra-vs-post-00.txt"</span>, <time datetime="2026-01" class="refDate">January 2026</time>, <span>&lt;<a href="https://mailarchive.ietf.org/arch/msg/seat/Pxr_12v6MIQIzGFTUdx04aVZYpM/">https://mailarchive.ietf.org/arch/msg/seat/Pxr_12v6MIQIzGFTUdx04aVZYpM/</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 <dt id="MCR-LAKE">[MCR-LAKE]</dt>
         <dd>
