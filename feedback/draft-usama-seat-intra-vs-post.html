@@ -1177,7 +1177,7 @@ category, namely pre-handshake attestation, intra-handshake attestation and post
                     <p id="section-toc.1-1.4.2.1.2.1.1"><a href="#section-4.1.1" class="auto internal xref">4.1.1</a>.  <a href="#name-no-additional-application-l" class="internal xref">No Additional Application-Level Protocol</a></p>
 </li>
                   <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.4.2.1.2.2">
-                    <p id="section-toc.1-1.4.2.1.2.2.1"><a href="#section-4.1.2" class="auto internal xref">4.1.2</a>.  <a href="#name-avoids-extra-round-trips-fo" class="internal xref">Avoids Extra Round Trips for One-time Attestation</a></p>
+                    <p id="section-toc.1-1.4.2.1.2.2.1"><a href="#section-4.1.2" class="auto internal xref">4.1.2</a>.  <a href="#name-avoid-extra-round-trips-for" class="internal xref">Avoid Extra Round Trips for One-time Attestation</a></p>
 </li>
                 </ul>
 </li>
@@ -1228,16 +1228,16 @@ category, namely pre-handshake attestation, intra-handshake attestation and post
                     <p id="section-toc.1-1.5.2.1.2.4.1"><a href="#section-5.1.4" class="auto internal xref">5.1.4</a>.  <a href="#name-standard-handshake-latency" class="internal xref">Standard Handshake Latency</a></p>
 </li>
                   <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.5.2.1.2.5">
-                    <p id="section-toc.1-1.5.2.1.2.5.1"><a href="#section-5.1.5" class="auto internal xref">5.1.5</a>.  <a href="#name-avoids-extra-round-trips" class="internal xref">Avoids Extra Round Trips</a></p>
+                    <p id="section-toc.1-1.5.2.1.2.5.1"><a href="#section-5.1.5" class="auto internal xref">5.1.5</a>.  <a href="#name-avoid-extra-round-trips" class="internal xref">Avoid Extra Round Trips</a></p>
 </li>
                   <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.5.2.1.2.6">
                     <p id="section-toc.1-1.5.2.1.2.6.1"><a href="#section-5.1.6" class="auto internal xref">5.1.6</a>.  <a href="#name-ease-of-implementation" class="internal xref">Ease of Implementation</a></p>
 </li>
                   <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.5.2.1.2.7">
-                    <p id="section-toc.1-1.5.2.1.2.7.1"><a href="#section-5.1.7" class="auto internal xref">5.1.7</a>.  <a href="#name-general-solution-for-other-" class="internal xref">General Solution for Other Protocols</a></p>
+                    <p id="section-toc.1-1.5.2.1.2.7.1"><a href="#section-5.1.7" class="auto internal xref">5.1.7</a>.  <a href="#name-ease-of-verification-and-au" class="internal xref">Ease of Verification and Audit</a></p>
 </li>
                   <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.5.2.1.2.8">
-                    <p id="section-toc.1-1.5.2.1.2.8.1"><a href="#section-5.1.8" class="auto internal xref">5.1.8</a>.  <a href="#name-ease-of-verification-and-au" class="internal xref">Ease of Verification and Audit</a></p>
+                    <p id="section-toc.1-1.5.2.1.2.8.1"><a href="#section-5.1.8" class="auto internal xref">5.1.8</a>.  <a href="#name-general-solution-for-other-" class="internal xref">General Solution for Other Protocols</a></p>
 </li>
                 </ul>
 </li>
@@ -1335,7 +1335,7 @@ be done within the TLS handshake protocol.<a href="#section-1-3" class="pilcrow"
         <h3 id="name-scope">
 <a href="#section-1.1" class="section-number selfRef">1.1. </a><a href="#name-scope" class="section-name selfRef">Scope</a>
         </h3>
-<p id="section-1.1-1">In this version, we analyze the three categories (without combinations) with a focus on the last two.<a href="#section-1.1-1" class="pilcrow">¶</a></p>
+<p id="section-1.1-1">In this version, we analyze the three categories (without combinations) with a focus on the last two, i.e., intra-handshake attestation and post-handshake attestation.<a href="#section-1.1-1" class="pilcrow">¶</a></p>
 <p id="section-1.1-2">The current scope of this draft is existing specifications and real-world implementations pointed in the
 given references. Any theoretical solutions are currently out of scope until some specification or
 implementation emerges.<a href="#section-1.1-2" class="pilcrow">¶</a></p>
@@ -1344,6 +1344,8 @@ Environment <span>[<a href="#RFC9334" class="cite xref">RFC9334</a>]</span>. Tha
 <span>[<a href="#RFC9334" class="cite xref">RFC9334</a>]</span> etc. are out of scope in this version.<a href="#section-1.1-3" class="pilcrow">¶</a></p>
 <p id="section-1.1-4">From RATS perspective, we consider Background Check Model <span>[<a href="#RFC9334" class="cite xref">RFC9334</a>]</span>. Future versions will add
 Passport Model <span>[<a href="#RFC9334" class="cite xref">RFC9334</a>]</span>.<a href="#section-1.1-4" class="pilcrow">¶</a></p>
+<p id="section-1.1-5">From TLS perspective, the scope is limited to TLS 1.3 as per <span>[<a href="#SEAT-Charter" class="cite xref">SEAT-Charter</a>]</span>.
+That is, older versions of TLS are explicitly out of scope.<a href="#section-1.1-5" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="note">
@@ -1424,21 +1426,29 @@ is required, applications do incorporate additional trust logic to interpret att
 and make security-relevant decisions.<a href="#section-4.1.1-1" class="pilcrow">¶</a></p>
 </section>
 </div>
-<div id="avoids-extra-round-trips-for-one-time-attestation">
+<div id="avoid-extra-round-trips-for-one-time-attestation">
 <section id="section-4.1.2">
-          <h4 id="name-avoids-extra-round-trips-fo">
-<a href="#section-4.1.2" class="section-number selfRef">4.1.2. </a><a href="#name-avoids-extra-round-trips-fo" class="section-name selfRef">Avoids Extra Round Trips for One-time Attestation</a>
+          <h4 id="name-avoid-extra-round-trips-for">
+<a href="#section-4.1.2" class="section-number selfRef">4.1.2. </a><a href="#name-avoid-extra-round-trips-for" class="section-name selfRef">Avoid Extra Round Trips for One-time Attestation</a>
           </h4>
-<p id="section-4.1.2-1">Proponents of intra-handshake claim that it avoids extra round trips
+<p id="section-4.1.2-1">It is claimed that intra-handshake attestation avoids extra round trips
 for use cases which require remote attestation only once
 during Connection Establishment Time.<a href="#section-4.1.2-1" class="pilcrow">¶</a></p>
-<p id="section-4.1.2-2">However, Markus Rudy shares his practical experience <span>[<a href="#Markus-16Jan" class="cite xref">Markus-16Jan</a>]</span>:<a href="#section-4.1.2-2" class="pilcrow">¶</a></p>
+<p id="section-4.1.2-2">However, this may only be valid in cases when the Connection Establishment
+Time without remote attestation is significantly higher than the time
+for generation and appraisal of Evidence.
+For instance, Markus Rudy shares his practical experience <span>[<a href="#Markus-16Jan" class="cite xref">Markus-16Jan</a>]</span>:<a href="#section-4.1.2-2" class="pilcrow">¶</a></p>
 <blockquote id="section-4.1.2-3">
             <p id="section-4.1.2-3.1">I don't think saving extra roundtrips is an appropriate design
 goal when attestation is required. Generating evidence alone takes
 much longer than normal network roundtrip times, not even speaking
 of verification.<a href="#section-4.1.2-3.1" class="pilcrow">¶</a></p>
 </blockquote>
+<p id="section-4.1.2-4">Our experiments also support his practical experience. In our experience,
+the generation of Evidence for Infineon Optiga SLB 9670,
+a discrete hardware TPM (dTPM) implementing TPM 2.0, takes around 210 ms.
+In our experience, the generation of Evidence for AMD SEV-SNP takes around
+6 ms.<a href="#section-4.1.2-4" class="pilcrow">¶</a></p>
 </section>
 </div>
 </section>
@@ -1503,8 +1513,8 @@ order to verify it, breaking the intended layering.<a href="#section-4.2.4-3.1" 
           <h4 id="name-maturity-of-tees">
 <a href="#section-4.2.5" class="section-number selfRef">4.2.5. </a><a href="#name-maturity-of-tees" class="section-name selfRef">Maturity of TEEs</a>
           </h4>
-<p id="section-4.2.5-1">With several attacks, such as TEE.fail, Wiretap.fail, BadRAM, attestation in
-TEEs may not yet be mature enough to be integrated within TLS handshake.<a href="#section-4.2.5-1" class="pilcrow">¶</a></p>
+<p id="section-4.2.5-1">With several attacks (see <a href="#sec-sec-cons" class="auto internal xref">Section 8</a>), attestation in
+TEEs may not yet be mature enough to be integrated <em>within</em> TLS handshake.<a href="#section-4.2.5-1" class="pilcrow">¶</a></p>
 <p id="section-4.2.5-2">Ayoub Benaissa remarks <span>[<a href="#Ayoub-16Jan" class="cite xref">Ayoub-16Jan</a>]</span>:<a href="#section-4.2.5-2" class="pilcrow">¶</a></p>
 <blockquote id="section-4.2.5-3">
             <p id="section-4.2.5-3.1">TLS might not be well suited to include this in its protocol. Not sure
@@ -1615,10 +1625,10 @@ state of Attester may change after Connection Establishment Time.<a href="#secti
 happen after Connection Establishment Time, there is no additional latency.<a href="#section-5.1.4-1" class="pilcrow">¶</a></p>
 </section>
 </div>
-<div id="avoids-extra-round-trips">
+<div id="avoid-extra-round-trips">
 <section id="section-5.1.5">
-          <h4 id="name-avoids-extra-round-trips">
-<a href="#section-5.1.5" class="section-number selfRef">5.1.5. </a><a href="#name-avoids-extra-round-trips" class="section-name selfRef">Avoids Extra Round Trips</a>
+          <h4 id="name-avoid-extra-round-trips">
+<a href="#section-5.1.5" class="section-number selfRef">5.1.5. </a><a href="#name-avoid-extra-round-trips" class="section-name selfRef">Avoid Extra Round Trips</a>
           </h4>
 <p id="section-5.1.5-1">Except for first round of remote attestation, post-handshake attestation outperforms the
 intra-handshake attestation (one round trip), which requires re-establishing the connection
@@ -1640,35 +1650,35 @@ on the client and server side.<a href="#section-5.1.6-2.1" class="pilcrow">¶</a
 </blockquote>
 </section>
 </div>
-<div id="general-solution-for-other-protocols">
+<div id="ease-of-verification-and-audit">
 <section id="section-5.1.7">
-          <h4 id="name-general-solution-for-other-">
-<a href="#section-5.1.7" class="section-number selfRef">5.1.7. </a><a href="#name-general-solution-for-other-" class="section-name selfRef">General Solution for Other Protocols</a>
+          <h4 id="name-ease-of-verification-and-au">
+<a href="#section-5.1.7" class="section-number selfRef">5.1.7. </a><a href="#name-ease-of-verification-and-au" class="section-name selfRef">Ease of Verification and Audit</a>
           </h4>
-<p id="section-5.1.7-1">In post-handshake attestation, design, verification and audit effort
-will be one-time and any protocol
-(e.g., Noise) which has support for exporters can then use it without
-changing each and every protocol.<a href="#section-5.1.7-1" class="pilcrow">¶</a></p>
-<p id="section-5.1.7-2">Markus Rudy shares this requirement <span>[<a href="#Markus-16Jan" class="cite xref">Markus-16Jan</a>]</span>:<a href="#section-5.1.7-2" class="pilcrow">¶</a></p>
+<p id="section-5.1.7-1">Post-handshake attestation has relatively easier formal analysis and
+verification. The same may apply to audit.<a href="#section-5.1.7-1" class="pilcrow">¶</a></p>
+<p id="section-5.1.7-2">Markus Rudy remarks <span>[<a href="#Markus-16Jan" class="cite xref">Markus-16Jan</a>]</span>:<a href="#section-5.1.7-2" class="pilcrow">¶</a></p>
 <blockquote id="section-5.1.7-3">
-            <p id="section-5.1.7-3.1">It should be possible to port the general shape of a post-handshake
-attested TLS protocol to other protocols that provide secure channels
-and session binding (Noise comes to mind).<a href="#section-5.1.7-3.1" class="pilcrow">¶</a></p>
+            <p id="section-5.1.7-3.1">(Formal) verification of a protocol and audit of its implementations
+might be much easier if it ran on top of TLS. Existing proofs and
+certifications would not need to be reevaluated.<a href="#section-5.1.7-3.1" class="pilcrow">¶</a></p>
 </blockquote>
 </section>
 </div>
-<div id="ease-of-verification-and-audit">
+<div id="general-solution-for-other-protocols">
 <section id="section-5.1.8">
-          <h4 id="name-ease-of-verification-and-au">
-<a href="#section-5.1.8" class="section-number selfRef">5.1.8. </a><a href="#name-ease-of-verification-and-au" class="section-name selfRef">Ease of Verification and Audit</a>
+          <h4 id="name-general-solution-for-other-">
+<a href="#section-5.1.8" class="section-number selfRef">5.1.8. </a><a href="#name-general-solution-for-other-" class="section-name selfRef">General Solution for Other Protocols</a>
           </h4>
-<p id="section-5.1.8-1">Post-handshake attestation has relatively easier formal analysis and
-verification. The same may apply to audit.<a href="#section-5.1.8-1" class="pilcrow">¶</a></p>
-<p id="section-5.1.8-2">Markus Rudy remarks <span>[<a href="#Markus-16Jan" class="cite xref">Markus-16Jan</a>]</span>:<a href="#section-5.1.8-2" class="pilcrow">¶</a></p>
+<p id="section-5.1.8-1">In post-handshake attestation, design, verification and audit effort
+will be one-time and any protocol
+(e.g., Noise) which has support for exporters can then use it without
+changing each and every protocol.<a href="#section-5.1.8-1" class="pilcrow">¶</a></p>
+<p id="section-5.1.8-2">Markus Rudy shares this requirement <span>[<a href="#Markus-16Jan" class="cite xref">Markus-16Jan</a>]</span>:<a href="#section-5.1.8-2" class="pilcrow">¶</a></p>
 <blockquote id="section-5.1.8-3">
-            <p id="section-5.1.8-3.1">(Formal) verification of a protocol and audit of its implementations
-might be much easier if it ran on top of TLS. Existing proofs and
-certifications would not need to be reevaluated.<a href="#section-5.1.8-3.1" class="pilcrow">¶</a></p>
+            <p id="section-5.1.8-3.1">It should be possible to port the general shape of a post-handshake
+attested TLS protocol to other protocols that provide secure channels
+and session binding (Noise comes to mind).<a href="#section-5.1.8-3.1" class="pilcrow">¶</a></p>
 </blockquote>
 </section>
 </div>
@@ -1781,7 +1791,7 @@ are all using post-handshake attestation.<a href="#section-7.2-1" class="pilcrow
 </div>
 </section>
 </div>
-<div id="security-considerations">
+<div id="sec-sec-cons">
 <section id="section-8">
       <h2 id="name-security-considerations">
 <a href="#section-8" class="section-number selfRef">8. </a><a href="#name-security-considerations" class="section-name selfRef">Security Considerations</a>
@@ -1791,18 +1801,26 @@ Security Considerations of <span>[<a href="#RFC9334" class="cite xref">RFC9334</
 <ul class="normal">
 <li class="normal" id="section-8-2.1">
           <p id="section-8-2.1.1">Pre-handshake attestation is vulnerable to <strong>replay</strong> <span>[<a href="#RA-TLS" class="cite xref">RA-TLS</a>]</span> and <strong>diversion</strong>
-            <span>[<a href="#ID-Crisis" class="cite xref">ID-Crisis</a>]</span> attacks.<a href="#section-8-2.1.1" class="pilcrow">¶</a></p>
+            <span>[<a href="#ID-Crisis" class="cite xref">ID-Crisis</a>]</span> attacks. Moreover, pre-handshake attestation leads to a single point of
+failure.<a href="#section-8-2.1.1" class="pilcrow">¶</a></p>
 </li>
         <li class="normal" id="section-8-2.2">
           <p id="section-8-2.2.1">Without significant changes to the TLS protocol: Intra-handshake attestation is
-vulnerable to <strong>diversion</strong> attacks <span>[<a href="#ID-Crisis" class="cite xref">ID-Crisis</a>]</span>. It also does not bind the Evidence
+vulnerable to <strong>diversion</strong> attacks <span>[<a href="#ID-Crisis" class="cite xref">ID-Crisis</a>]</span>. We reported these attacks to TLS WG in
+February 2025 <span>[<a href="#Usama-TLS-26Feb25" class="cite xref">Usama-TLS-26Feb25</a>]</span>. A formal proof is available
+<span>[<a href="#ID-Crisis-Repo" class="cite xref">ID-Crisis-Repo</a>]</span> for further research and
+development. Since reporting to TLS WG, these attacks have been practically
+exploited in <a href="https://tee.fail/">TEE.fail</a>, <a href="https://wiretap.fail/">Wiretap.fail</a>, and <a href="https://badram.eu/">BadRAM</a>.
+More recently, we found that intra-handshake attestation also does not bind the Evidence
 to the application traffic secrets, resulting in <strong>relay</strong> attacks <span>[<a href="#RelayAttacks" class="cite xref">RelayAttacks</a>]</span>.<a href="#section-8-2.2.1" class="pilcrow">¶</a></p>
 </li>
         <li class="normal" id="section-8-2.3">
           <p id="section-8-2.3.1">No attacks on post-handshake attestation are currently known. Post-handshake attestation
 avoids replay attacks by using fresh attestation nonce. Moreover, it avoids diversion and relay attacks
 by binding the Evidence to the underlying TLS connection, such as using Exported Keying Material (EKM)
-<span>[<a href="#I-D.ietf-tls-rfc8446bis" class="cite xref">I-D.ietf-tls-rfc8446bis</a>]</span>. <span>[<a href="#RFC9261" class="cite xref">RFC9261</a>]</span> and <span>[<a href="#RFC9266" class="cite xref">RFC9266</a>]</span> provide mechanisms for such bindings.<a href="#section-8-2.3.1" class="pilcrow">¶</a></p>
+<span>[<a href="#I-D.ietf-tls-rfc8446bis" class="cite xref">I-D.ietf-tls-rfc8446bis</a>]</span>, as proposed in Section 9.2 of <span>[<a href="#ID-Crisis" class="cite xref">ID-Crisis</a>]</span>.
+<span>[<a href="#RFC9261" class="cite xref">RFC9261</a>]</span> and <span>[<a href="#RFC9266" class="cite xref">RFC9266</a>]</span> provide mechanisms for such bindings. Efforts for a formal proof
+of security of post-handshake attestation are ongoing.<a href="#section-8-2.3.1" class="pilcrow">¶</a></p>
 </li>
       </ul>
 <div id="exploit-of-sensitive-hardware-level-information">
@@ -1860,11 +1878,11 @@ send the Evidence after successful client authentication.<a href="#section-8.1-1
 <dl class="references">
 <dt id="Ayoub-16Jan">[Ayoub-16Jan]</dt>
         <dd>
-<span class="refAuthor">Ayoub Benaissa</span>, <span class="refTitle">"New Version Notification for draft-usama-seat-intra-vs-post-00.txt"</span>, <time datetime="2026-01" class="refDate">January 2026</time>, <span>&lt;<a href="https://mailarchive.ietf.org/arch/msg/seat/8eynK9ky5F-TcnL_UPbSRDKuK1E/">https://mailarchive.ietf.org/arch/msg/seat/8eynK9ky5F-TcnL_UPbSRDKuK1E/</a>&gt;</span>. </dd>
+<span class="refAuthor">Ayoub Benaissa</span>, <span class="refTitle">"Re: New Version Notification for draft-usama-seat-intra-vs-post-00.txt"</span>, <time datetime="2026-01" class="refDate">January 2026</time>, <span>&lt;<a href="https://mailarchive.ietf.org/arch/msg/seat/8eynK9ky5F-TcnL_UPbSRDKuK1E/">https://mailarchive.ietf.org/arch/msg/seat/8eynK9ky5F-TcnL_UPbSRDKuK1E/</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 <dt id="Goran-LAKE">[Goran-LAKE]</dt>
         <dd>
-<span class="refAuthor">Göran Selander</span>, <span class="refTitle">"Comments for remote attestation over EDHOC"</span>, <time datetime="2024-05" class="refDate">May 2024</time>, <span>&lt;<a href="https://mailarchive.ietf.org/arch/msg/lake/Bb3eTcQxDA-F1AYJ0hZZy3p9wpQ/">https://mailarchive.ietf.org/arch/msg/lake/Bb3eTcQxDA-F1AYJ0hZZy3p9wpQ/</a>&gt;</span>. </dd>
+<span class="refAuthor">Göran Selander</span>, <span class="refTitle">"Re: Comments for remote attestation over EDHOC"</span>, <time datetime="2024-05" class="refDate">May 2024</time>, <span>&lt;<a href="https://mailarchive.ietf.org/arch/msg/lake/Bb3eTcQxDA-F1AYJ0hZZy3p9wpQ/">https://mailarchive.ietf.org/arch/msg/lake/Bb3eTcQxDA-F1AYJ0hZZy3p9wpQ/</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 <dt id="I-D.ietf-tls-rfc8446bis">[I-D.ietf-tls-rfc8446bis]</dt>
         <dd>
@@ -1878,17 +1896,21 @@ send the Evidence after successful client authentication.<a href="#section-8.1-1
         <dd>
 <span class="refAuthor">Sardar, M. U.</span>, <span class="refAuthor">Moustafa, M.</span>, and <span class="refAuthor">T. Aura</span>, <span class="refTitle">"Identity Crisis in Confidential Computing: Formal Analysis of Attested TLS"</span>, <time datetime="2025-11" class="refDate">November 2025</time>, <span>&lt;<a href="https://www.researchgate.net/publication/398839141_Identity_Crisis_in_Confidential_Computing_Formal_Analysis_of_Attested_TLS">https://www.researchgate.net/publication/398839141_Identity_Crisis_in_Confidential_Computing_Formal_Analysis_of_Attested_TLS</a>&gt;</span>. </dd>
 <dd class="break"></dd>
+<dt id="ID-Crisis-Repo">[ID-Crisis-Repo]</dt>
+        <dd>
+<span class="refAuthor">Muhammad Usama Sardar</span>, <span class="refTitle">"Identity Crisis in Confidential Computing: Formal analysis of attested TLS protocols"</span>, <span>&lt;<a href="https://github.com/CCC-Attestation/formal-spec-id-crisis">https://github.com/CCC-Attestation/formal-spec-id-crisis</a>&gt;</span>. </dd>
+<dd class="break"></dd>
 <dt id="Keith-STET-CCC">[Keith-STET-CCC]</dt>
         <dd>
 <span class="refAuthor">Keith Moyer</span>, <span class="refTitle">"Split-Trust Encryption Tool Attested Session Handling"</span>, <time datetime="2022-03" class="refDate">March 2022</time>, <span>&lt;<a href="https://github.com/CCC-Attestation/meetings/blob/main/materials/KeithMoyer_STET.pdf">https://github.com/CCC-Attestation/meetings/blob/main/materials/KeithMoyer_STET.pdf</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 <dt id="Markus-16Jan">[Markus-16Jan]</dt>
         <dd>
-<span class="refAuthor">Markus Rudy</span>, <span class="refTitle">"New Version Notification for draft-usama-seat-intra-vs-post-00.txt"</span>, <time datetime="2026-01" class="refDate">January 2026</time>, <span>&lt;<a href="https://mailarchive.ietf.org/arch/msg/seat/Pxr_12v6MIQIzGFTUdx04aVZYpM/">https://mailarchive.ietf.org/arch/msg/seat/Pxr_12v6MIQIzGFTUdx04aVZYpM/</a>&gt;</span>. </dd>
+<span class="refAuthor">Markus Rudy</span>, <span class="refTitle">"Re: New Version Notification for draft-usama-seat-intra-vs-post-00.txt"</span>, <time datetime="2026-01" class="refDate">January 2026</time>, <span>&lt;<a href="https://mailarchive.ietf.org/arch/msg/seat/Pxr_12v6MIQIzGFTUdx04aVZYpM/">https://mailarchive.ietf.org/arch/msg/seat/Pxr_12v6MIQIzGFTUdx04aVZYpM/</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 <dt id="MCR-LAKE">[MCR-LAKE]</dt>
         <dd>
-<span class="refAuthor">Michael Richardson</span>, <span class="refTitle">"Comments for remote attestation over EDHOC"</span>, <time datetime="2024-05" class="refDate">May 2024</time>, <span>&lt;<a href="https://mailarchive.ietf.org/arch/msg/lake/RseQknOug41sTzW7xBJ60oRdvq0/">https://mailarchive.ietf.org/arch/msg/lake/RseQknOug41sTzW7xBJ60oRdvq0/</a>&gt;</span>. </dd>
+<span class="refAuthor">Michael Richardson</span>, <span class="refTitle">"Re: Comments for remote attestation over EDHOC"</span>, <time datetime="2024-05" class="refDate">May 2024</time>, <span>&lt;<a href="https://mailarchive.ietf.org/arch/msg/lake/RseQknOug41sTzW7xBJ60oRdvq0/">https://mailarchive.ietf.org/arch/msg/lake/RseQknOug41sTzW7xBJ60oRdvq0/</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 <dt id="MCR-LAKE2">[MCR-LAKE2]</dt>
         <dd>
@@ -1927,8 +1949,12 @@ send the Evidence after successful client authentication.<a href="#section-8.1-1
 <span class="refAuthor">Mike Stunes</span>, <span class="refTitle">"Azure vTPM Attestation and Binding"</span>, <time datetime="2025-07" class="refDate">July 2025</time>, <span>&lt;<a href="https://www.youtube.com/watch?v=J7SibeZmQsE">https://www.youtube.com/watch?v=J7SibeZmQsE</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 <dt id="Tech-Concepts">[Tech-Concepts]</dt>
-      <dd>
+        <dd>
 <span class="refAuthor">Sardar, M. U.</span>, <span class="refTitle">"Perspicuity of Attestation Mechanisms in Confidential Computing: Technical Concepts"</span>, <time datetime="2025-10" class="refDate">October 2025</time>, <span>&lt;<a href="https://www.researchgate.net/publication/396199290_Perspicuity_of_Attestation_Mechanisms_in_Confidential_Computing_Technical_Concepts">https://www.researchgate.net/publication/396199290_Perspicuity_of_Attestation_Mechanisms_in_Confidential_Computing_Technical_Concepts</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="Usama-TLS-26Feb25">[Usama-TLS-26Feb25]</dt>
+      <dd>
+<span class="refAuthor">Muhammad Usama Sardar</span>, <span class="refTitle">"Impersonation attacks on protocol in draft-fossati-tls-attestation (Identity crisis in Attested TLS) for Confidential Computing"</span>, <time datetime="2025-02" class="refDate">February 2025</time>, <span>&lt;<a href="https://mailarchive.ietf.org/arch/msg/tls/Jx_yPoYWMIKaqXmPsytKZBDq23o/">https://mailarchive.ietf.org/arch/msg/tls/Jx_yPoYWMIKaqXmPsytKZBDq23o/</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 </dl>
 </section>
@@ -1940,7 +1966,21 @@ send the Evidence after successful client authentication.<a href="#section-8.1-1
       <h2 id="name-acknowledgments">
 <a href="#name-acknowledgments" class="section-name selfRef">Acknowledgments</a>
       </h2>
-<p id="appendix-A-1">We gratefully thank Peg Jones, Paul Wouters, Ayoub Benaissa and Markus Rudy for review.<a href="#appendix-A-1" class="pilcrow">¶</a></p>
+<p id="appendix-A-1">We gratefully thank the following:<a href="#appendix-A-1" class="pilcrow">¶</a></p>
+<ul class="normal">
+<li class="normal" id="appendix-A-2.1">
+          <p id="appendix-A-2.1.1">Peg Jones for review of early draft before submission<a href="#appendix-A-2.1.1" class="pilcrow">¶</a></p>
+</li>
+        <li class="normal" id="appendix-A-2.2">
+          <p id="appendix-A-2.2.1">Paul Wouters for review of section 4 of -00<a href="#appendix-A-2.2.1" class="pilcrow">¶</a></p>
+</li>
+        <li class="normal" id="appendix-A-2.3">
+          <p id="appendix-A-2.3.1">Ayoub Benaissa for review of -00 and sharing his practical experiences<a href="#appendix-A-2.3.1" class="pilcrow">¶</a></p>
+</li>
+        <li class="normal" id="appendix-A-2.4">
+          <p id="appendix-A-2.4.1">Markus Rudy for review of -00 and sharing his practical experiences<a href="#appendix-A-2.4.1" class="pilcrow">¶</a></p>
+</li>
+      </ul>
 </section>
 </div>
 <div id="contributors">
@@ -1965,7 +2005,10 @@ send the Evidence after successful client authentication.<a href="#section-8.1-1
           <p id="appendix-C-2.2.1">Added comments of Ayoub Benaissa as quotes<a href="#appendix-C-2.2.1" class="pilcrow">¶</a></p>
 </li>
         <li class="normal" id="appendix-C-2.3">
-          <p id="appendix-C-2.3.1">Added comments of Markus Rudy as quotes<a href="#appendix-C-2.3.1" class="pilcrow">¶</a></p>
+          <p id="appendix-C-2.3.1">Added some subsections to incorporate practical experiences of Markus Rudy<a href="#appendix-C-2.3.1" class="pilcrow">¶</a></p>
+</li>
+        <li class="normal" id="appendix-C-2.4">
+          <p id="appendix-C-2.4.1">Extended security considerations<a href="#appendix-C-2.4.1" class="pilcrow">¶</a></p>
 </li>
       </ul>
 </section>
