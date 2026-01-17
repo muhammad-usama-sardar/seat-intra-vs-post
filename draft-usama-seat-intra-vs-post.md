@@ -73,7 +73,7 @@ informative:
      author:
       - ins: IETF
   MCR-LAKE:
-     title: "Comments for remote attestation over EDHOC"
+     title: "Re: Comments for remote attestation over EDHOC"
      date: 25 May 2024,
      target: https://mailarchive.ietf.org/arch/msg/lake/RseQknOug41sTzW7xBJ60oRdvq0/
      author:
@@ -85,7 +85,7 @@ informative:
      author:
       - ins: Michael Richardson
   Goran-LAKE:
-     title: "Comments for remote attestation over EDHOC"
+     title: "Re: Comments for remote attestation over EDHOC"
      date: 28 May 2024,
      target: https://mailarchive.ietf.org/arch/msg/lake/Bb3eTcQxDA-F1AYJ0hZZy3p9wpQ/
      author:
@@ -111,18 +111,29 @@ informative:
       - ins: T. Fossati
       - ins: S. Frost
   Ayoub-16Jan:
-     title: "New Version Notification for draft-usama-seat-intra-vs-post-00.txt"
+     title: "Re: New Version Notification for draft-usama-seat-intra-vs-post-00.txt"
      date: 16 January 2026,
      target: https://mailarchive.ietf.org/arch/msg/seat/8eynK9ky5F-TcnL_UPbSRDKuK1E/
      author:
       - ins: Ayoub Benaissa
   Markus-16Jan:
-     title: "New Version Notification for draft-usama-seat-intra-vs-post-00.txt"
+     title: "Re: New Version Notification for draft-usama-seat-intra-vs-post-00.txt"
      date: 16 January 2026,
      target: https://mailarchive.ietf.org/arch/msg/seat/Pxr_12v6MIQIzGFTUdx04aVZYpM/
      author:
       - ins: Markus Rudy
-
+  Usama-TLS-26Feb25:
+     title: "Impersonation attacks on protocol in draft-fossati-tls-attestation (Identity crisis in Attested TLS) for Confidential Computing"
+     date: 26 February 2025,
+     target: https://mailarchive.ietf.org/arch/msg/tls/Jx_yPoYWMIKaqXmPsytKZBDq23o/
+     author:
+      - ins: Muhammad Usama Sardar
+  ID-Crisis-Repo:
+     title: "Identity Crisis in Confidential Computing: Formal analysis of attested TLS protocols"
+     date: 2025,
+     target: https://github.com/CCC-Attestation/formal-spec-id-crisis
+     author:
+      - ins: Muhammad Usama Sardar
 
 
 ...
@@ -152,7 +163,7 @@ be done within the TLS handshake protocol.
 
 ## Scope
 
-In this version, we analyze the three categories (without combinations) with a focus on the last two.
+In this version, we analyze the three categories (without combinations) with a focus on the last two, i.e., intra-handshake attestation and post-handshake attestation.
 
 The current scope of this draft is existing specifications and real-world implementations pointed in the
 given references. Any theoretical solutions are currently out of scope until some specification or
@@ -164,6 +175,9 @@ Environment {{-rfc9334}}. That is, complicated scenarios such as Composite Devic
 
 From RATS perspective, we consider Background Check Model {{-rfc9334}}. Future versions will add
 Passport Model {{-rfc9334}}.
+
+From TLS perspective, the scope is limited to TLS 1.3 as per {{SEAT-Charter}}.
+That is, older versions of TLS are explicitly out of scope.
 
 ## Note
 Regarding remote attestation, we note that:
@@ -220,18 +234,27 @@ is required, applications do incorporate additional trust logic to interpret att
 and make security-relevant decisions.
 
 
-### Avoids Extra Round Trips for One-time Attestation
-Proponents of intra-handshake claim that it avoids extra round trips
+### Avoid Extra Round Trips for One-time Attestation
+It is claimed that intra-handshake attestation avoids extra round trips
 for use cases which require remote attestation only once
 during Connection Establishment Time.
 
-However, Markus Rudy shares his practical experience {{Markus-16Jan}}:
+However, this may only be valid in cases when the Connection Establishment
+Time without remote attestation is significantly higher than the time
+for generation and appraisal of Evidence.
+For instance, Markus Rudy shares his practical experience {{Markus-16Jan}}:
 
 {:quote}
 >  I don't think saving extra roundtrips is an appropriate design
 goal when attestation is required. Generating evidence alone takes
 much longer than normal network roundtrip times, not even speaking
 of verification.
+
+Our experiments also support his practical experience. In our experience,
+the generation of Evidence for Infineon Optiga SLB 9670,
+a discrete hardware TPM (dTPM) implementing TPM 2.0, takes around 210 ms.
+In our experience, the generation of Evidence for AMD SEV-SNP takes around
+6 ms.
 
 ## Limitations
 
@@ -268,8 +291,8 @@ order to verify it, breaking the intended layering.
 
 
 ### Maturity of TEEs
-With several attacks, such as TEE.fail, Wiretap.fail, BadRAM, attestation in
-TEEs may not yet be mature enough to be integrated within TLS handshake.
+With several attacks (see {{sec-sec-cons}}), attestation in
+TEEs may not yet be mature enough to be integrated *within* TLS handshake.
 
 Ayoub Benaissa remarks {{Ayoub-16Jan}}:
 
@@ -346,7 +369,7 @@ state of Attester may change after Connection Establishment Time.
 Since the signature in Evidence generation and verification of signatures during appraisal
 happen after Connection Establishment Time, there is no additional latency.
 
-### Avoids Extra Round Trips
+### Avoid Extra Round Trips
 Except for first round of remote attestation, post-handshake attestation outperforms the
 intra-handshake attestation (one round trip), which requires re-establishing the connection
 (1.5 round trip).
@@ -361,6 +384,18 @@ don't need to modify any TLS implementation, but only add a few
 verification steps after the usual TLS handshake. This is almost the same
 on the client and server side.
 
+### Ease of Verification and Audit
+Post-handshake attestation has relatively easier formal analysis and
+verification. The same may apply to audit.
+
+Markus Rudy remarks {{Markus-16Jan}}:
+
+{:quote}
+>  (Formal) verification of a protocol and audit of its implementations
+might be much easier if it ran on top of TLS. Existing proofs and
+certifications would not need to be reevaluated.
+
+
 ### General Solution for Other Protocols
 In post-handshake attestation, design, verification and audit effort
 will be one-time and any protocol
@@ -374,16 +409,6 @@ Markus Rudy shares this requirement {{Markus-16Jan}}:
 attested TLS protocol to other protocols that provide secure channels
 and session binding (Noise comes to mind).
 
-### Ease of Verification and Audit
-Post-handshake attestation has relatively easier formal analysis and
-verification. The same may apply to audit.
-
-Markus Rudy remarks {{Markus-16Jan}}:
-
-{:quote}
->  (Formal) verification of a protocol and audit of its implementations
-might be much easier if it ran on top of TLS. Existing proofs and
-certifications would not need to be reevaluated.
 
 ## Limitations
 
@@ -465,19 +490,30 @@ are all using post-handshake attestation.
 
 
 # Security Considerations
+{: #sec-sec-cons }
 
 Most of the document is about security considerations. Also,
 Security Considerations of {{-rfc9334}} and {{I-D.ietf-tls-rfc8446bis}} apply. In addition:
 
 * Pre-handshake attestation is vulnerable to **replay** {{RA-TLS}} and **diversion**
-{{ID-Crisis}} attacks.
+{{ID-Crisis}} attacks. Moreover, pre-handshake attestation leads to a single point of
+failure.
+
 * Without significant changes to the TLS protocol: Intra-handshake attestation is
-vulnerable to **diversion** attacks {{ID-Crisis}}. It also does not bind the Evidence
+vulnerable to **diversion** attacks {{ID-Crisis}}. We reported these attacks to TLS WG in
+February 2025 {{Usama-TLS-26Feb25}}. A formal proof is available
+{{ID-Crisis-Repo}} for further research and
+development. Since reporting to TLS WG, these attacks have been practically
+exploited in [TEE.fail](https://tee.fail/), [Wiretap.fail](https://wiretap.fail/), and [BadRAM](https://badram.eu/).
+More recently, we found that intra-handshake attestation also does not bind the Evidence
 to the application traffic secrets, resulting in **relay** attacks {{RelayAttacks}}.
+
 * No attacks on post-handshake attestation are currently known. Post-handshake attestation
 avoids replay attacks by using fresh attestation nonce. Moreover, it avoids diversion and relay attacks
 by binding the Evidence to the underlying TLS connection, such as using Exported Keying Material (EKM)
-{{I-D.ietf-tls-rfc8446bis}}. {{-rfc9261}} and {{-rfc9266}} provide mechanisms for such bindings.
+{{I-D.ietf-tls-rfc8446bis}}, as proposed in Section 9.2 of {{ID-Crisis}}.
+{{-rfc9261}} and {{-rfc9266}} provide mechanisms for such bindings. Efforts for a formal proof
+of security of post-handshake attestation are ongoing.
 
 ## Exploit of Sensitive Hardware-level Information
 
@@ -501,7 +537,12 @@ This document has no IANA actions.
 # Acknowledgments
 {:numbered="false"}
 
-We gratefully thank Peg Jones, Paul Wouters, Ayoub Benaissa and Markus Rudy for review.
+We gratefully thank the following:
+
+* Peg Jones for review of early draft before submission
+* Paul Wouters for review of section 4 of -00
+* Ayoub Benaissa for review of -00 and sharing his practical experiences
+* Markus Rudy for review of -00 and sharing his practical experiences
 
 # Contributors
 {:numbered="false"}
@@ -515,4 +556,5 @@ Pavel Nikonorov (GENXT / IIAP NAS RA) contributed text in {{sec-intra-app-change
 
 * Added scope section to address comments of Paul Wouters
 * Added comments of Ayoub Benaissa as quotes
-* Added comments of Markus Rudy as quotes
+* Added some subsections to incorporate practical experiences of Markus Rudy
+* Extended security considerations
