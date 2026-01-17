@@ -110,6 +110,20 @@ informative:
       - ins: M. U. Sardar
       - ins: T. Fossati
       - ins: S. Frost
+  Ayoub-16Jan:
+     title: "New Version Notification for draft-usama-seat-intra-vs-post-00.txt"
+     date: 16 January 2026,
+     target: https://mailarchive.ietf.org/arch/msg/seat/8eynK9ky5F-TcnL_UPbSRDKuK1E/
+     author:
+      - ins: Ayoub Benaissa
+  Markus-16Jan:
+     title: "New Version Notification for draft-usama-seat-intra-vs-post-00.txt"
+     date: 16 January 2026,
+     target: https://mailarchive.ietf.org/arch/msg/seat/Pxr_12v6MIQIzGFTUdx04aVZYpM/
+     author:
+      - ins: Markus Rudy
+
+
 
 ...
 
@@ -211,7 +225,7 @@ Proponents of intra-handshake claim that it avoids extra round trips
 for use cases which require remote attestation only once
 during Connection Establishment Time.
 
-However, Markus Rudy shares his practical experience:
+However, Markus Rudy shares his practical experience {{Markus-16Jan}}:
 
 {:quote}
 >  I don't think saving extra roundtrips is an appropriate design
@@ -239,7 +253,7 @@ resumption is a new connection {{I-D.ietf-tls-rfc8446bis}}.
 Because of signature in Evidence generation and verification of signatures during appraisal,
 this leads to high handshake latency. This may not be desirable for some applications.
 
-Markus Rudy shares his practical experience:
+Markus Rudy shares his practical experience {{Markus-16Jan}}:
 
 {:quote}
 >  Conveying the evidence is not enough, it needs to be verified as well
@@ -257,7 +271,7 @@ order to verify it, breaking the intended layering.
 With several attacks, such as TEE.fail, Wiretap.fail, BadRAM, attestation in
 TEEs may not yet be mature enough to be integrated within TLS handshake.
 
-Ayoub Benaissa remarks:
+Ayoub Benaissa remarks {{Ayoub-16Jan}}:
 
 {:quote}
 >  TLS might not be well suited to include this in its protocol. Not sure
@@ -268,7 +282,7 @@ don't think there is enough motivation right now.
 
 ### Amount of Effort
 
-Markus Rudy shares his practical experience:
+Markus Rudy shares his practical experience {{Markus-16Jan}}:
 
 {:quote}
 >  "Keeping attestation out of the application logic" is not as straightforward
@@ -278,7 +292,7 @@ lucky that the Golang TLS stack can be supplied with arbitrary closures
 that are called during the handshake, but in my experience this is a rare
 design choice and may also be difficult to implement in other languages.
 
-Ayoub Benaissa remarks:
+Ayoub Benaissa remarks {{Ayoub-16Jan}}:
 
 {:quote}
 >  An intra-handshake requires much more work compared to a post-handshake.
@@ -291,7 +305,7 @@ less secure.
 
 ### Difficulty of Debugging Attestation
 
-Markus Rudy shares his practical experience:
+Markus Rudy shares his practical experience {{Markus-16Jan}}:
 
 {:quote}
 >  There's only so much information in a TLS alert message, and it's
@@ -338,7 +352,7 @@ intra-handshake attestation (one round trip), which requires re-establishing the
 (1.5 round trip).
 
 ### Ease of Implementation
-Ayoub Benaissa remarks:
+Ayoub Benaissa remarks {{Ayoub-16Jan}}:
 
 {:quote}
 >  We already implemented a post-handshake protocol and have a full demo
@@ -353,7 +367,7 @@ will be one-time and any protocol
 (e.g., Noise) which has support for exporters can then use it without
 changing each and every protocol.
 
-Markus Rudy shares this requirement:
+Markus Rudy shares this requirement {{Markus-16Jan}}:
 
 {:quote}
 >  It should be possible to port the general shape of a post-handshake
@@ -361,10 +375,10 @@ attested TLS protocol to other protocols that provide secure channels
 and session binding (Noise comes to mind).
 
 ### Ease of Verification and Audit
-Post-handshake attestation has relatively easier formal analysis. The
-same may apply to audit.
+Post-handshake attestation has relatively easier formal analysis and
+verification. The same may apply to audit.
 
-Markus Rudy remarks:
+Markus Rudy remarks {{Markus-16Jan}}:
 
 {:quote}
 >  (Formal) verification of a protocol and audit of its implementations
