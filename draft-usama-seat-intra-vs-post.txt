@@ -182,16 +182,16 @@ Table of Contents
    *  *Connection Establishment Time*: Time at which TLS handshake is
       performed
 
-   *  *Lifetime of Connection*: Time period starting from Evidence
-      Generation Time until the connection exists.
+   *  *Lifetime of Connection*: Time period starting from Connection
+      Establishment Time until the connection exists.
 
 3.  Pre-handshake Attestation
 
    Since the Evidence Generation Time could be at any arbitrary point of
-   time in the past compared to the connection establishment time, pre-
+   time in the past compared to the Connection Establishment Time, pre-
    handshake attestation provides no guarantees about the state of
-   Attester at the Evidence Generation Time and during the Lifetime of
-   Connection.
+   Attester at the Connection Establishment Time and during the Lifetime
+   of Connection.
 
 4.  Intra-handshake Attestation
 

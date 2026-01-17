@@ -1383,7 +1383,7 @@ for readability. Future versions will tighten it.<a href="#section-2-2" class="p
           <p id="section-2-4.2.1"><strong>Connection Establishment Time</strong>: Time at which TLS handshake is performed<a href="#section-2-4.2.1" class="pilcrow">¶</a></p>
 </li>
         <li class="normal" id="section-2-4.3">
-          <p id="section-2-4.3.1"><strong>Lifetime of Connection</strong>: Time period starting from Evidence Generation Time until the connection exists.<a href="#section-2-4.3.1" class="pilcrow">¶</a></p>
+          <p id="section-2-4.3.1"><strong>Lifetime of Connection</strong>: Time period starting from Connection Establishment Time until the connection exists.<a href="#section-2-4.3.1" class="pilcrow">¶</a></p>
 </li>
       </ul>
 </section>
@@ -1394,9 +1394,9 @@ for readability. Future versions will tighten it.<a href="#section-2-2" class="p
 <a href="#section-3" class="section-number selfRef">3. </a><a href="#name-pre-handshake-attestation" class="section-name selfRef">Pre-handshake Attestation</a>
       </h2>
 <p id="section-3-1">Since the Evidence Generation Time could be at any
-arbitrary point of time in the past compared to the connection
-establishment time, pre-handshake attestation provides no guarantees about the state of Attester
-at the Evidence Generation Time and during the Lifetime of Connection.<a href="#section-3-1" class="pilcrow">¶</a></p>
+arbitrary point of time in the past compared to the Connection
+Establishment Time, pre-handshake attestation provides no guarantees about the state of Attester
+at the Connection Establishment Time and during the Lifetime of Connection.<a href="#section-3-1" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="intra-handshake-attestation">
