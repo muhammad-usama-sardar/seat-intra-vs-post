@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2026-01-15T01:58:56.646799+00:00",
+  "timestamp": "2026-01-18T02:08:06.173467+00:00",
   "repo": "muhammad-usama-sardar/seat-intra-vs-post",
   "labels": [
     {
@@ -49,6 +49,208 @@
       "color": "ffffff"
     }
   ],
-  "issues": [],
-  "pulls": []
+  "issues": [
+    {
+      "number": 1,
+      "id": "I_kwDOQ5mD8c7jkUPU",
+      "title": "Clarify scope: existing specs and real-world implementations",
+      "url": "https://github.com/muhammad-usama-sardar/seat-intra-vs-post/issues/1",
+      "state": "CLOSED",
+      "author": "muhammad-usama-sardar",
+      "authorAssociation": "OWNER",
+      "assignees": [],
+      "labels": [],
+      "body": "Clarify that the draft is based on existing specs and real-world implementations pointed in the given references. Any theoretical solutions are currently out of scope.",
+      "createdAt": "2026-01-15T15:08:30Z",
+      "updatedAt": "2026-01-17T13:50:55Z",
+      "closedAt": "2026-01-17T13:50:55Z",
+      "comments": [
+        {
+          "author": "muhammad-usama-sardar",
+          "authorAssociation": "OWNER",
+          "body": "and background check model",
+          "createdAt": "2026-01-15T16:33:10Z",
+          "updatedAt": "2026-01-15T16:33:10Z"
+        }
+      ]
+    },
+    {
+      "number": 2,
+      "id": "I_kwDOQ5mD8c7jknwz",
+      "title": "Emphasize simple Attester",
+      "url": "https://github.com/muhammad-usama-sardar/seat-intra-vs-post/issues/2",
+      "state": "CLOSED",
+      "author": "muhammad-usama-sardar",
+      "authorAssociation": "OWNER",
+      "assignees": [],
+      "labels": [],
+      "body": "For simplicity and for WG to sync, no composite Attester etc. yet ",
+      "createdAt": "2026-01-15T15:28:39Z",
+      "updatedAt": "2026-01-17T13:51:05Z",
+      "closedAt": "2026-01-17T13:51:05Z",
+      "comments": []
+    },
+    {
+      "number": 3,
+      "id": "I_kwDOQ5mD8c7jk02W",
+      "title": "Clarify Sec. 4.2.1",
+      "url": "https://github.com/muhammad-usama-sardar/seat-intra-vs-post/issues/3",
+      "state": "OPEN",
+      "author": "muhammad-usama-sardar",
+      "authorAssociation": "OWNER",
+      "assignees": [],
+      "labels": [],
+      "body": "> I do not understand Section 4.2.1\n\nExplain [Sec. 4.2.1](https://www.ietf.org/archive/id/draft-usama-seat-intra-vs-post-00.html#section-4.2.1) a little more.",
+      "createdAt": "2026-01-15T15:41:41Z",
+      "updatedAt": "2026-01-17T14:21:56Z",
+      "closedAt": null,
+      "comments": [
+        {
+          "author": "muhammad-usama-sardar",
+          "authorAssociation": "OWNER",
+          "body": "Find a suitable reference to cite here.",
+          "createdAt": "2026-01-17T14:21:56Z",
+          "updatedAt": "2026-01-17T14:21:56Z"
+        }
+      ]
+    },
+    {
+      "number": 4,
+      "id": "I_kwDOQ5mD8c7jlLGG",
+      "title": "Session resumption is new connection",
+      "url": "https://github.com/muhammad-usama-sardar/seat-intra-vs-post/issues/4",
+      "state": "CLOSED",
+      "author": "muhammad-usama-sardar",
+      "authorAssociation": "OWNER",
+      "assignees": [],
+      "labels": [],
+      "body": "> I don't agree with Section 4.2.3, as session resumption with fresh attestation could be used.\n\nDig archives for Ekr's email from charter time where he clarified that session resumption is a new \"connection\".",
+      "createdAt": "2026-01-15T16:04:44Z",
+      "updatedAt": "2026-01-17T13:51:17Z",
+      "closedAt": "2026-01-17T13:51:17Z",
+      "comments": [
+        {
+          "author": "muhammad-usama-sardar",
+          "authorAssociation": "OWNER",
+          "body": "https://mailarchive.ietf.org/arch/msg/seal/98THKBhYNlXPuNvrAv5N1f3afHU/",
+          "createdAt": "2026-01-15T21:02:47Z",
+          "updatedAt": "2026-01-15T21:02:47Z"
+        }
+      ]
+    },
+    {
+      "number": 6,
+      "id": "I_kwDOQ5mD8c7j2dyR",
+      "title": "Markus Rudy feedback",
+      "url": "https://github.com/muhammad-usama-sardar/seat-intra-vs-post/issues/6",
+      "state": "CLOSED",
+      "author": "muhammad-usama-sardar",
+      "authorAssociation": "OWNER",
+      "assignees": [],
+      "labels": [],
+      "body": "[Archive link](https://mailarchive.ietf.org/arch/msg/seat/Pxr_12v6MIQIzGFTUdx04aVZYpM/)\n\n> Edgeless Systems has been using intra-handshake attested TLS in production since 2022, in at least two distinct confidential computing software products. From the [use-cases], we align mostly with *3.2. Secure Provisioning*: automatic dissemination of configuration and secrets between mutually attesting TEEs. I'd like to share my experience and perspective on the debate around intra-handshake and post-handshake attestation.\n> \n> The basics of [aTLS] are similar to [early-attestation] with only ephemeral keys, but since we needed (wanted) to work with existing TLS software, the messages are conveyed over different (potentially unrelated) extension points. We originally opted for an intra-handshake protocol to keep the attestation and verification parts out of the application logic, and to leave cryptographic heavy-lifting to the TLS stack. If we had known about [exporters] back then, we might have chosen a different approach.\n> \n> I identified the following issues with our current implementation, which are partially reflected in [intra-vs-post]:\n> \n> 1. \"Keeping attestation out of the application logic\" is not as straightforward as it sounds. In the background-check model, the attester needs to collect evidence in response to the relying party's challenge (nonce). We were lucky that the Golang TLS stack can be supplied with arbitrary closures that are called during the handshake, but in my experience this is a rare design choice and may also be difficult to implement in other languages.\n> \n> 2. Conveying the evidence is not enough, it needs to be verified as well in order to end up with a trustworthy channel. We decided to integrate verification into the handshake, too, but that has massive drawbacks: Verification can take orders of magnitude longer than normal TLS handshakes, and usually involves remote calls, affecting all sorts of timeouts. However, doing the verification at the application level would require forwarding information from the handshake (e.g. nonce), at which point the application needs to be fully aware of the handshake protocol in order to verify it, breaking the intended layering.\n> \n> 3. There's only so much information in a TLS alert message, and it's definitely not enough to understand remote verification failures. While I understand this to be a deliberate design choice by TLS, I found this to be a hindrance for operating and debugging a large number of services in practice.\n> \n> 4. I don't think saving extra roundtrips is an appropriate design goal when attestation is required. Generating evidence alone takes much longer than normal network roundtrip times, not even speaking of verification.\n> \n> All of the above leads me to a strong preference for a post-handshake protocol. In addition, I have justified hopes that a post-handshake protocol would also have the following benefits:\n> \n> A. It's much easier to adopt an attestation protocol if it does not require TLS libraries to add support first! Established libraries are slow to change and may even be reluctant to implement all published extensions.\n> B. It should be possible to port the general shape of a post-handshake attested TLS protocol to other protocols that provide secure channels and session binding (Noise comes to mind).\n> C. (Formal) verification of a protocol and audit of its implementations might be much easier if it ran *on top of* TLS. Existing proofs and certifications would not need to be reevaluated.\n> \n> Thanks for the consideration!\n> \n> Cheers, Markus\n> \n> [use-cases]: https://www.ietf.org/archive/id/draft-mihalcea-seat-use-cases-00.html\n> [intra-vs-post]: https://www.ietf.org/archive/id/draft-usama-seat-intra-vs-post-00.html\n> [aTLS]: https://github.com/edgelesssys/contrast/blob/3bd17f8/docs/docs/architecture/attestation/atls.md\n> [early-attestation]: https://www.ietf.org/archive/id/draft-fossati-seat-early-attestation-02.html\n> [exporters]: https://www.rfc-editor.org/rfc/rfc5705.html\n> [id-crisis]: https://github.com/CCC-Attestation/formal-spec-id-crisis\n\n",
+      "createdAt": "2026-01-16T16:21:00Z",
+      "updatedAt": "2026-01-17T13:51:26Z",
+      "closedAt": "2026-01-17T13:51:26Z",
+      "comments": []
+    },
+    {
+      "number": 7,
+      "id": "I_kwDOQ5mD8c7j6WS5",
+      "title": "Ayoub Benaissa feedback",
+      "url": "https://github.com/muhammad-usama-sardar/seat-intra-vs-post/issues/7",
+      "state": "CLOSED",
+      "author": "muhammad-usama-sardar",
+      "authorAssociation": "OWNER",
+      "assignees": [],
+      "labels": [],
+      "body": "[Archive link](https://mailarchive.ietf.org/arch/msg/seat/Bn9xDWrnv6NVWXr4IPaXCETL5EI/)\n\n>From a practical perspective, I think a post-handshake implementation makes\nmore sense. We have been building an Attested TLS protocol for a web-based\napplication, and we had to do a post-handshake implementation.\nIntra-handshake requires too much change. For example, you have to\nreimplement or customize how Nginx (or other) servers speak TLS. This would\ntake months and more to have a standard implementation that is somehow safe\nto use. It's different in a post-handshake implementation where you can\nhave a full working example in a matter of weeks.\n\n[Archive link2](https://mailarchive.ietf.org/arch/msg/seat/8eynK9ky5F-TcnL_UPbSRDKuK1E/)\n\n> For what I said about post-handshake vs intra-handshake, I will try to\n> elaborate with a few points:\n> - TLS might not be well suited to include this in its protocol. Not sure\n> TEEs are even as mature for the people to see that it should be included\n> right now. The plan to make it a post-handshake protocol makes more sense\n> right now. A future where it's incorporated into TLS might exist, but I\n> don't think there is enough motivation right now.\n> - An intra-handshake requires much more work compared to a post-handshake.\n> People need to agree on how to add this as optional in TLS (we can't force\n> everyone to use it of course), the standard needs to be implemented by\n> major libraries, and then it will be available in major client/server\n> applications. If any of the prior steps doesn't go through, it means you\n> have to patch your components to make it work, which is not convenient /\n> less secure.\n> - We already implemented a post-handshake protocol and have a full demo\n> working. We were able to do this in a matter of weeks. That's because you\n> don't need to modify any TLS implementation, but only add a few\n> verification steps after the usual TLS handshake. This is almost the same\n> on the client and server side.\n> \n> I also want to point out that the need for such a protocol is high. I can\n> talk about how LLMs are being served with TEEs, and everyone is doing the\n> attested TLS differently. A standard leading to a major and secure\n> implementation that can be used in browsers and so on would really benefit\n> the people.",
+      "createdAt": "2026-01-16T21:30:03Z",
+      "updatedAt": "2026-01-17T13:51:42Z",
+      "closedAt": "2026-01-17T13:51:42Z",
+      "comments": [
+        {
+          "author": "muhammad-usama-sardar",
+          "authorAssociation": "OWNER",
+          "body": "Follow-up: \n* web-based application\n* LLMs\n* browsers",
+          "createdAt": "2026-01-16T21:53:51Z",
+          "updatedAt": "2026-01-16T21:53:51Z"
+        }
+      ]
+    },
+    {
+      "number": 8,
+      "id": "I_kwDOQ5mD8c7kAVsP",
+      "title": "Use cases?",
+      "url": "https://github.com/muhammad-usama-sardar/seat-intra-vs-post/issues/8",
+      "state": "OPEN",
+      "author": "muhammad-usama-sardar",
+      "authorAssociation": "OWNER",
+      "assignees": [],
+      "labels": [],
+      "body": "Discuss whether to add use cases in it",
+      "createdAt": "2026-01-17T14:30:22Z",
+      "updatedAt": "2026-01-17T14:30:22Z",
+      "closedAt": null,
+      "comments": []
+    }
+  ],
+  "pulls": [
+    {
+      "number": 5,
+      "id": "PR_kwDOQ5mD8c69bmBf",
+      "title": "Address feedback from Paul, Ayoub and Markus",
+      "url": "https://github.com/muhammad-usama-sardar/seat-intra-vs-post/pull/5",
+      "state": "MERGED",
+      "author": "muhammad-usama-sardar",
+      "authorAssociation": "OWNER",
+      "assignees": [],
+      "labels": [],
+      "body": "- clarify scope\r\n- addresses #1, #2, #4, #6, and #7",
+      "createdAt": "2026-01-15T17:21:48Z",
+      "updatedAt": "2026-01-17T13:50:33Z",
+      "baseRepository": "muhammad-usama-sardar/seat-intra-vs-post",
+      "baseRefName": "main",
+      "baseRefOid": "59a5bcdd8c044997822185211f636991c0b32917",
+      "headRepository": "muhammad-usama-sardar/seat-intra-vs-post",
+      "headRefName": "feedback",
+      "headRefOid": "5014624b70fc31b978a846a24dc90132524c1161",
+      "closedAt": "2026-01-17T13:50:33Z",
+      "mergedAt": "2026-01-17T13:50:32Z",
+      "mergedBy": "muhammad-usama-sardar",
+      "mergeCommit": {
+        "oid": "648136489b2e93f94a318e364bfe83fbc20ad1d6"
+      },
+      "comments": [],
+      "reviews": []
+    },
+    {
+      "number": 9,
+      "id": "PR_kwDOQ5mD8c69zmv7",
+      "title": "Fix typos",
+      "url": "https://github.com/muhammad-usama-sardar/seat-intra-vs-post/pull/9",
+      "state": "MERGED",
+      "author": "muhammad-usama-sardar",
+      "authorAssociation": "OWNER",
+      "assignees": [],
+      "labels": [],
+      "body": "",
+      "createdAt": "2026-01-17T19:10:01Z",
+      "updatedAt": "2026-01-17T19:11:37Z",
+      "baseRepository": "muhammad-usama-sardar/seat-intra-vs-post",
+      "baseRefName": "main",
+      "baseRefOid": "648136489b2e93f94a318e364bfe83fbc20ad1d6",
+      "headRepository": "muhammad-usama-sardar/seat-intra-vs-post",
+      "headRefName": "feedback02",
+      "headRefOid": "817cf4d0c27befb773d9c93ba021be715ecb9acb",
+      "closedAt": "2026-01-17T19:11:37Z",
+      "mergedAt": "2026-01-17T19:11:37Z",
+      "mergedBy": "muhammad-usama-sardar",
+      "mergeCommit": {
+        "oid": "ec546edbc4890acf086c558a44ed262d3e6c41ac"
+      },
+      "comments": [],
+      "reviews": []
+    }
+  ]
 }
