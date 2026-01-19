@@ -134,7 +134,7 @@ informative:
      target: https://github.com/CCC-Attestation/formal-spec-id-crisis
      author:
       - ins: Muhammad Usama Sardar
-
+  I-D.mihalcea-seat-use-cases:
 
 ...
 
@@ -431,7 +431,8 @@ Use cases where pre-handshake attestation and intra-handshake attestation are
 insufficient include AI agents/agentic AI {{I-D.jiang-seat-dynamic-attestation}}.
 
 Intra-handshake attestation only adds unnecessary complexity which is avoidable.
-All use cases of intra-handshake attestation can be covered by post-handshake
+All identified use cases {{I-D.mihalcea-seat-use-cases}} where intra-handshake
+attestation seems suitable can be covered by post-handshake
 attestation (by doing attestation round immediately after Connection Establishment Time)
 but not the other way around.
 
@@ -543,6 +544,7 @@ We gratefully thank the following:
 * Paul Wouters for review of section 4 of -00
 * Ayoub Benaissa for review of -00 and sharing his practical experiences
 * Markus Rudy for review of -00 and sharing his practical experiences
+* Mike Bursell for review of -01
 
 # Contributors
 {:numbered="false"}
