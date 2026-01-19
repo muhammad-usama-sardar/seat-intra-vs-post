@@ -135,6 +135,12 @@ informative:
      author:
       - ins: Muhammad Usama Sardar
   I-D.mihalcea-seat-use-cases:
+  Markus-19Jan:
+     title: "Re: New Version Notification for draft-usama-seat-intra-vs-post-00.txt"
+     date: 19 January 2026,
+     target: https://mailarchive.ietf.org/arch/msg/seat/iAeCQLna8FdfoQGV3P-mEHUobn4/
+     author:
+      - ins: Markus Rudy
 
 ...
 
@@ -216,7 +222,10 @@ is the same as Connection Establishment Time.
 
 In following subsections, we present the benefits and limitations of intra-handshake attestation.
 
-[comment]: <> (If RA appraisal succeeds, client and server agree on current transcript hash. We do not have all guarantees about authentication and security of the connection at the point at which the Evidence is conveyed.)
+<!--  (If RA appraisal succeeds, client and server agree on
+current transcript hash. We do not have all guarantees about
+authentication and security of the connection at the point
+at which the Evidence is conveyed.)  -->
 
 
 ## Benefits
@@ -250,11 +259,47 @@ goal when attestation is required. Generating evidence alone takes
 much longer than normal network roundtrip times, not even speaking
 of verification.
 
-Our experiments also support his practical experience. In our experience,
+On request, he kindly conducted an experiment and shares his
+preliminary results of experiment based on
+attested TLS implementation in Edgeless Systems Contrast where
+Coordinator is one of the components {{Markus-19Jan}}:
+
+{:quote}
+>  I did a quick experiment in our testing lab, running on the
+same machine as the Coordinator:
+
+>  * TCP connections are local, and thus the TCP connection establishment
+unsurprisingly takes only 0.5ms. But even to neighbouring nodes
+in the same cluster, the TCP handshake takes below 2ms.
+
+>  * I measured generation of evidence including the TLS session
+establishment, but with these numbers I don't think it makes a lot
+of difference:
+
+>  >  * SNP: Median time of 140ms from TCP SYN to TLS channel established
+and evidence sent to the client.
+
+>  >  * TDX: Median time of 1020ms, same procedure. I don't know why
+it is that slow, it should only be making machine-local remote
+calls, if any.
+
+>  * So far, I only managed to measure TDX verification, which adds
+another 340ms. This is bound by remote HTTP requests, afaiu, and could
+be optimized with locally cached collateral, CRL, etc. I'd expect SNP
+to exhibit similar timing, because verification does similar remote calls.
+
+We summarize that in the following table:
+
+| Property  | Intel TDX | AMD SEV-SNP |
+| Generation of Evidence + TLS      |   1020   | 140  |
+| Appraisal of Evidence      |  340    |  not available (expected ca. 340)   |
+{: title="Preliminary analysis by Markus Rudy (Median time in ms)"}
+
+<!--  Our experiments also support his practical experience. In our experience,
 the generation of Evidence for Infineon Optiga SLB 9670,
 a discrete hardware TPM (dTPM) implementing TPM 2.0, takes around 210 ms.
 In our experience, the generation of Evidence for AMD SEV-SNP takes around
-6 ms.
+6 ms. -->
 
 ## Limitations
 
@@ -543,7 +588,8 @@ We gratefully thank the following:
 * Peg Jones for review of early draft before submission
 * Paul Wouters for review of section 4 of -00
 * Ayoub Benaissa for review of -00 and sharing his practical experiences
-* Markus Rudy for review of -00 and sharing his practical experiences
+* Markus Rudy for review of -00 and sharing his practical experiences and
+for conducting experiments with TDX and SNP on our request
 * Mike Bursell for review of -01
 
 # Contributors
@@ -560,3 +606,9 @@ Pavel Nikonorov (GENXT / IIAP NAS RA) contributed text in {{sec-intra-app-change
 * Added comments of Ayoub Benaissa as quotes
 * Added some subsections to incorporate practical experiences of Markus Rudy
 * Extended security considerations
+
+-02
+
+* Added experiments by Markus Rudy
+* Removed our experiments
+* Added reference to use cases document to address comment of Mike Bursell
