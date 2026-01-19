@@ -1444,11 +1444,103 @@ goal when attestation is required. Generating evidence alone takes
 much longer than normal network roundtrip times, not even speaking
 of verification.<a href="#section-4.1.2-3.1" class="pilcrow">¶</a></p>
 </blockquote>
-<p id="section-4.1.2-4">Our experiments also support his practical experience. In our experience,
-the generation of Evidence for Infineon Optiga SLB 9670,
-a discrete hardware TPM (dTPM) implementing TPM 2.0, takes around 210 ms.
-In our experience, the generation of Evidence for AMD SEV-SNP takes around
-6 ms.<a href="#section-4.1.2-4" class="pilcrow">¶</a></p>
+<p id="section-4.1.2-4">On request, he kindly conducted an experiment and shares his
+preliminary results of experiment based on
+attested TLS implementation in Edgeless Systems Contrast where
+Coordinator is one of the components <span>[<a href="#Markus-19Jan" class="cite xref">Markus-19Jan</a>]</span>:<a href="#section-4.1.2-4" class="pilcrow">¶</a></p>
+<blockquote id="section-4.1.2-5">
+            <p id="section-4.1.2-5.1">I did a quick experiment in our testing lab, running on the
+same machine as the Coordinator:<a href="#section-4.1.2-5.1" class="pilcrow">¶</a></p>
+</blockquote>
+<ul class="normal ulEmpty">
+<li class="normal ulEmpty" id="section-4.1.2-6.1">
+              <ul class="normal">
+<li class="normal" id="section-4.1.2-6.1.1.1">
+                  <p id="section-4.1.2-6.1.1.1.1">TCP connections are local, and thus the TCP connection establishment
+unsurprisingly takes only 0.5ms. But even to neighbouring nodes
+in the same cluster, the TCP handshake takes below 2ms.<a href="#section-4.1.2-6.1.1.1.1" class="pilcrow">¶</a></p>
+</li>
+              </ul>
+</li>
+          </ul>
+<ul class="normal ulEmpty">
+<li class="normal ulEmpty" id="section-4.1.2-7.1">
+              <ul class="normal">
+<li class="normal" id="section-4.1.2-7.1.1.1">
+                  <p id="section-4.1.2-7.1.1.1.1">I measured generation of evidence including the TLS session
+establishment, but with these numbers I don't think it makes a lot
+of difference:<a href="#section-4.1.2-7.1.1.1.1" class="pilcrow">¶</a></p>
+</li>
+              </ul>
+</li>
+          </ul>
+<ul class="normal ulEmpty">
+<li class="normal ulEmpty" id="section-4.1.2-8.1">
+              <ul class="normal ulEmpty">
+<li class="normal ulEmpty" id="section-4.1.2-8.1.1.1">
+                  <ul class="normal">
+<li class="normal" id="section-4.1.2-8.1.1.1.1.1">
+                      <p id="section-4.1.2-8.1.1.1.1.1.1">SNP: Median time of 140ms from TCP SYN to TLS channel established
+and evidence sent to the client.<a href="#section-4.1.2-8.1.1.1.1.1.1" class="pilcrow">¶</a></p>
+</li>
+                  </ul>
+</li>
+              </ul>
+</li>
+          </ul>
+<ul class="normal ulEmpty">
+<li class="normal ulEmpty" id="section-4.1.2-9.1">
+              <ul class="normal ulEmpty">
+<li class="normal ulEmpty" id="section-4.1.2-9.1.1.1">
+                  <ul class="normal">
+<li class="normal" id="section-4.1.2-9.1.1.1.1.1">
+                      <p id="section-4.1.2-9.1.1.1.1.1.1">TDX: Median time of 1020ms, same procedure. I don't know why
+it is that slow, it should only be making machine-local remote
+calls, if any.<a href="#section-4.1.2-9.1.1.1.1.1.1" class="pilcrow">¶</a></p>
+</li>
+                  </ul>
+</li>
+              </ul>
+</li>
+          </ul>
+<ul class="normal ulEmpty">
+<li class="normal ulEmpty" id="section-4.1.2-10.1">
+              <ul class="normal">
+<li class="normal" id="section-4.1.2-10.1.1.1">
+                  <p id="section-4.1.2-10.1.1.1.1">So far, I only managed to measure TDX verification, which adds
+another 340ms. This is bound by remote HTTP requests, afaiu, and could
+be optimized with locally cached collateral, CRL, etc. I'd expect SNP
+to exhibit similar timing, because verification does similar remote calls.<a href="#section-4.1.2-10.1.1.1.1" class="pilcrow">¶</a></p>
+</li>
+              </ul>
+</li>
+          </ul>
+<p id="section-4.1.2-11">We summarize that in the following table:<a href="#section-4.1.2-11" class="pilcrow">¶</a></p>
+<span id="name-preliminary-analysis-by-mar"></span><table class="center" id="table-1">
+            <caption>
+<a href="#table-1" class="selfRef">Table 1</a>:
+<a href="#name-preliminary-analysis-by-mar" class="selfRef">Preliminary analysis by Markus Rudy (Median time in ms)</a>
+            </caption>
+<thead>
+              <tr>
+                <th class="text-left" rowspan="1" colspan="1">Property</th>
+                <th class="text-left" rowspan="1" colspan="1">Intel TDX</th>
+                <th class="text-left" rowspan="1" colspan="1">AMD SEV-SNP</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td class="text-left" rowspan="1" colspan="1">Generation of Evidence + TLS</td>
+                <td class="text-left" rowspan="1" colspan="1">1020</td>
+                <td class="text-left" rowspan="1" colspan="1">140</td>
+              </tr>
+              <tr>
+                <td class="text-left" rowspan="1" colspan="1">Appraisal of Evidence</td>
+                <td class="text-left" rowspan="1" colspan="1">340</td>
+                <td class="text-left" rowspan="1" colspan="1">not available (expected ca. 340)</td>
+              </tr>
+            </tbody>
+          </table>
 </section>
 </div>
 </section>
@@ -1913,6 +2005,10 @@ send the Evidence after successful client authentication.<a href="#section-8.1-1
         <dd>
 <span class="refAuthor">Markus Rudy</span>, <span class="refTitle">"Re: New Version Notification for draft-usama-seat-intra-vs-post-00.txt"</span>, <time datetime="2026-01" class="refDate">January 2026</time>, <span>&lt;<a href="https://mailarchive.ietf.org/arch/msg/seat/Pxr_12v6MIQIzGFTUdx04aVZYpM/">https://mailarchive.ietf.org/arch/msg/seat/Pxr_12v6MIQIzGFTUdx04aVZYpM/</a>&gt;</span>. </dd>
 <dd class="break"></dd>
+<dt id="Markus-19Jan">[Markus-19Jan]</dt>
+        <dd>
+<span class="refAuthor">Markus Rudy</span>, <span class="refTitle">"Re: New Version Notification for draft-usama-seat-intra-vs-post-00.txt"</span>, <time datetime="2026-01" class="refDate">January 2026</time>, <span>&lt;<a href="https://mailarchive.ietf.org/arch/msg/seat/iAeCQLna8FdfoQGV3P-mEHUobn4/">https://mailarchive.ietf.org/arch/msg/seat/iAeCQLna8FdfoQGV3P-mEHUobn4/</a>&gt;</span>. </dd>
+<dd class="break"></dd>
 <dt id="MCR-LAKE">[MCR-LAKE]</dt>
         <dd>
 <span class="refAuthor">Michael Richardson</span>, <span class="refTitle">"Re: Comments for remote attestation over EDHOC"</span>, <time datetime="2024-05" class="refDate">May 2024</time>, <span>&lt;<a href="https://mailarchive.ietf.org/arch/msg/lake/RseQknOug41sTzW7xBJ60oRdvq0/">https://mailarchive.ietf.org/arch/msg/lake/RseQknOug41sTzW7xBJ60oRdvq0/</a>&gt;</span>. </dd>
@@ -1983,7 +2079,8 @@ send the Evidence after successful client authentication.<a href="#section-8.1-1
           <p id="appendix-A-2.3.1">Ayoub Benaissa for review of -00 and sharing his practical experiences<a href="#appendix-A-2.3.1" class="pilcrow">¶</a></p>
 </li>
         <li class="normal" id="appendix-A-2.4">
-          <p id="appendix-A-2.4.1">Markus Rudy for review of -00 and sharing his practical experiences<a href="#appendix-A-2.4.1" class="pilcrow">¶</a></p>
+          <p id="appendix-A-2.4.1">Markus Rudy for review of -00 and sharing his practical experiences and
+for conducting experiments with TDX and SNP on our request<a href="#appendix-A-2.4.1" class="pilcrow">¶</a></p>
 </li>
         <li class="normal" id="appendix-A-2.5">
           <p id="appendix-A-2.5.1">Mike Bursell for review of -01<a href="#appendix-A-2.5.1" class="pilcrow">¶</a></p>
@@ -2017,6 +2114,18 @@ send the Evidence after successful client authentication.<a href="#section-8.1-1
 </li>
         <li class="normal" id="appendix-C-2.4">
           <p id="appendix-C-2.4.1">Extended security considerations<a href="#appendix-C-2.4.1" class="pilcrow">¶</a></p>
+</li>
+      </ul>
+<p id="appendix-C-3">-02<a href="#appendix-C-3" class="pilcrow">¶</a></p>
+<ul class="normal">
+<li class="normal" id="appendix-C-4.1">
+          <p id="appendix-C-4.1.1">Added experiments by Markus Rudy<a href="#appendix-C-4.1.1" class="pilcrow">¶</a></p>
+</li>
+        <li class="normal" id="appendix-C-4.2">
+          <p id="appendix-C-4.2.1">Removed our experiments<a href="#appendix-C-4.2.1" class="pilcrow">¶</a></p>
+</li>
+        <li class="normal" id="appendix-C-4.3">
+          <p id="appendix-C-4.3.1">Added reference to use cases document to address comment of Mike Bursell<a href="#appendix-C-4.3.1" class="pilcrow">¶</a></p>
 </li>
       </ul>
 </section>
