@@ -4,8 +4,8 @@
 
 Secure Evidence and Attestation Transport                   M. U. Sardar
 Internet-Draft                                                TU Dresden
-Intended status: Informational                           17 January 2026
-Expires: 21 July 2026
+Intended status: Informational                           19 January 2026
+Expires: 23 July 2026
 
 
               Pre-, Intra- and Post-handshake Attestation
@@ -52,7 +52,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 21 July 2026.
+   This Internet-Draft will expire on 23 July 2026.
 
 Copyright Notice
 
@@ -435,10 +435,10 @@ Table of Contents
    agentic AI [I-D.jiang-seat-dynamic-attestation].
 
    Intra-handshake attestation only adds unnecessary complexity which is
-   avoidable.  All use cases of intra-handshake attestation can be
-   covered by post-handshake attestation (by doing attestation round
-   immediately after Connection Establishment Time) but not the other
-   way around.
+   avoidable.  All identified use cases [I-D.mihalcea-seat-use-cases]
+   where intra-handshake attestation seems suitable can be covered by
+   post-handshake attestation (by doing attestation round immediately
+   after Connection Establishment Time) but not the other way around.
 
 6.1.  IoT Constraints
 
@@ -585,6 +585,15 @@ Table of Contents
               <https://datatracker.ietf.org/doc/html/draft-jiang-seat-
               dynamic-attestation-00>.
 
+   [I-D.mihalcea-seat-use-cases]
+              Mihalcea, I., Sardar, M. U., Fossati, T., Reddy.K, T.,
+              Jiang, Y., and M. Chen, "Use Cases and Properties for
+              Integrating Remote Attestation with Secure Channel
+              Protocols", Work in Progress, Internet-Draft, draft-
+              mihalcea-seat-use-cases-01, 19 January 2026,
+              <https://datatracker.ietf.org/doc/html/draft-mihalcea-
+              seat-use-cases-01>.
+
    [ID-Crisis]
               Sardar, M. U., Moustafa, M., and T. Aura, "Identity Crisis
               in Confidential Computing: Formal Analysis of Attested
@@ -689,6 +698,8 @@ Acknowledgments
 
    *  Markus Rudy for review of -00 and sharing his practical
       experiences
+
+   *  Mike Bursell for review of -01
 
 Contributors
 
