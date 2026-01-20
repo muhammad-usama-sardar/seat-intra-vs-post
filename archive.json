@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2026-01-18T02:08:06.173467+00:00",
+  "timestamp": "2026-01-20T02:00:47.816057+00:00",
   "repo": "muhammad-usama-sardar/seat-intra-vs-post",
   "labels": [
     {
@@ -190,9 +190,65 @@
       "labels": [],
       "body": "Discuss whether to add use cases in it",
       "createdAt": "2026-01-17T14:30:22Z",
-      "updatedAt": "2026-01-17T14:30:22Z",
+      "updatedAt": "2026-01-19T15:12:37Z",
       "closedAt": null,
-      "comments": []
+      "comments": [
+        {
+          "author": "muhammad-usama-sardar",
+          "authorAssociation": "OWNER",
+          "body": "See #11 ",
+          "createdAt": "2026-01-19T15:12:37Z",
+          "updatedAt": "2026-01-19T15:12:37Z"
+        }
+      ]
+    },
+    {
+      "number": 10,
+      "id": "I_kwDOQ5mD8c7kSJQp",
+      "title": "Mike Bursell feedback on -01",
+      "url": "https://github.com/muhammad-usama-sardar/seat-intra-vs-post/issues/10",
+      "state": "CLOSED",
+      "author": "muhammad-usama-sardar",
+      "authorAssociation": "OWNER",
+      "assignees": [],
+      "labels": [],
+      "body": "[Archive link](https://lists.confidentialcomputing.io/g/attestation/message/276)\n\n> Usama -\n> \n> This reads well to me, and I think that the additional feedback from\n> Ayoub and Markus adds further context and credibility.\n> \n> My only feedback is minor, and would be around Section 6:\n> \"Intra-handshake attestation only adds unnecessary complexity which is\n> avoidable. All use cases of intra-handshake attestation can be covered\n> by post-handshake attestation (by doing attestation round immediately\n> after Connection Establishment Time) but not the other way around.\"\n> \n> I'm wary of unqualified use of words like \"all\" in this context. \n> Unless you're certain that all use possible use cases have been\n> considered (and you may be, but that wasn't clear to me from my reading\n> of this doc), then I'd suggest something like \"All known use cases...\"\n> or \"All identified use cases...\".\n> \n> -Mike.",
+      "createdAt": "2026-01-19T14:24:12Z",
+      "updatedAt": "2026-01-19T14:44:12Z",
+      "closedAt": "2026-01-19T14:44:12Z",
+      "comments": [
+        {
+          "author": "muhammad-usama-sardar",
+          "authorAssociation": "OWNER",
+          "body": "Addressed [here](https://github.com/muhammad-usama-sardar/seat-intra-vs-post/commit/94ea510372f35f8257689d267a070856f9386bb4)",
+          "createdAt": "2026-01-19T14:44:12Z",
+          "updatedAt": "2026-01-19T14:44:12Z"
+        }
+      ]
+    },
+    {
+      "number": 11,
+      "id": "I_kwDOQ5mD8c7kS1Bk",
+      "title": "Edgeless Systems use case and experiment results",
+      "url": "https://github.com/muhammad-usama-sardar/seat-intra-vs-post/issues/11",
+      "state": "CLOSED",
+      "author": "muhammad-usama-sardar",
+      "authorAssociation": "OWNER",
+      "assignees": [],
+      "labels": [],
+      "body": "[Archive link](https://mailarchive.ietf.org/arch/msg/seat/iAeCQLna8FdfoQGV3P-mEHUobn4/)\n\n> Hi Usama,\n> \n> Contrast is the main product that should be named. Constellation was using the same protocol, but the project is archived since 2026. Funnily enough, I just learned that our earlier SGX-based products did post-handshake attestation.\n> \n> I don't know whether our patterns justify a new use case, but since you asked: A Contrast system has three types of participants - User, Coordinator, Workload. The latter two types run in TEEs, with the following communication flows (numbered for reference, not for temporal ordering):\n> \n> 1. The user creates an aTLS channel to the Coordinator, and if it passes all checks the user configures it with root key material. The Coordinator creates an internal CA for workloads. Only the Coordinator attests. This happens infrequently.\n> 2. Workloads create aTLS channels to the Coordinator and send a CSR. If the Coordinator is satisfied with the workload's attestation, it signs a certificate for the workload. Together with the CA certificate, workloads can now communicate with standard mTLS using these certificates (no more attestation involved). This happens frequently (with Kubernetes pod starts/restarts). While the CSR could be signed without an attested TLS channel, it's easier for the workload to trust the response this way. Furthermore, some workloads also obtain a persistent secret seed over this channel, which they can use to derive durable key material themselves (e.g. volume decryption key).\n> 3. Coordinators contact other Coordinators to obtain the root key material for themselves. Both sides need to attest to ensure trustworthiness. This happens infrequently.\n> \n> I did a quick experiment in our testing lab, running on the same machine as the Coordinator:\n> \n> 1. TCP connections are local, and thus the TCP connection establishment unsurprisingly takes only 0.5ms. But even to neighbouring nodes in the same cluster, the TCP handshake takes below 2ms.\n> 2. I measured generation of evidence including the TLS session establishment, but with these numbers I don't think it makes a lot of difference:\n>    - SNP: Median time of 140ms from TCP SYN to TLS channel established and evidence sent to the client.\n>    - TDX: Median time of 1020ms, same procedure. I don't know why it is that slow, it should only be making machine-local remote calls, if any.\n> 3. So far, I only managed to measure TDX verification, which adds another 340ms. This is bound by remote HTTP requests, afaiu, and could be optimized with locally cached collateral, CRL, etc. I'd expect SNP to exhibit similar timing, because verification does similar remote calls.\n> \n> Cheers, Markus",
+      "createdAt": "2026-01-19T15:10:42Z",
+      "updatedAt": "2026-01-19T23:11:57Z",
+      "closedAt": "2026-01-19T23:11:57Z",
+      "comments": [
+        {
+          "author": "muhammad-usama-sardar",
+          "authorAssociation": "OWNER",
+          "body": "Addressed [here](https://github.com/muhammad-usama-sardar/seat-intra-vs-post/commit/d147346fb2e7aa2e58dc5537813a0ed2ad307aa2)",
+          "createdAt": "2026-01-19T23:11:57Z",
+          "updatedAt": "2026-01-19T23:11:57Z"
+        }
+      ]
     }
   ],
   "pulls": [
@@ -248,6 +304,62 @@
       "mergedBy": "muhammad-usama-sardar",
       "mergeCommit": {
         "oid": "ec546edbc4890acf086c558a44ed262d3e6c41ac"
+      },
+      "comments": [],
+      "reviews": []
+    },
+    {
+      "number": 12,
+      "id": "PR_kwDOQ5mD8c6-CKN-",
+      "title": "Mike Bursell feedback",
+      "url": "https://github.com/muhammad-usama-sardar/seat-intra-vs-post/pull/12",
+      "state": "MERGED",
+      "author": "muhammad-usama-sardar",
+      "authorAssociation": "OWNER",
+      "assignees": [],
+      "labels": [],
+      "body": "https://lists.confidentialcomputing.io/g/attestation/message/276",
+      "createdAt": "2026-01-19T15:29:50Z",
+      "updatedAt": "2026-01-19T15:30:04Z",
+      "baseRepository": "muhammad-usama-sardar/seat-intra-vs-post",
+      "baseRefName": "main",
+      "baseRefOid": "ec546edbc4890acf086c558a44ed262d3e6c41ac",
+      "headRepository": "muhammad-usama-sardar/seat-intra-vs-post",
+      "headRefName": "feedback02",
+      "headRefOid": "94ea510372f35f8257689d267a070856f9386bb4",
+      "closedAt": "2026-01-19T15:30:04Z",
+      "mergedAt": "2026-01-19T15:30:04Z",
+      "mergedBy": "muhammad-usama-sardar",
+      "mergeCommit": {
+        "oid": "c9bdf939bc2dd3e09b4f9a8bd171a07f4feb2084"
+      },
+      "comments": [],
+      "reviews": []
+    },
+    {
+      "number": 13,
+      "id": "PR_kwDOQ5mD8c6-GLzp",
+      "title": "Markus experiment",
+      "url": "https://github.com/muhammad-usama-sardar/seat-intra-vs-post/pull/13",
+      "state": "MERGED",
+      "author": "muhammad-usama-sardar",
+      "authorAssociation": "OWNER",
+      "assignees": [],
+      "labels": [],
+      "body": "Based on https://mailarchive.ietf.org/arch/msg/seat/iAeCQLna8FdfoQGV3P-mEHUobn4/",
+      "createdAt": "2026-01-19T22:48:01Z",
+      "updatedAt": "2026-01-19T22:48:15Z",
+      "baseRepository": "muhammad-usama-sardar/seat-intra-vs-post",
+      "baseRefName": "main",
+      "baseRefOid": "c9bdf939bc2dd3e09b4f9a8bd171a07f4feb2084",
+      "headRepository": "muhammad-usama-sardar/seat-intra-vs-post",
+      "headRefName": "feedback02",
+      "headRefOid": "d147346fb2e7aa2e58dc5537813a0ed2ad307aa2",
+      "closedAt": "2026-01-19T22:48:15Z",
+      "mergedAt": "2026-01-19T22:48:15Z",
+      "mergedBy": "muhammad-usama-sardar",
+      "mergeCommit": {
+        "oid": "cfb987fd21717a21451ea35eb44e2a3957d970a8"
       },
       "comments": [],
       "reviews": []
