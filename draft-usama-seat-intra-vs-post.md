@@ -141,6 +141,12 @@ informative:
      target: https://mailarchive.ietf.org/arch/msg/seat/iAeCQLna8FdfoQGV3P-mEHUobn4/
      author:
       - ins: Markus Rudy
+  Mike-19Jan:
+     title: "Re: Requesting review of IETF draft on categories for attested TLS"
+     date: 19 January 2026,
+     target: https://lists.confidentialcomputing.io/g/attestation/message/276
+     author:
+      - ins: Mike Bursell
 
 ...
 
@@ -155,6 +161,9 @@ category, namely pre-handshake attestation, intra-handshake attestation and post
 
 # Introduction
 
+<!-- Formatting https://raw.githubusercontent.com/cabo/kramdown-rfc/master/examples/draft-rfcxml-general-template-standard-00.xml-edited.md
+and https://github.com/cabo/kramdown-rfc
+https://authors.ietf.org/en/templates-and-schemas -->
 Based on our extensive analysis of attested TLS {{Tech-Concepts}},
 we classify attested TLS into three main categories:
 
@@ -242,6 +251,19 @@ consume the attestation properties exposed by the TLS stack. As a result, while 
 is required, applications do incorporate additional trust logic to interpret attested connection properties
 and make security-relevant decisions.
 
+Related to this, Markus Rudy shares his practical experience {{Markus-16Jan}}:
+
+{:quote}
+>  Conveying the evidence is not enough, it needs to be verified as well
+in order to end up with a trustworthy channel. We decided to integrate
+verification into the handshake, too, but that has massive drawbacks:
+Verification can take orders of magnitude longer than normal TLS handshakes,
+and usually involves remote calls, affecting all sorts of timeouts.
+However, doing the verification at the application level would require
+forwarding information from the handshake (e.g. nonce), at which point
+the application needs to be fully aware of the handshake protocol in
+order to verify it, breaking the intended layering.
+
 
 ### Avoid Extra Round Trips for One-time Attestation
 It is claimed that intra-handshake attestation avoids extra round trips
@@ -259,7 +281,7 @@ goal when attestation is required. Generating evidence alone takes
 much longer than normal network roundtrip times, not even speaking
 of verification.
 
-On request, he kindly conducted an experiment and shares his
+On request, he kindly conducted an experiment and shared his
 preliminary results of experiment based on
 attested TLS implementation in Edgeless Systems Contrast where
 Coordinator is one of the components {{Markus-19Jan}}:
@@ -309,7 +331,14 @@ complete security posture of the Attester, such as runtime integrity of Attester
 
 ### Invasive Changes in TLS
 To be made secure, it requires invasive changes in TLS protocol, as deep as key
-schedule and adding or modifying existing handshake messages {{ID-Crisis}}.
+schedule and adding or modifying existing handshake messages {{ID-Crisis}}, which
+are explicitly out of scope of {{SEAT-Charter}}:
+
+{:quote}
+>  The attested (D)TLS protocol extension will not modify the (D)TLS
+protocol itself. It may define (D)TLS extensions to support its goals
+but will not modify, add, or remove any existing protocol messages
+or modify the key schedule.
 
 ### State After Connection Establishment Not Covered
 It provides no guarantees about the state of Attester during the lifetime
@@ -509,7 +538,6 @@ He further shares {{MCR-LAKE2}}:
 >  My contention, which I think the group agreed with, is that one probably
 wants to do continuous assurance, that is, to repeat the remote attestation.
 
-{:quote}
 >  Do you want to have two protocols and two code paths? (redundant code in a
 constrained device?).  I suggested that *maybe* the remote attestation should
 use it's own /.well-known Path, and that it would just occur after
@@ -585,12 +613,12 @@ This document has no IANA actions.
 
 We gratefully thank the following:
 
-* Peg Jones for review of early draft before submission
+* Peg Jones for review of early draft before submission of -00
 * Paul Wouters for review of section 4 of -00
 * Ayoub Benaissa for review of -00 and sharing his practical experiences
 * Markus Rudy for review of -00 and sharing his practical experiences and
 for conducting experiments with TDX and SNP on our request
-* Mike Bursell for review of -01
+* Mike Bursell (Executive Director, Confidential Computing Consortium) for review of -01 {{Mike-19Jan}}
 
 # Contributors
 {:numbered="false"}
