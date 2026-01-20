@@ -290,21 +290,26 @@ Coordinator is one of the components {{Markus-19Jan}}:
 >  I did a quick experiment in our testing lab, running on the
 same machine as the Coordinator:
 
+{:quote}
 >  * TCP connections are local, and thus the TCP connection establishment
 unsurprisingly takes only 0.5ms. But even to neighbouring nodes
 in the same cluster, the TCP handshake takes below 2ms.
 
+{:quote}
 >  * I measured generation of evidence including the TLS session
 establishment, but with these numbers I don't think it makes a lot
 of difference:
 
+{:quote}
 >  >  * SNP: Median time of 140ms from TCP SYN to TLS channel established
 and evidence sent to the client.
 
+{:quote}
 >  >  * TDX: Median time of 1020ms, same procedure. I don't know why
 it is that slow, it should only be making machine-local remote
 calls, if any.
 
+{:quote}
 >  * So far, I only managed to measure TDX verification, which adds
 another 340ms. This is bound by remote HTTP requests, afaiu, and could
 be optimized with locally cached collateral, CRL, etc. I'd expect SNP
@@ -538,6 +543,7 @@ He further shares {{MCR-LAKE2}}:
 >  My contention, which I think the group agreed with, is that one probably
 wants to do continuous assurance, that is, to repeat the remote attestation.
 
+{:quote}
 >  Do you want to have two protocols and two code paths? (redundant code in a
 constrained device?).  I suggested that *maybe* the remote attestation should
 use it's own /.well-known Path, and that it would just occur after
