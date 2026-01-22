@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2026-01-20T02:00:47.816057+00:00",
+  "timestamp": "2026-01-22T02:04:22.544135+00:00",
   "repo": "muhammad-usama-sardar/seat-intra-vs-post",
   "labels": [
     {
@@ -249,6 +249,30 @@
           "updatedAt": "2026-01-19T23:11:57Z"
         }
       ]
+    },
+    {
+      "number": 15,
+      "id": "I_kwDOQ5mD8c7kgPvE",
+      "title": "Carey Wilson review of -02",
+      "url": "https://github.com/muhammad-usama-sardar/seat-intra-vs-post/issues/15",
+      "state": "OPEN",
+      "author": "muhammad-usama-sardar",
+      "authorAssociation": "OWNER",
+      "assignees": [],
+      "labels": [],
+      "body": "[CCC TAC archive link](https://lists.confidentialcomputing.io/g/tac/message/1711)\n\n> thank you for putting together this taxonomy and analysis - it gets very quickly to the heart of the tradeoffs in the ATLS space, and I\u2019ve already found it immensely informative.\n> \n> I wanted to raise a point that is discussed in the draft, but that I think may be worth sharpening further. It seems unavoidable that many, near-term uses of attestation will rely on non-ephemeral server-side state that must remain confidential, and that cannot feasibly be handled client-side only.\n> \n> Confidential AI is an emerging workload class for confidential computing, with requirements that explicitly include durable and confidential state governance. It inherently depends on (1) hardware capable of running large models, which has no short-term path to being feasible on consumer devices, and (2) mechanisms to query, synchronize, and protect large volumes of contextual data, which are similarly impractical to manage entirely on the client.\n> \n> This line of thinking appears consistent with the draft\u2019s motivation for post-handshake attestation, as well as the observation that intra-handshake attestation cannot account for state changes over the lifetime of a system. What I am curious about is whether it would be useful to frame this more explicitly as a general systems constraint: namely, that once durable, confidential server-side state is involved, trust decisions and key management inevitably live above the transport layer, with TLS (and ATLS) primarily providing binding and freshness rather than being the locus of trust itself.\n> \n> I\u2019m wondering whether this framing would be helpful as future work, particularly when thinking about the relative prioritization of ATLS mechanisms versus application-level attestation solutions for stateful services.\n\nNeed to clarify terms: \n\n- non-ephemeral server-side state\n- durable, confidential server-side state\n- stateful services\n- durable and confidential state governance\n",
+      "createdAt": "2026-01-20T13:05:12Z",
+      "updatedAt": "2026-01-20T16:01:20Z",
+      "closedAt": null,
+      "comments": [
+        {
+          "author": "muhammad-usama-sardar",
+          "authorAssociation": "OWNER",
+          "body": "[CCC TAC Archive link](https://lists.confidentialcomputing.io/g/tac/message/1714)\n\n> Thanks for your response. For each of these, when I say \"state\" I am referring specifically to the application-level data that must remain confidential to run a \"confidential ai\" service, the three primary classes being:\n> \n> 1. Contextual data used at inference time. This could be prompts, retrieved documents, conversation history, tool state, etc. This data is large and evolves over time.\n> 2. Customer managed cryptographic material for encryption and identity. These are long-lived and user recoverable and should only ever be accessible in the client or in the tee. Possibly this could be service-managed as well.\n> 3. Trained model weights or parameters\n> \n> Though I was primarily thinking of 1) and 2) for the majority of confidential ai use cases.\n> \n> By \"non-ephemeral\" or \"durable\" server side state, I mean state that persists across TLS connections and sessions, evolves over time, and cannot be practically managed solely on the client. Outside of confidential AI, one could argue most cases could be handled via more classic end to end encryption, where data is only ever plaintext on the client. In such cases, ATLS can add useful guarantees about binding server behavior to an attested execution environment.\n> \n> In contrast, for confidential AI, the classes of data in (1) and (3) are often not feasible to exist only on the client. As a result, they are pushed to server-side execution environments that are capable of both running data- and compute-intensive workloads and producing attestation evidence. My intended point was that, for such provider-specific confidential AI services, the platform operator will likely need to present application-level attestation to users, so that claims about how these classes of data are handled can be evaluated and enforced.\n> \n> As an example, a browser-side SDK or client is effectively constrained to application-layer attestation. In a web-based interaction model, which is likely a primary way many users will interact with confidential AI, client-side decisions (e.g., whether it is safe to send sensitive data to the service) must generally be made at the application level, since the TLS stack is not extensible or observable from browser code.",
+          "createdAt": "2026-01-20T16:01:20Z",
+          "updatedAt": "2026-01-20T16:01:20Z"
+        }
+      ]
     }
   ],
   "pulls": [
@@ -360,6 +384,34 @@
       "mergedBy": "muhammad-usama-sardar",
       "mergeCommit": {
         "oid": "cfb987fd21717a21451ea35eb44e2a3957d970a8"
+      },
+      "comments": [],
+      "reviews": []
+    },
+    {
+      "number": 14,
+      "id": "PR_kwDOQ5mD8c6-KuS7",
+      "title": "Charter text + Markus quote",
+      "url": "https://github.com/muhammad-usama-sardar/seat-intra-vs-post/pull/14",
+      "state": "MERGED",
+      "author": "muhammad-usama-sardar",
+      "authorAssociation": "OWNER",
+      "assignees": [],
+      "labels": [],
+      "body": "",
+      "createdAt": "2026-01-20T09:23:20Z",
+      "updatedAt": "2026-01-20T09:23:28Z",
+      "baseRepository": "muhammad-usama-sardar/seat-intra-vs-post",
+      "baseRefName": "main",
+      "baseRefOid": "cfb987fd21717a21451ea35eb44e2a3957d970a8",
+      "headRepository": "muhammad-usama-sardar/seat-intra-vs-post",
+      "headRefName": "feedback02",
+      "headRefOid": "3e42efb0ebc57b00e92fa2422b7cddff9112e1bf",
+      "closedAt": "2026-01-20T09:23:28Z",
+      "mergedAt": "2026-01-20T09:23:28Z",
+      "mergedBy": "muhammad-usama-sardar",
+      "mergeCommit": {
+        "oid": "06ee066640f9ed3ed89aa40cb65a6b18e63b4c30"
       },
       "comments": [],
       "reviews": []
