@@ -249,7 +249,7 @@ As Yaroslav Rosomakho (as individual contributor) observes {{Yaroslav-22Jan}}:
 >  no modification of TLS, no changes to application protocols, and
 potential caching/scalability.
 
-Yaroslav Rosomakho (as individual contributor) further explains {{Yaroslav-22Jan}}:
+He (as individual contributor) further explains {{Yaroslav-22Jan}}:
 
 {:quote}
 >  Many signed artifacts carry issuance time and validity constraints
@@ -370,7 +370,7 @@ We summarize that in the following table:
 | Appraisal of Evidence      |  340    |  not available (expected ca. 340)   |
 {: title="Preliminary analysis by Markus Rudy (Median time in ms)"}
 
-As Yaroslav Rosomakho (as individual contributor) observes {{Yaroslav-22Jan}}:
+However, Yaroslav Rosomakho (as individual contributor) raises a concern {{Yaroslav-22Jan}}:
 
 {:quote}
 >  The argument that avoiding an extra RTT is not a relevant goal may depend
@@ -397,8 +397,9 @@ Examples include dynamic Claims, such as weights of trained model and contextual
 in the case of AI agents/agentic AI {{I-D.jiang-seat-dynamic-attestation}}, {{Edward-20Jan}}, {{I-D.aylward-aiga-1}}. These dynamic Claims are neither available for pre-handshake
 attestation nor for intra-handshake attestation.
 
-### Invasive Changes in TLS
-To be made secure, it requires invasive changes in TLS protocol, as deep as key
+### Invasive Changes in TLS and Security Concerns
+To be made secure for confidential computing, it requires invasive changes in TLS
+protocol, as deep as key
 schedule and adding or modifying existing handshake messages {{ID-Crisis}}, which
 are explicitly out of scope of {{SEAT-Charter}}:
 
@@ -437,7 +438,9 @@ the application needs to be fully aware of the handshake protocol in
 order to verify it, breaking the intended layering.
 
 As Yaroslav Rosomakho (as individual contributor) observes {{Yaroslav-22Jan}},
-note that Post-Quantum (PQ) transition may change the baseline.
+note that Post-Quantum (PQ) transition may change the baseline. We argue that
+while PQ is unavoidable within TLS handshake, remote attestation is avoidable
+(see {{sec-post-HS-need}}).
 
 ### Maturity of TEEs
 With several attacks (see {{sec-sec-cons}}), attestation in
@@ -548,7 +551,7 @@ is always a good thing. In some real-time and streaming applications, a spike
 after the session is established may be much more disruptive than paying a cost
 during the handshake.
 
-We believe this can be resolved by the layering described in {{sec-post-HS}}.
+We believe this concern can be resolved by the layering described in {{sec-post-HS}}.
 
 ### Avoid Extra Round Trips
 Except for first round of remote attestation, post-handshake attestation outperforms the
@@ -609,6 +612,7 @@ production deployments in which TLS termination and certificate handling are per
 fronting proxy, while the application itself remains unchanged and resides behind it.
 
 # Need for Post-handshake Attestation
+{: #sec-post-HS-need }
 We argue that post-handshake attestation is unavoidable (e.g., re-attestation to
 track changes after Connection Establishment Time for long-lived connections).
 Use cases where pre-handshake attestation and intra-handshake attestation are
