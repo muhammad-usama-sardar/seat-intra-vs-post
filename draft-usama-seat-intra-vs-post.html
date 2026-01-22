@@ -28,7 +28,7 @@ category, namely pre-handshake attestation, intra-handshake attestation and post
     pycountry 24.6.1
     PyYAML 6.0.3
     requests 2.32.5
-    wcwidth 0.2.14
+    wcwidth 0.3.0
 -->
 <link href="draft-usama-seat-intra-vs-post.xml" rel="alternate" type="application/rfc+xml">
 <link href="#copyright" rel="license">
@@ -1051,7 +1051,7 @@ svg :is([fill="white"], [fill^="#fff"]) {
 </tr></thead>
 <tfoot><tr>
 <td class="left">Sardar</td>
-<td class="center">Expires 24 July 2026</td>
+<td class="center">Expires 26 July 2026</td>
 <td class="right">[Page]</td>
 </tr></tfoot>
 </table>
@@ -1064,12 +1064,12 @@ svg :is([fill="white"], [fill^="#fff"]) {
 <dd class="internet-draft">draft-usama-seat-intra-vs-post-latest</dd>
 <dt class="label-published">Published:</dt>
 <dd class="published">
-<time datetime="2026-01-20" class="published">20 January 2026</time>
+<time datetime="2026-01-22" class="published">22 January 2026</time>
     </dd>
 <dt class="label-intended-status">Intended Status:</dt>
 <dd class="intended-status">Informational</dd>
 <dt class="label-expires">Expires:</dt>
-<dd class="expires"><time datetime="2026-07-24">24 July 2026</time></dd>
+<dd class="expires"><time datetime="2026-07-26">26 July 2026</time></dd>
 <dt class="label-authors">Author:</dt>
 <dd class="authors">
 <div class="author">
@@ -1121,7 +1121,7 @@ category, namely pre-handshake attestation, intra-handshake attestation and post
         time. It is inappropriate to use Internet-Drafts as reference
         material or to cite them other than as "work in progress."<a href="#section-boilerplate.1-3" class="pilcrow">¶</a></p>
 <p id="section-boilerplate.1-4">
-        This Internet-Draft will expire on 24 July 2026.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
+        This Internet-Draft will expire on 26 July 2026.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="copyright">
@@ -1166,12 +1166,20 @@ category, namely pre-handshake attestation, intra-handshake attestation and post
 </li>
           <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.3">
             <p id="section-toc.1-1.3.1"><a href="#section-3" class="auto internal xref">3</a>.  <a href="#name-pre-handshake-attestation" class="internal xref">Pre-handshake Attestation</a></p>
+<ul class="compact toc ulBare ulEmpty">
+<li class="compact toc ulBare ulEmpty" id="section-toc.1-1.3.2.1">
+                <p id="section-toc.1-1.3.2.1.1"><a href="#section-3.1" class="auto internal xref">3.1</a>.  <a href="#name-benefits" class="internal xref">Benefits</a></p>
+</li>
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.3.2.2">
+                <p id="section-toc.1-1.3.2.2.1"><a href="#section-3.2" class="auto internal xref">3.2</a>.  <a href="#name-limitations" class="internal xref">Limitations</a></p>
+</li>
+            </ul>
 </li>
           <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.4">
             <p id="section-toc.1-1.4.1"><a href="#section-4" class="auto internal xref">4</a>.  <a href="#name-intra-handshake-attestation" class="internal xref">Intra-handshake Attestation</a></p>
 <ul class="compact toc ulBare ulEmpty">
 <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.4.2.1">
-                <p id="section-toc.1-1.4.2.1.1"><a href="#section-4.1" class="auto internal xref">4.1</a>.  <a href="#name-benefits" class="internal xref">Benefits</a></p>
+                <p id="section-toc.1-1.4.2.1.1"><a href="#section-4.1" class="auto internal xref">4.1</a>.  <a href="#name-benefits-2" class="internal xref">Benefits</a></p>
 <ul class="compact toc ulBare ulEmpty">
 <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.4.2.1.2.1">
                     <p id="section-toc.1-1.4.2.1.2.1.1"><a href="#section-4.1.1" class="auto internal xref">4.1.1</a>.  <a href="#name-no-additional-application-l" class="internal xref">No Additional Application-Level Protocol</a></p>
@@ -1182,13 +1190,13 @@ category, namely pre-handshake attestation, intra-handshake attestation and post
                 </ul>
 </li>
               <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.4.2.2">
-                <p id="section-toc.1-1.4.2.2.1"><a href="#section-4.2" class="auto internal xref">4.2</a>.  <a href="#name-limitations" class="internal xref">Limitations</a></p>
+                <p id="section-toc.1-1.4.2.2.1"><a href="#section-4.2" class="auto internal xref">4.2</a>.  <a href="#name-limitations-2" class="internal xref">Limitations</a></p>
 <ul class="compact toc ulBare ulEmpty">
 <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.4.2.2.2.1">
                     <p id="section-toc.1-1.4.2.2.2.1.1"><a href="#section-4.2.1" class="auto internal xref">4.2.1</a>.  <a href="#name-limited-claims-availability" class="internal xref">Limited Claims Availability</a></p>
 </li>
                   <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.4.2.2.2.2">
-                    <p id="section-toc.1-1.4.2.2.2.2.1"><a href="#section-4.2.2" class="auto internal xref">4.2.2</a>.  <a href="#name-invasive-changes-in-tls" class="internal xref">Invasive Changes in TLS</a></p>
+                    <p id="section-toc.1-1.4.2.2.2.2.1"><a href="#section-4.2.2" class="auto internal xref">4.2.2</a>.  <a href="#name-invasive-changes-in-tls-and" class="internal xref">Invasive Changes in TLS and Security Concerns</a></p>
 </li>
                   <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.4.2.2.2.3">
                     <p id="section-toc.1-1.4.2.2.2.3.1"><a href="#section-4.2.3" class="auto internal xref">4.2.3</a>.  <a href="#name-state-after-connection-esta" class="internal xref">State After Connection Establishment Not Covered</a></p>
@@ -1213,7 +1221,7 @@ category, namely pre-handshake attestation, intra-handshake attestation and post
             <p id="section-toc.1-1.5.1"><a href="#section-5" class="auto internal xref">5</a>.  <a href="#name-post-handshake-attestation" class="internal xref">Post-handshake Attestation</a></p>
 <ul class="compact toc ulBare ulEmpty">
 <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.5.2.1">
-                <p id="section-toc.1-1.5.2.1.1"><a href="#section-5.1" class="auto internal xref">5.1</a>.  <a href="#name-benefits-2" class="internal xref">Benefits</a></p>
+                <p id="section-toc.1-1.5.2.1.1"><a href="#section-5.1" class="auto internal xref">5.1</a>.  <a href="#name-benefits-3" class="internal xref">Benefits</a></p>
 <ul class="compact toc ulBare ulEmpty">
 <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.5.2.1.2.1">
                     <p id="section-toc.1-1.5.2.1.2.1.1"><a href="#section-5.1.1" class="auto internal xref">5.1.1</a>.  <a href="#name-full-claims-availability" class="internal xref">Full Claims Availability</a></p>
@@ -1242,7 +1250,7 @@ category, namely pre-handshake attestation, intra-handshake attestation and post
                 </ul>
 </li>
               <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.5.2.2">
-                <p id="section-toc.1-1.5.2.2.1"><a href="#section-5.2" class="auto internal xref">5.2</a>.  <a href="#name-limitations-2" class="internal xref">Limitations</a></p>
+                <p id="section-toc.1-1.5.2.2.1"><a href="#section-5.2" class="auto internal xref">5.2</a>.  <a href="#name-limitations-3" class="internal xref">Limitations</a></p>
 <ul class="compact toc ulBare ulEmpty">
 <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.5.2.2.2.1">
                     <p id="section-toc.1-1.5.2.2.2.1.1"><a href="#section-5.2.1" class="auto internal xref">5.2.1</a>.  <a href="#name-impact-on-application-layer" class="internal xref">Impact on Application Layer</a></p>
@@ -1393,10 +1401,43 @@ for readability. Future versions will tighten it.<a href="#section-2-2" class="p
       <h2 id="name-pre-handshake-attestation">
 <a href="#section-3" class="section-number selfRef">3. </a><a href="#name-pre-handshake-attestation" class="section-name selfRef">Pre-handshake Attestation</a>
       </h2>
-<p id="section-3-1">Since the Evidence Generation Time could be at any
+<div id="benefits">
+<section id="section-3.1">
+        <h3 id="name-benefits">
+<a href="#section-3.1" class="section-number selfRef">3.1. </a><a href="#name-benefits" class="section-name selfRef">Benefits</a>
+        </h3>
+<p id="section-3.1-1">In certain deployments, there may be benefits for pre-handshake attestation.
+As Yaroslav Rosomakho (as individual contributor) observes <span>[<a href="#Yaroslav-22Jan" class="cite xref">Yaroslav-22Jan</a>]</span>:<a href="#section-3.1-1" class="pilcrow">¶</a></p>
+<blockquote id="section-3.1-2">
+          <p id="section-3.1-2.1">no modification of TLS, no changes to application protocols, and
+potential caching/scalability.<a href="#section-3.1-2.1" class="pilcrow">¶</a></p>
+</blockquote>
+<p id="section-3.1-3">He (as individual contributor) further explains <span>[<a href="#Yaroslav-22Jan" class="cite xref">Yaroslav-22Jan</a>]</span>:<a href="#section-3.1-3" class="pilcrow">¶</a></p>
+<blockquote id="section-3.1-4">
+          <p id="section-3.1-4.1">Many signed artifacts carry issuance time and validity constraints
+(e.g., JWT iat/exp <span>[<a href="#RFC7519" class="cite xref">RFC7519</a>]</span>, HTTP Message Signatures created/expires <span>[<a href="#RFC9421" class="cite xref">RFC9421</a>]</span>,
+SAML conditions <span>[<a href="#SAML" class="cite xref">SAML</a>]</span>). A timestamp alone is not the same as freshness,
+but a short validity window plus a trustworthy time source can be an
+acceptable assurance mechanism in some deployments. Likewise, some
+schemes can provide stronger freshness via verifier-chosen challenges
+or monotonic counters.<a href="#section-3.1-4.1" class="pilcrow">¶</a></p>
+</blockquote>
+</section>
+</div>
+<div id="limitations">
+<section id="section-3.2">
+        <h3 id="name-limitations">
+<a href="#section-3.2" class="section-number selfRef">3.2. </a><a href="#name-limitations" class="section-name selfRef">Limitations</a>
+        </h3>
+<p id="section-3.2-1">There are also security concerns on pre-handshake attestation for
+use cases such as confidential computing <a href="#sec-sec-cons" class="auto internal xref">Section 8</a>.
+Since the Evidence Generation Time could be at any
 arbitrary point of time in the past compared to the Connection
-Establishment Time, pre-handshake attestation provides no guarantees about the state of Attester
-at the Connection Establishment Time and during the Lifetime of Connection.<a href="#section-3-1" class="pilcrow">¶</a></p>
+Establishment Time in the case of untrusted clocks as in confidential computing,
+pre-handshake attestation provides no guarantees about the state of Attester
+at the Connection Establishment Time and during the Lifetime of Connection.<a href="#section-3.2-1" class="pilcrow">¶</a></p>
+</section>
+</div>
 </section>
 </div>
 <div id="intra-handshake-attestation">
@@ -1404,13 +1445,14 @@ at the Connection Establishment Time and during the Lifetime of Connection.<a hr
       <h2 id="name-intra-handshake-attestation">
 <a href="#section-4" class="section-number selfRef">4. </a><a href="#name-intra-handshake-attestation" class="section-name selfRef">Intra-handshake Attestation</a>
       </h2>
-<p id="section-4-1">Intra-handshake attestation improves the situation where Evidence Generation Time
-is the same as Connection Establishment Time.<a href="#section-4-1" class="pilcrow">¶</a></p>
+<p id="section-4-1">In general, intra-handshake attestation improves the situation where Evidence Generation Time
+is the same as Connection Establishment Time, assuming freshness mechanisms,
+such as unpredictable, single-use challenge and clear replay handling, are in place.<a href="#section-4-1" class="pilcrow">¶</a></p>
 <p id="section-4-2">In following subsections, we present the benefits and limitations of intra-handshake attestation.<a href="#section-4-2" class="pilcrow">¶</a></p>
-<div id="benefits">
+<div id="benefits-1">
 <section id="section-4.1">
-        <h3 id="name-benefits">
-<a href="#section-4.1" class="section-number selfRef">4.1. </a><a href="#name-benefits" class="section-name selfRef">Benefits</a>
+        <h3 id="name-benefits-2">
+<a href="#section-4.1" class="section-number selfRef">4.1. </a><a href="#name-benefits-2" class="section-name selfRef">Benefits</a>
         </h3>
 <div id="sec-intra-app-changes">
 <section id="section-4.1.1">
@@ -1448,7 +1490,7 @@ for use cases which require remote attestation only once
 during Connection Establishment Time.<a href="#section-4.1.2-1" class="pilcrow">¶</a></p>
 <p id="section-4.1.2-2">However, this may only be valid in cases when the Connection Establishment
 Time without remote attestation is significantly higher than the time
-for generation and appraisal of Evidence.
+for generation and appraisal of Evidence, such as cross-continent.
 For instance, Markus Rudy shares his practical experience <span>[<a href="#Markus-16Jan" class="cite xref">Markus-16Jan</a>]</span>:<a href="#section-4.1.2-2" class="pilcrow">¶</a></p>
 <blockquote id="section-4.1.2-3">
             <p id="section-4.1.2-3.1">I don't think saving extra roundtrips is an appropriate design
@@ -1464,70 +1506,63 @@ Coordinator is one of the components <span>[<a href="#Markus-19Jan" class="cite 
             <p id="section-4.1.2-5.1">I did a quick experiment in our testing lab, running on the
 same machine as the Coordinator:<a href="#section-4.1.2-5.1" class="pilcrow">¶</a></p>
 </blockquote>
-<ul class="normal ulEmpty">
-<li class="normal ulEmpty" id="section-4.1.2-6.1">
-              <ul class="normal">
-<li class="normal" id="section-4.1.2-6.1.1.1">
-                  <p id="section-4.1.2-6.1.1.1.1">TCP connections are local, and thus the TCP connection establishment
+<blockquote id="section-4.1.2-6">
+            <ul class="normal">
+<li class="normal" id="section-4.1.2-6.1.1">
+                <p id="section-4.1.2-6.1.1.1">TCP connections are local, and thus the TCP connection establishment
 unsurprisingly takes only 0.5ms. But even to neighbouring nodes
-in the same cluster, the TCP handshake takes below 2ms.<a href="#section-4.1.2-6.1.1.1.1" class="pilcrow">¶</a></p>
+in the same cluster, the TCP handshake takes below 2ms.<a href="#section-4.1.2-6.1.1.1" class="pilcrow">¶</a></p>
 </li>
-              </ul>
-</li>
-          </ul>
-<ul class="normal ulEmpty">
-<li class="normal ulEmpty" id="section-4.1.2-7.1">
-              <ul class="normal">
-<li class="normal" id="section-4.1.2-7.1.1.1">
-                  <p id="section-4.1.2-7.1.1.1.1">I measured generation of evidence including the TLS session
+            </ul>
+</blockquote>
+<blockquote id="section-4.1.2-7">
+            <ul class="normal">
+<li class="normal" id="section-4.1.2-7.1.1">
+                <p id="section-4.1.2-7.1.1.1">I measured generation of evidence including the TLS session
 establishment, but with these numbers I don't think it makes a lot
-of difference:<a href="#section-4.1.2-7.1.1.1.1" class="pilcrow">¶</a></p>
+of difference:<a href="#section-4.1.2-7.1.1.1" class="pilcrow">¶</a></p>
 </li>
-              </ul>
+            </ul>
+</blockquote>
+<blockquote id="section-4.1.2-8">
+            <ul class="normal ulEmpty">
+<li class="normal ulEmpty" id="section-4.1.2-8.1.1">
+                <ul class="normal">
+<li class="normal" id="section-4.1.2-8.1.1.1.1">
+                    <p id="section-4.1.2-8.1.1.1.1.1">SNP: Median time of 140ms from TCP SYN to TLS channel established
+and evidence sent to the client.<a href="#section-4.1.2-8.1.1.1.1.1" class="pilcrow">¶</a></p>
 </li>
-          </ul>
-<ul class="normal ulEmpty">
-<li class="normal ulEmpty" id="section-4.1.2-8.1">
-              <ul class="normal ulEmpty">
-<li class="normal ulEmpty" id="section-4.1.2-8.1.1.1">
-                  <ul class="normal">
-<li class="normal" id="section-4.1.2-8.1.1.1.1.1">
-                      <p id="section-4.1.2-8.1.1.1.1.1.1">SNP: Median time of 140ms from TCP SYN to TLS channel established
-and evidence sent to the client.<a href="#section-4.1.2-8.1.1.1.1.1.1" class="pilcrow">¶</a></p>
+                </ul>
 </li>
-                  </ul>
-</li>
-              </ul>
-</li>
-          </ul>
-<ul class="normal ulEmpty">
-<li class="normal ulEmpty" id="section-4.1.2-9.1">
-              <ul class="normal ulEmpty">
-<li class="normal ulEmpty" id="section-4.1.2-9.1.1.1">
-                  <ul class="normal">
-<li class="normal" id="section-4.1.2-9.1.1.1.1.1">
-                      <p id="section-4.1.2-9.1.1.1.1.1.1">TDX: Median time of 1020ms, same procedure. I don't know why
+            </ul>
+</blockquote>
+<blockquote id="section-4.1.2-9">
+            <ul class="normal ulEmpty">
+<li class="normal ulEmpty" id="section-4.1.2-9.1.1">
+                <ul class="normal">
+<li class="normal" id="section-4.1.2-9.1.1.1.1">
+                    <p id="section-4.1.2-9.1.1.1.1.1">TDX: Median time of 1020ms, same procedure. I don't know why
 it is that slow, it should only be making machine-local remote
-calls, if any.<a href="#section-4.1.2-9.1.1.1.1.1.1" class="pilcrow">¶</a></p>
+calls, if any.<a href="#section-4.1.2-9.1.1.1.1.1" class="pilcrow">¶</a></p>
 </li>
-                  </ul>
+                </ul>
 </li>
-              </ul>
-</li>
-          </ul>
-<ul class="normal ulEmpty">
-<li class="normal ulEmpty" id="section-4.1.2-10.1">
-              <ul class="normal">
-<li class="normal" id="section-4.1.2-10.1.1.1">
-                  <p id="section-4.1.2-10.1.1.1.1">So far, I only managed to measure TDX verification, which adds
+            </ul>
+</blockquote>
+<blockquote id="section-4.1.2-10">
+            <ul class="normal">
+<li class="normal" id="section-4.1.2-10.1.1">
+                <p id="section-4.1.2-10.1.1.1">So far, I only managed to measure TDX verification, which adds
 another 340ms. This is bound by remote HTTP requests, afaiu, and could
 be optimized with locally cached collateral, CRL, etc. I'd expect SNP
-to exhibit similar timing, because verification does similar remote calls.<a href="#section-4.1.2-10.1.1.1.1" class="pilcrow">¶</a></p>
+to exhibit similar timing, because verification does similar remote calls.<a href="#section-4.1.2-10.1.1.1" class="pilcrow">¶</a></p>
 </li>
-              </ul>
-</li>
-          </ul>
-<p id="section-4.1.2-11">We summarize that in the following table:<a href="#section-4.1.2-11" class="pilcrow">¶</a></p>
+            </ul>
+</blockquote>
+<blockquote id="section-4.1.2-11">
+            <p id="section-4.1.2-11.1">AMD is probably quicker because they're trading off with the appraisal time: the AMD report is not self-contained and can be generated with only the VM and the SP, but for verification you need to fetch the VCEK from somewhere, whereas the Intel quote includes the PCK cert and possibly other things that need to be fetched from a host service, if not the internet.<a href="#section-4.1.2-11.1" class="pilcrow">¶</a></p>
+</blockquote>
+<p id="section-4.1.2-12">We summarize that in the following table:<a href="#section-4.1.2-12" class="pilcrow">¶</a></p>
 <span id="name-preliminary-analysis-by-mar"></span><table class="center" id="table-1">
             <caption>
 <a href="#table-1" class="selfRef">Table 1</a>:
@@ -1553,14 +1588,35 @@ to exhibit similar timing, because verification does similar remote calls.<a hre
               </tr>
             </tbody>
           </table>
+<p id="section-4.1.2-14">However, Yaroslav Rosomakho (as individual contributor) raises a concern <span>[<a href="#Yaroslav-22Jan" class="cite xref">Yaroslav-22Jan</a>]</span>:<a href="#section-4.1.2-14" class="pilcrow">¶</a></p>
+<blockquote id="section-4.1.2-15">
+            <p id="section-4.1.2-15.1">The argument that avoiding an extra RTT is not a relevant goal may depend
+heavily on deployment topology (LAN vs same-region vs cross-continent).<a href="#section-4.1.2-15.1" class="pilcrow">¶</a></p>
+</blockquote>
+<div id="request-for-contributions">
+<section id="section-4.1.2.1">
+            <h5 id="name-request-for-contributions">
+<a href="#section-4.1.2.1" class="section-number selfRef">4.1.2.1. </a><a href="#name-request-for-contributions" class="section-name selfRef">Request for Contributions</a>
+            </h5>
+<p id="section-4.1.2.1-1">We invite the WG to submit their analysis results for cases such as:<a href="#section-4.1.2.1-1" class="pilcrow">¶</a></p>
+<ul class="normal">
+<li class="normal" id="section-4.1.2.1-2.1">
+                <p id="section-4.1.2.1-2.1.1">within continent<a href="#section-4.1.2.1-2.1.1" class="pilcrow">¶</a></p>
+</li>
+              <li class="normal" id="section-4.1.2.1-2.2">
+                <p id="section-4.1.2.1-2.2.1">across continent<a href="#section-4.1.2.1-2.2.1" class="pilcrow">¶</a></p>
+</li>
+            </ul>
 </section>
 </div>
 </section>
 </div>
-<div id="limitations">
+</section>
+</div>
+<div id="limitations-1">
 <section id="section-4.2">
-        <h3 id="name-limitations">
-<a href="#section-4.2" class="section-number selfRef">4.2. </a><a href="#name-limitations" class="section-name selfRef">Limitations</a>
+        <h3 id="name-limitations-2">
+<a href="#section-4.2" class="section-number selfRef">4.2. </a><a href="#name-limitations-2" class="section-name selfRef">Limitations</a>
         </h3>
 <div id="limited-claims-availability">
 <section id="section-4.2.1">
@@ -1568,15 +1624,19 @@ to exhibit similar timing, because verification does similar remote calls.<a hre
 <a href="#section-4.2.1" class="section-number selfRef">4.2.1. </a><a href="#name-limited-claims-availability" class="section-name selfRef">Limited Claims Availability</a>
           </h4>
 <p id="section-4.2.1-1">Since limited Claims are available at the Evidence Generation Time, it does not provide
-complete security posture of the Attester, such as runtime integrity of Attester.<a href="#section-4.2.1-1" class="pilcrow">¶</a></p>
+complete security posture of the Attester, such as runtime integrity of Attester.
+Examples include dynamic Claims, such as weights of trained model and contextual data
+in the case of AI agents/agentic AI <span>[<a href="#I-D.jiang-seat-dynamic-attestation" class="cite xref">I-D.jiang-seat-dynamic-attestation</a>]</span>, <span>[<a href="#Edward-20Jan" class="cite xref">Edward-20Jan</a>]</span>, <span>[<a href="#I-D.aylward-aiga-1" class="cite xref">I-D.aylward-aiga-1</a>]</span>. These dynamic Claims are neither available for pre-handshake
+attestation nor for intra-handshake attestation.<a href="#section-4.2.1-1" class="pilcrow">¶</a></p>
 </section>
 </div>
-<div id="invasive-changes-in-tls">
+<div id="invasive-changes-in-tls-and-security-concerns">
 <section id="section-4.2.2">
-          <h4 id="name-invasive-changes-in-tls">
-<a href="#section-4.2.2" class="section-number selfRef">4.2.2. </a><a href="#name-invasive-changes-in-tls" class="section-name selfRef">Invasive Changes in TLS</a>
+          <h4 id="name-invasive-changes-in-tls-and">
+<a href="#section-4.2.2" class="section-number selfRef">4.2.2. </a><a href="#name-invasive-changes-in-tls-and" class="section-name selfRef">Invasive Changes in TLS and Security Concerns</a>
           </h4>
-<p id="section-4.2.2-1">To be made secure, it requires invasive changes in TLS protocol, as deep as key
+<p id="section-4.2.2-1">To be made secure for confidential computing, it requires invasive changes in TLS
+protocol, as deep as key
 schedule and adding or modifying existing handshake messages <span>[<a href="#ID-Crisis" class="cite xref">ID-Crisis</a>]</span>, which
 are explicitly out of scope of <span>[<a href="#SEAT-Charter" class="cite xref">SEAT-Charter</a>]</span>:<a href="#section-4.2.2-1" class="pilcrow">¶</a></p>
 <blockquote id="section-4.2.2-2">
@@ -1585,6 +1645,8 @@ protocol itself. It may define (D)TLS extensions to support its goals
 but will not modify, add, or remove any existing protocol messages
 or modify the key schedule.<a href="#section-4.2.2-2.1" class="pilcrow">¶</a></p>
 </blockquote>
+<p id="section-4.2.2-3">A detailed analysis of different binding mechanisms for intra-handshake attestation
+has been shared with the WG <span>[<a href="#RelayAttacks" class="cite xref">RelayAttacks</a>]</span>.<a href="#section-4.2.2-3" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="state-after-connection-establishment-not-covered">
@@ -1592,10 +1654,12 @@ or modify the key schedule.<a href="#section-4.2.2-2.1" class="pilcrow">¶</a></
           <h4 id="name-state-after-connection-esta">
 <a href="#section-4.2.3" class="section-number selfRef">4.2.3. </a><a href="#name-state-after-connection-esta" class="section-name selfRef">State After Connection Establishment Not Covered</a>
           </h4>
-<p id="section-4.2.3-1">It provides no guarantees about the state of Attester during the lifetime
-of connection. This is a security concern in long-lived connections where
-state of Attester may change after Connection Establishment Time. Note that session
-resumption is a new connection <span>[<a href="#I-D.ietf-tls-rfc8446bis" class="cite xref">I-D.ietf-tls-rfc8446bis</a>]</span>.<a href="#section-4.2.3-1" class="pilcrow">¶</a></p>
+<p id="section-4.2.3-1">It provides no guarantees about the state of Attester during the Lifetime
+of Connection. This is a security concern in long-lived connections where
+state of Attester (at workload or platform level) may change after
+Connection Establishment Time. Examples include AI agents/agentic AI
+<span>[<a href="#I-D.jiang-seat-dynamic-attestation" class="cite xref">I-D.jiang-seat-dynamic-attestation</a>]</span>, <span>[<a href="#Edward-20Jan" class="cite xref">Edward-20Jan</a>]</span>, <span>[<a href="#I-D.aylward-aiga-1" class="cite xref">I-D.aylward-aiga-1</a>]</span>.
+Note that session resumption is a new connection <span>[<a href="#I-D.ietf-tls-rfc8446bis" class="cite xref">I-D.ietf-tls-rfc8446bis</a>]</span>.<a href="#section-4.2.3-1" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="high-handshake-latency">
@@ -1617,6 +1681,10 @@ forwarding information from the handshake (e.g. nonce), at which point
 the application needs to be fully aware of the handshake protocol in
 order to verify it, breaking the intended layering.<a href="#section-4.2.4-3.1" class="pilcrow">¶</a></p>
 </blockquote>
+<p id="section-4.2.4-4">As Yaroslav Rosomakho (as individual contributor) observes <span>[<a href="#Yaroslav-22Jan" class="cite xref">Yaroslav-22Jan</a>]</span>,
+note that Post-Quantum (PQ) transition may change the baseline. We argue that
+while PQ is unavoidable within TLS handshake, remote attestation is avoidable
+(see <a href="#sec-post-HS-need" class="auto internal xref">Section 6</a>).<a href="#section-4.2.4-4" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="maturity-of-tees">
@@ -1681,7 +1749,7 @@ number of services in practice.<a href="#section-4.2.7-2.1" class="pilcrow">¶</
 </div>
 </section>
 </div>
-<div id="post-handshake-attestation">
+<div id="sec-post-HS">
 <section id="section-5">
       <h2 id="name-post-handshake-attestation">
 <a href="#section-5" class="section-number selfRef">5. </a><a href="#name-post-handshake-attestation" class="section-name selfRef">Post-handshake Attestation</a>
@@ -1693,11 +1761,31 @@ long-lived connections requiring re-attestation.
 For post-handshake attestation, first round of remote attestation <span class="bcp14">MUST</span> be done
 immediately after Connection Establishment Time, and Relying Party (RP)
 <span>[<a href="#RFC9334" class="cite xref">RFC9334</a>]</span> <span class="bcp14">MUST</span> not send any secure data until Evidence is successfully appraised.<a href="#section-5-1" class="pilcrow">¶</a></p>
-<p id="section-5-2">In following subsections, we present the benefits and limitations of post-handshake attestation.<a href="#section-5-2" class="pilcrow">¶</a></p>
-<div id="benefits-1">
+<p id="section-5-2">As Yaroslav Rosomakho (as individual contributor) proposes <span>[<a href="#Yaroslav-22Jan" class="cite xref">Yaroslav-22Jan</a>]</span>:<a href="#section-5-2" class="pilcrow">¶</a></p>
+<blockquote id="section-5-3">
+        <p id="section-5-3.1">an explicit shim or gating layer that performs attestation after
+the TLS handshake completes but before any application data is exchanged.
+This is operationally distinct from both intra-handshake attestation and
+fully application-integrated post-handshake attestation. Such an approach
+could preserve standard TLS handshake behaviour and latency characteristics,
+avoid invasive TLS changes, and still prevent application data from
+flowing until attestation succeeds. It may also mitigate some of the
+application-layer complexity by localizing attestation handling to a
+well-defined enforcement point (e.g., a sidecar or connection gate)
+rather than requiring per-protocol integration.<a href="#section-5-3.1" class="pilcrow">¶</a></p>
+</blockquote>
+<p id="section-5-4">So a promising idea is to have an attested TLS library as a layer in between
+TLS implementation and application layer.<a href="#section-5-4" class="pilcrow">¶</a></p>
+<div class="alignLeft art-text artwork" id="section-5-5">
+<pre>
+TLS (any implmentation) -&gt; Attested TLS library -&gt; Application Layer
+</pre><a href="#section-5-5" class="pilcrow">¶</a>
+</div>
+<p id="section-5-6">In following subsections, we present the benefits and limitations of post-handshake attestation.<a href="#section-5-6" class="pilcrow">¶</a></p>
+<div id="benefits-2">
 <section id="section-5.1">
-        <h3 id="name-benefits-2">
-<a href="#section-5.1" class="section-number selfRef">5.1. </a><a href="#name-benefits-2" class="section-name selfRef">Benefits</a>
+        <h3 id="name-benefits-3">
+<a href="#section-5.1" class="section-number selfRef">5.1. </a><a href="#name-benefits-3" class="section-name selfRef">Benefits</a>
         </h3>
 <p id="section-5.1-1">In general, it allows re-authentication and re-attestation without tearing down the connection.<a href="#section-5.1-1" class="pilcrow">¶</a></p>
 <div id="full-claims-availability">
@@ -1734,6 +1822,14 @@ state of Attester may change after Connection Establishment Time.<a href="#secti
           </h4>
 <p id="section-5.1.4-1">Since the signature in Evidence generation and verification of signatures during appraisal
 happen after Connection Establishment Time, there is no additional latency.<a href="#section-5.1.4-1" class="pilcrow">¶</a></p>
+<p id="section-5.1.4-2">Yaroslav Rosomakho (as individual contributor) shares his concern <span>[<a href="#Yaroslav-22Jan" class="cite xref">Yaroslav-22Jan</a>]</span>:<a href="#section-5.1.4-2" class="pilcrow">¶</a></p>
+<blockquote id="section-5.1.4-3">
+            <p id="section-5.1.4-3.1">I don't think that moving latency related to attestation into after handshake
+is always a good thing. In some real-time and streaming applications, a spike
+after the session is established may be much more disruptive than paying a cost
+during the handshake.<a href="#section-5.1.4-3.1" class="pilcrow">¶</a></p>
+</blockquote>
+<p id="section-5.1.4-4">We believe this concern can be resolved by the layering described in <a href="#sec-post-HS" class="auto internal xref">Section 5</a>.<a href="#section-5.1.4-4" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="avoid-extra-round-trips">
@@ -1759,6 +1855,8 @@ don't need to modify any TLS implementation, but only add a few
 verification steps after the usual TLS handshake. This is almost the same
 on the client and server side.<a href="#section-5.1.6-2.1" class="pilcrow">¶</a></p>
 </blockquote>
+<p id="section-5.1.6-3">Production-grade deployments, including Google STET <span>[<a href="#Keith-STET-CCC" class="cite xref">Keith-STET-CCC</a>]</span> and
+SCONE <span>[<a href="#SoK-Attestation" class="cite xref">SoK-Attestation</a>]</span>, exist.<a href="#section-5.1.6-3" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="ease-of-verification-and-audit">
@@ -1795,10 +1893,10 @@ and session binding (Noise comes to mind).<a href="#section-5.1.8-3.1" class="pi
 </div>
 </section>
 </div>
-<div id="limitations-1">
+<div id="limitations-2">
 <section id="section-5.2">
-        <h3 id="name-limitations-2">
-<a href="#section-5.2" class="section-number selfRef">5.2. </a><a href="#name-limitations-2" class="section-name selfRef">Limitations</a>
+        <h3 id="name-limitations-3">
+<a href="#section-5.2" class="section-number selfRef">5.2. </a><a href="#name-limitations-3" class="section-name selfRef">Limitations</a>
         </h3>
 <div id="sec-post-app-changes">
 <section id="section-5.2.1">
@@ -1820,7 +1918,7 @@ fronting proxy, while the application itself remains unchanged and resides behin
 </div>
 </section>
 </div>
-<div id="need-for-post-handshake-attestation">
+<div id="sec-post-HS-need">
 <section id="section-6">
       <h2 id="name-need-for-post-handshake-att">
 <a href="#section-6" class="section-number selfRef">6. </a><a href="#name-need-for-post-handshake-att" class="section-name selfRef">Need for Post-handshake Attestation</a>
@@ -1860,16 +1958,14 @@ never get fixed, since the code only runs once.<a href="#section-6.1-4.1" class=
           <p id="section-6.1-6.1">My contention, which I think the group agreed with, is that one probably
 wants to do continuous assurance, that is, to repeat the remote attestation.<a href="#section-6.1-6.1" class="pilcrow">¶</a></p>
 </blockquote>
-<ul class="normal ulEmpty">
-<li class="normal ulEmpty" id="section-6.1-7.1">
-            <p id="section-6.1-7.1.1">Do you want to have two protocols and two code paths? (redundant code in a
+<blockquote id="section-6.1-7">
+          <p id="section-6.1-7.1">Do you want to have two protocols and two code paths? (redundant code in a
 constrained device?).  I suggested that <em>maybe</em> the remote attestation should
 use it's own /.well-known Path, and that it would just occur after
 onboarding, and regularly onwards.  Maybe it's weird to onboard a device only
 to kick it out again immediately because it failed remote attestation, but
-given continuous assurance, this could happen at any time.<a href="#section-6.1-7.1.1" class="pilcrow">¶</a></p>
-</li>
-        </ul>
+given continuous assurance, this could happen at any time.<a href="#section-6.1-7.1" class="pilcrow">¶</a></p>
+</blockquote>
 <p id="section-6.1-8">Göran Selander observes <span>[<a href="#Goran-LAKE" class="cite xref">Goran-LAKE</a>]</span>:<a href="#section-6.1-8" class="pilcrow">¶</a></p>
 <blockquote id="section-6.1-9">
           <p id="section-6.1-9.1">Indeed, if the authentication procedure is repeated at a later stage, for
@@ -1894,7 +1990,7 @@ relay attacks <span>[<a href="#RelayAttacks" class="cite xref">RelayAttacks</a>]
 SNI and ALPN, for conveyance of attestation nonce <span>[<a href="#RelayAttacks" class="cite xref">RelayAttacks</a>]</span>.<a href="#section-7.1-1" class="pilcrow">¶</a></p>
 </section>
 </div>
-<div id="post-handshake-attestation-1">
+<div id="post-handshake-attestation">
 <section id="section-7.2">
         <h3 id="name-post-handshake-attestation-2">
 <a href="#section-7.2" class="section-number selfRef">7.2. </a><a href="#name-post-handshake-attestation-2" class="section-name selfRef">Post-handshake Attestation</a>
@@ -1926,7 +2022,8 @@ February 2025 <span>[<a href="#Usama-TLS-26Feb25" class="cite xref">Usama-TLS-26
 development. Since reporting to TLS WG, these attacks have been practically
 exploited in <a href="https://tee.fail/">TEE.fail</a>, <a href="https://wiretap.fail/">Wiretap.fail</a>, and <a href="https://badram.eu/">BadRAM</a>.
 More recently, we found that intra-handshake attestation also does not bind the Evidence
-to the application traffic secrets, resulting in <strong>relay</strong> attacks <span>[<a href="#RelayAttacks" class="cite xref">RelayAttacks</a>]</span>.<a href="#section-8-2.2.1" class="pilcrow">¶</a></p>
+to the application traffic secrets, resulting in <strong>relay</strong> attacks <span>[<a href="#RelayAttacks" class="cite xref">RelayAttacks</a>]</span>.
+A detailed analysis of binding mechanisms is available at <span>[<a href="#RelayAttacks" class="cite xref">RelayAttacks</a>]</span>.<a href="#section-8-2.2.1" class="pilcrow">¶</a></p>
 </li>
         <li class="normal" id="section-8-2.3">
           <p id="section-8-2.3.1">No attacks on post-handshake attestation are currently known. Post-handshake attestation
@@ -1994,9 +2091,17 @@ send the Evidence after successful client authentication.<a href="#section-8.1-1
         <dd>
 <span class="refAuthor">Ayoub Benaissa</span>, <span class="refTitle">"Re: New Version Notification for draft-usama-seat-intra-vs-post-00.txt"</span>, <time datetime="2026-01" class="refDate">January 2026</time>, <span>&lt;<a href="https://mailarchive.ietf.org/arch/msg/seat/8eynK9ky5F-TcnL_UPbSRDKuK1E/">https://mailarchive.ietf.org/arch/msg/seat/8eynK9ky5F-TcnL_UPbSRDKuK1E/</a>&gt;</span>. </dd>
 <dd class="break"></dd>
+<dt id="Edward-20Jan">[Edward-20Jan]</dt>
+        <dd>
+<span class="refAuthor">Edward Aylward</span>, <span class="refTitle">"[Use Case] RATS for Hardware-Enforced State Management in Autonomous Agents (AIGA)"</span>, <time datetime="2026-01" class="refDate">January 2026</time>, <span>&lt;<a href="https://mailarchive.ietf.org/arch/msg/rats/TFzusdvG5d0PSl5m0dY3nAeeUyQ/">https://mailarchive.ietf.org/arch/msg/rats/TFzusdvG5d0PSl5m0dY3nAeeUyQ/</a>&gt;</span>. </dd>
+<dd class="break"></dd>
 <dt id="Goran-LAKE">[Goran-LAKE]</dt>
         <dd>
 <span class="refAuthor">Göran Selander</span>, <span class="refTitle">"Re: Comments for remote attestation over EDHOC"</span>, <time datetime="2024-05" class="refDate">May 2024</time>, <span>&lt;<a href="https://mailarchive.ietf.org/arch/msg/lake/Bb3eTcQxDA-F1AYJ0hZZy3p9wpQ/">https://mailarchive.ietf.org/arch/msg/lake/Bb3eTcQxDA-F1AYJ0hZZy3p9wpQ/</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="I-D.aylward-aiga-1">[I-D.aylward-aiga-1]</dt>
+        <dd>
+<span class="refAuthor">Aylward, E. R.</span>, <span class="refTitle">"AI Governance and Accountability Protocol (AIGA)"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-aylward-aiga-1-00</span>, <time datetime="2025-11-02" class="refDate">2 November 2025</time>, <span>&lt;<a href="https://datatracker.ietf.org/doc/html/draft-aylward-aiga-1-00">https://datatracker.ietf.org/doc/html/draft-aylward-aiga-1-00</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 <dt id="I-D.ietf-tls-rfc8446bis">[I-D.ietf-tls-rfc8446bis]</dt>
         <dd>
@@ -2050,6 +2155,10 @@ send the Evidence after successful client authentication.<a href="#section-8.1-1
         <dd>
 <span class="refAuthor">Sardar, M. U.</span>, <span class="refTitle">"Relay Attacks in Intra-handshake Attestation for Confidential Agentic AI Systems"</span>, <time datetime="2026-01" class="refDate">January 2026</time>, <span>&lt;<a href="https://mailarchive.ietf.org/arch/msg/seat/x3eQxFjQFJLceae6l4_NgXnmsDY/">https://mailarchive.ietf.org/arch/msg/seat/x3eQxFjQFJLceae6l4_NgXnmsDY/</a>&gt;</span>. </dd>
 <dd class="break"></dd>
+<dt id="RFC7519">[RFC7519]</dt>
+        <dd>
+<span class="refAuthor">Jones, M.</span>, <span class="refAuthor">Bradley, J.</span>, and <span class="refAuthor">N. Sakimura</span>, <span class="refTitle">"JSON Web Token (JWT)"</span>, <span class="seriesInfo">RFC 7519</span>, <span class="seriesInfo">DOI 10.17487/RFC7519</span>, <time datetime="2015-05" class="refDate">May 2015</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc7519">https://www.rfc-editor.org/rfc/rfc7519</a>&gt;</span>. </dd>
+<dd class="break"></dd>
 <dt id="RFC9261">[RFC9261]</dt>
         <dd>
 <span class="refAuthor">Sullivan, N.</span>, <span class="refTitle">"Exported Authenticators in TLS"</span>, <span class="seriesInfo">RFC 9261</span>, <span class="seriesInfo">DOI 10.17487/RFC9261</span>, <time datetime="2022-07" class="refDate">July 2022</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc9261">https://www.rfc-editor.org/rfc/rfc9261</a>&gt;</span>. </dd>
@@ -2061,6 +2170,14 @@ send the Evidence after successful client authentication.<a href="#section-8.1-1
 <dt id="RFC9334">[RFC9334]</dt>
         <dd>
 <span class="refAuthor">Birkholz, H.</span>, <span class="refAuthor">Thaler, D.</span>, <span class="refAuthor">Richardson, M.</span>, <span class="refAuthor">Smith, N.</span>, and <span class="refAuthor">W. Pan</span>, <span class="refTitle">"Remote ATtestation procedureS (RATS) Architecture"</span>, <span class="seriesInfo">RFC 9334</span>, <span class="seriesInfo">DOI 10.17487/RFC9334</span>, <time datetime="2023-01" class="refDate">January 2023</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc9334">https://www.rfc-editor.org/rfc/rfc9334</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="RFC9421">[RFC9421]</dt>
+        <dd>
+<span class="refAuthor">Backman, A., Ed.</span>, <span class="refAuthor">Richer, J., Ed.</span>, and <span class="refAuthor">M. Sporny</span>, <span class="refTitle">"HTTP Message Signatures"</span>, <span class="seriesInfo">RFC 9421</span>, <span class="seriesInfo">DOI 10.17487/RFC9421</span>, <time datetime="2024-02" class="refDate">February 2024</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc9421">https://www.rfc-editor.org/rfc/rfc9421</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="SAML">[SAML]</dt>
+        <dd>
+<span class="refAuthor">Cantor et al</span>, <span class="refTitle">"Assertions and Protocols for the OASIS Security Assertion Markup Language (SAML) V2.0"</span>, <time datetime="2005-03" class="refDate">March 2005</time>, <span>&lt;<a href="https://docs.oasis-open.org/security/saml/v2.0/saml-core-2.0-os.pdf">https://docs.oasis-open.org/security/saml/v2.0/saml-core-2.0-os.pdf</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 <dt id="SEAT-Charter">[SEAT-Charter]</dt>
         <dd>
@@ -2079,8 +2196,12 @@ send the Evidence after successful client authentication.<a href="#section-8.1-1
 <span class="refAuthor">Sardar, M. U.</span>, <span class="refTitle">"Perspicuity of Attestation Mechanisms in Confidential Computing: Technical Concepts"</span>, <time datetime="2025-10" class="refDate">October 2025</time>, <span>&lt;<a href="https://www.researchgate.net/publication/396199290_Perspicuity_of_Attestation_Mechanisms_in_Confidential_Computing_Technical_Concepts">https://www.researchgate.net/publication/396199290_Perspicuity_of_Attestation_Mechanisms_in_Confidential_Computing_Technical_Concepts</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 <dt id="Usama-TLS-26Feb25">[Usama-TLS-26Feb25]</dt>
-      <dd>
+        <dd>
 <span class="refAuthor">Muhammad Usama Sardar</span>, <span class="refTitle">"Impersonation attacks on protocol in draft-fossati-tls-attestation (Identity crisis in Attested TLS) for Confidential Computing"</span>, <time datetime="2025-02" class="refDate">February 2025</time>, <span>&lt;<a href="https://mailarchive.ietf.org/arch/msg/tls/Jx_yPoYWMIKaqXmPsytKZBDq23o/">https://mailarchive.ietf.org/arch/msg/tls/Jx_yPoYWMIKaqXmPsytKZBDq23o/</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="Yaroslav-22Jan">[Yaroslav-22Jan]</dt>
+      <dd>
+<span class="refAuthor">Yaroslav Rosomakho</span>, <span class="refTitle">"Re: New Version Notification for draft-usama-seat-intra-vs-post-02.txt"</span>, <time datetime="2026-01" class="refDate">January 2026</time>, <span>&lt;<a href="https://mailarchive.ietf.org/arch/msg/seat/gQTdMo0OexLffcB1x39M4J57Ug4/">https://mailarchive.ietf.org/arch/msg/seat/gQTdMo0OexLffcB1x39M4J57Ug4/</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 </dl>
 </section>
@@ -2109,6 +2230,9 @@ for conducting experiments with TDX and SNP on our request<a href="#appendix-A-2
 </li>
         <li class="normal" id="appendix-A-2.5">
           <p id="appendix-A-2.5.1">Mike Bursell (Executive Director, Confidential Computing Consortium) for review of -01 <span>[<a href="#Mike-19Jan" class="cite xref">Mike-19Jan</a>]</span><a href="#appendix-A-2.5.1" class="pilcrow">¶</a></p>
+</li>
+        <li class="normal" id="appendix-A-2.6">
+          <p id="appendix-A-2.6.1">Yaroslav Rosomakho (as individual contributor) for detailed review of -02 <span>[<a href="#Yaroslav-22Jan" class="cite xref">Yaroslav-22Jan</a>]</span><a href="#appendix-A-2.6.1" class="pilcrow">¶</a></p>
 </li>
       </ul>
 </section>
@@ -2151,6 +2275,18 @@ for conducting experiments with TDX and SNP on our request<a href="#appendix-A-2
 </li>
         <li class="normal" id="appendix-C-4.3">
           <p id="appendix-C-4.3.1">Added reference to use cases document to address comment of Mike Bursell<a href="#appendix-C-4.3.1" class="pilcrow">¶</a></p>
+</li>
+      </ul>
+<p id="appendix-C-5">-03<a href="#appendix-C-5" class="pilcrow">¶</a></p>
+<ul class="normal">
+<li class="normal" id="appendix-C-6.1">
+          <p id="appendix-C-6.1.1">Added advantages of pre-handshake attestation<a href="#appendix-C-6.1.1" class="pilcrow">¶</a></p>
+</li>
+        <li class="normal" id="appendix-C-6.2">
+          <p id="appendix-C-6.2.1">Added references for limited Claims for intra-handshake attestation<a href="#appendix-C-6.2.1" class="pilcrow">¶</a></p>
+</li>
+        <li class="normal" id="appendix-C-6.3">
+          <p id="appendix-C-6.3.1">Added Yaroslav's proposal in post-handshake attestation<a href="#appendix-C-6.3.1" class="pilcrow">¶</a></p>
 </li>
       </ul>
 </section>
