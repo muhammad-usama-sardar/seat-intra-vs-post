@@ -147,6 +147,27 @@ informative:
      target: https://lists.confidentialcomputing.io/g/attestation/message/276
      author:
       - ins: Mike Bursell
+  Yaroslav-22Jan:
+     title: "Re: New Version Notification for draft-usama-seat-intra-vs-post-02.txt"
+     date: 22 January 2026,
+     target: https://mailarchive.ietf.org/arch/msg/seat/gQTdMo0OexLffcB1x39M4J57Ug4/
+     author:
+      - ins: Yaroslav Rosomakho
+  Edward-20Jan:
+     title: "[Use Case] RATS for Hardware-Enforced State Management in Autonomous Agents (AIGA)"
+     date: 22 January 2026,
+     target: https://mailarchive.ietf.org/arch/msg/rats/TFzusdvG5d0PSl5m0dY3nAeeUyQ/
+     author:
+      - ins: Edward Aylward
+  I-D.aylward-aiga-1:
+  RFC7519:
+  RFC9421:
+  SAML:
+     title: "Assertions and Protocols for the OASIS Security Assertion Markup Language (SAML) V2.0"
+     date: 15 March 2005,
+     target: https://docs.oasis-open.org/security/saml/v2.0/saml-core-2.0-os.pdf
+     author:
+      - ins: Cantor et al.
 
 ...
 
@@ -220,14 +241,38 @@ In addition, we define three temporal terms:
 
 # Pre-handshake Attestation
 
+## Benefits
+In certain deployments, there may be benefits for pre-handshake attestation.
+As Yaroslav Rosomakho (as individual contributor) observes {{Yaroslav-22Jan}}:
+
+{:quote}
+>  no modification of TLS, no changes to application protocols, and
+potential caching/scalability.
+
+He (as individual contributor) further explains {{Yaroslav-22Jan}}:
+
+{:quote}
+>  Many signed artifacts carry issuance time and validity constraints
+(e.g., JWT iat/exp {{RFC7519}}, HTTP Message Signatures created/expires {{RFC9421}},
+SAML conditions {{SAML}}). A timestamp alone is not the same as freshness,
+but a short validity window plus a trustworthy time source can be an
+acceptable assurance mechanism in some deployments. Likewise, some
+schemes can provide stronger freshness via verifier-chosen challenges
+or monotonic counters.
+
+## Limitations
+There are also security concerns on pre-handshake attestation for
+use cases such as confidential computing {{sec-sec-cons}}.
 Since the Evidence Generation Time could be at any
 arbitrary point of time in the past compared to the Connection
-Establishment Time, pre-handshake attestation provides no guarantees about the state of Attester
+Establishment Time in the case of untrusted clocks as in confidential computing,
+pre-handshake attestation provides no guarantees about the state of Attester
 at the Connection Establishment Time and during the Lifetime of Connection.
 
 # Intra-handshake Attestation
-Intra-handshake attestation improves the situation where Evidence Generation Time
-is the same as Connection Establishment Time.
+In general, intra-handshake attestation improves the situation where Evidence Generation Time
+is the same as Connection Establishment Time, assuming freshness mechanisms,
+such as unpredictable, single-use challenge and clear replay handling, are in place.
 
 In following subsections, we present the benefits and limitations of intra-handshake attestation.
 
@@ -272,7 +317,7 @@ during Connection Establishment Time.
 
 However, this may only be valid in cases when the Connection Establishment
 Time without remote attestation is significantly higher than the time
-for generation and appraisal of Evidence.
+for generation and appraisal of Evidence, such as cross-continent.
 For instance, Markus Rudy shares his practical experience {{Markus-16Jan}}:
 
 {:quote}
@@ -290,25 +335,33 @@ Coordinator is one of the components {{Markus-19Jan}}:
 >  I did a quick experiment in our testing lab, running on the
 same machine as the Coordinator:
 
+{:quote}
 >  * TCP connections are local, and thus the TCP connection establishment
 unsurprisingly takes only 0.5ms. But even to neighbouring nodes
 in the same cluster, the TCP handshake takes below 2ms.
 
+{:quote}
 >  * I measured generation of evidence including the TLS session
 establishment, but with these numbers I don't think it makes a lot
 of difference:
 
+{:quote}
 >  >  * SNP: Median time of 140ms from TCP SYN to TLS channel established
 and evidence sent to the client.
 
+{:quote}
 >  >  * TDX: Median time of 1020ms, same procedure. I don't know why
 it is that slow, it should only be making machine-local remote
 calls, if any.
 
+{:quote}
 >  * So far, I only managed to measure TDX verification, which adds
 another 340ms. This is bound by remote HTTP requests, afaiu, and could
 be optimized with locally cached collateral, CRL, etc. I'd expect SNP
 to exhibit similar timing, because verification does similar remote calls.
+
+{:quote}
+>  AMD is probably quicker because they're trading off with the appraisal time: the AMD report is not self-contained and can be generated with only the VM and the SP, but for verification you need to fetch the VCEK from somewhere, whereas the Intel quote includes the PCK cert and possibly other things that need to be fetched from a host service, if not the internet.
 
 We summarize that in the following table:
 
@@ -316,6 +369,18 @@ We summarize that in the following table:
 | Generation of Evidence + TLS      |   1020   | 140  |
 | Appraisal of Evidence      |  340    |  not available (expected ca. 340)   |
 {: title="Preliminary analysis by Markus Rudy (Median time in ms)"}
+
+However, Yaroslav Rosomakho (as individual contributor) raises a concern {{Yaroslav-22Jan}}:
+
+{:quote}
+>  The argument that avoiding an extra RTT is not a relevant goal may depend
+heavily on deployment topology (LAN vs same-region vs cross-continent).
+
+#### Request for Contributions
+We invite the WG to submit their analysis results for cases such as:
+
+* within continent
+* across continent
 
 <!--  Our experiments also support his practical experience. In our experience,
 the generation of Evidence for Infineon Optiga SLB 9670,
@@ -328,9 +393,13 @@ In our experience, the generation of Evidence for AMD SEV-SNP takes around
 ### Limited Claims Availability
 Since limited Claims are available at the Evidence Generation Time, it does not provide
 complete security posture of the Attester, such as runtime integrity of Attester.
+Examples include dynamic Claims, such as weights of trained model and contextual data
+in the case of AI agents/agentic AI {{I-D.jiang-seat-dynamic-attestation}}, {{Edward-20Jan}}, {{I-D.aylward-aiga-1}}. These dynamic Claims are neither available for pre-handshake
+attestation nor for intra-handshake attestation.
 
-### Invasive Changes in TLS
-To be made secure, it requires invasive changes in TLS protocol, as deep as key
+### Invasive Changes in TLS and Security Concerns
+To be made secure for confidential computing, it requires invasive changes in TLS
+protocol, as deep as key
 schedule and adding or modifying existing handshake messages {{ID-Crisis}}, which
 are explicitly out of scope of {{SEAT-Charter}}:
 
@@ -340,11 +409,16 @@ protocol itself. It may define (D)TLS extensions to support its goals
 but will not modify, add, or remove any existing protocol messages
 or modify the key schedule.
 
+A detailed analysis of different binding mechanisms for intra-handshake attestation
+has been shared with the WG {{RelayAttacks}}.
+
 ### State After Connection Establishment Not Covered
-It provides no guarantees about the state of Attester during the lifetime
-of connection. This is a security concern in long-lived connections where
-state of Attester may change after Connection Establishment Time. Note that session
-resumption is a new connection {{I-D.ietf-tls-rfc8446bis}}.
+It provides no guarantees about the state of Attester during the Lifetime
+of Connection. This is a security concern in long-lived connections where
+state of Attester (at workload or platform level) may change after
+Connection Establishment Time. Examples include AI agents/agentic AI
+{{I-D.jiang-seat-dynamic-attestation}}, {{Edward-20Jan}}, {{I-D.aylward-aiga-1}}.
+Note that session resumption is a new connection {{I-D.ietf-tls-rfc8446bis}}.
 
 ### High Handshake Latency
 Because of signature in Evidence generation and verification of signatures during appraisal,
@@ -363,6 +437,10 @@ forwarding information from the handshake (e.g. nonce), at which point
 the application needs to be fully aware of the handshake protocol in
 order to verify it, breaking the intended layering.
 
+As Yaroslav Rosomakho (as individual contributor) observes {{Yaroslav-22Jan}},
+note that Post-Quantum (PQ) transition may change the baseline. We argue that
+while PQ is unavoidable within TLS handshake, remote attestation is avoidable
+(see {{sec-post-HS-need}}).
 
 ### Maturity of TEEs
 With several attacks (see {{sec-sec-cons}}), attestation in
@@ -412,6 +490,7 @@ I found this to be a hindrance for operating and debugging a large
 number of services in practice.
 
 # Post-handshake Attestation
+{: #sec-post-HS }
 
 Post-handshake attestation improves the situation further by signing the Claims
 during Lifetime of Connection, i.e., at the time when it is actually required.
@@ -420,6 +499,27 @@ long-lived connections requiring re-attestation.
 For post-handshake attestation, first round of remote attestation MUST be done
 immediately after Connection Establishment Time, and Relying Party (RP)
 {{-rfc9334}} MUST not send any secure data until Evidence is successfully appraised.
+
+As Yaroslav Rosomakho (as individual contributor) proposes {{Yaroslav-22Jan}}:
+
+{:quote}
+>  an explicit shim or gating layer that performs attestation after
+the TLS handshake completes but before any application data is exchanged.
+This is operationally distinct from both intra-handshake attestation and
+fully application-integrated post-handshake attestation. Such an approach
+could preserve standard TLS handshake behaviour and latency characteristics,
+avoid invasive TLS changes, and still prevent application data from
+flowing until attestation succeeds. It may also mitigate some of the
+application-layer complexity by localizing attestation handling to a
+well-defined enforcement point (e.g., a sidecar or connection gate)
+rather than requiring per-protocol integration.
+
+So a promising idea is to have an attested TLS library as a layer in between
+TLS implementation and application layer.
+
+~~~~
+TLS (any implmentation) -> Attested TLS library -> Application Layer
+~~~~
 
 In following subsections, we present the benefits and limitations of post-handshake attestation.
 
@@ -443,6 +543,16 @@ state of Attester may change after Connection Establishment Time.
 Since the signature in Evidence generation and verification of signatures during appraisal
 happen after Connection Establishment Time, there is no additional latency.
 
+Yaroslav Rosomakho (as individual contributor) shares his concern {{Yaroslav-22Jan}}:
+
+{:quote}
+>  I don't think that moving latency related to attestation into after handshake
+is always a good thing. In some real-time and streaming applications, a spike
+after the session is established may be much more disruptive than paying a cost
+during the handshake.
+
+We believe this concern can be resolved by the layering described in {{sec-post-HS}}.
+
 ### Avoid Extra Round Trips
 Except for first round of remote attestation, post-handshake attestation outperforms the
 intra-handshake attestation (one round trip), which requires re-establishing the connection
@@ -457,6 +567,9 @@ working. We were able to do this in a matter of weeks. That's because you
 don't need to modify any TLS implementation, but only add a few
 verification steps after the usual TLS handshake. This is almost the same
 on the client and server side.
+
+Production-grade deployments, including Google STET {{Keith-STET-CCC}} and
+SCONE {{SoK-Attestation}}, exist.
 
 ### Ease of Verification and Audit
 Post-handshake attestation has relatively easier formal analysis and
@@ -499,6 +612,7 @@ production deployments in which TLS termination and certificate handling are per
 fronting proxy, while the application itself remains unchanged and resides behind it.
 
 # Need for Post-handshake Attestation
+{: #sec-post-HS-need }
 We argue that post-handshake attestation is unavoidable (e.g., re-attestation to
 track changes after Connection Establishment Time for long-lived connections).
 Use cases where pre-handshake attestation and intra-handshake attestation are
@@ -538,6 +652,7 @@ He further shares {{MCR-LAKE2}}:
 >  My contention, which I think the group agreed with, is that one probably
 wants to do continuous assurance, that is, to repeat the remote attestation.
 
+{:quote}
 >  Do you want to have two protocols and two code paths? (redundant code in a
 constrained device?).  I suggested that *maybe* the remote attestation should
 use it's own /.well-known Path, and that it would just occur after
@@ -581,6 +696,7 @@ development. Since reporting to TLS WG, these attacks have been practically
 exploited in [TEE.fail](https://tee.fail/), [Wiretap.fail](https://wiretap.fail/), and [BadRAM](https://badram.eu/).
 More recently, we found that intra-handshake attestation also does not bind the Evidence
 to the application traffic secrets, resulting in **relay** attacks {{RelayAttacks}}.
+A detailed analysis of binding mechanisms is available at {{RelayAttacks}}.
 
 * No attacks on post-handshake attestation are currently known. Post-handshake attestation
 avoids replay attacks by using fresh attestation nonce. Moreover, it avoids diversion and relay attacks
@@ -619,6 +735,7 @@ We gratefully thank the following:
 * Markus Rudy for review of -00 and sharing his practical experiences and
 for conducting experiments with TDX and SNP on our request
 * Mike Bursell (Executive Director, Confidential Computing Consortium) for review of -01 {{Mike-19Jan}}
+* Yaroslav Rosomakho (as individual contributor) for detailed review of -02 {{Yaroslav-22Jan}}
 
 # Contributors
 {:numbered="false"}
@@ -640,3 +757,9 @@ Pavel Nikonorov (GENXT / IIAP NAS RA) contributed text in {{sec-intra-app-change
 * Added experiments by Markus Rudy
 * Removed our experiments
 * Added reference to use cases document to address comment of Mike Bursell
+
+-03
+
+* Added advantages of pre-handshake attestation
+* Added references for limited Claims for intra-handshake attestation
+* Added Yaroslav's proposal in post-handshake attestation
