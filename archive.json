@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2026-01-22T02:04:22.544135+00:00",
+  "timestamp": "2026-01-25T02:11:10.960825+00:00",
   "repo": "muhammad-usama-sardar/seat-intra-vs-post",
   "labels": [
     {
@@ -95,15 +95,15 @@
       "id": "I_kwDOQ5mD8c7jk02W",
       "title": "Clarify Sec. 4.2.1",
       "url": "https://github.com/muhammad-usama-sardar/seat-intra-vs-post/issues/3",
-      "state": "OPEN",
+      "state": "CLOSED",
       "author": "muhammad-usama-sardar",
       "authorAssociation": "OWNER",
       "assignees": [],
       "labels": [],
       "body": "> I do not understand Section 4.2.1\n\nExplain [Sec. 4.2.1](https://www.ietf.org/archive/id/draft-usama-seat-intra-vs-post-00.html#section-4.2.1) a little more.",
       "createdAt": "2026-01-15T15:41:41Z",
-      "updatedAt": "2026-01-17T14:21:56Z",
-      "closedAt": null,
+      "updatedAt": "2026-01-22T15:36:34Z",
+      "closedAt": "2026-01-22T15:36:34Z",
       "comments": [
         {
           "author": "muhammad-usama-sardar",
@@ -111,6 +111,13 @@
           "body": "Find a suitable reference to cite here.",
           "createdAt": "2026-01-17T14:21:56Z",
           "updatedAt": "2026-01-17T14:21:56Z"
+        },
+        {
+          "author": "muhammad-usama-sardar",
+          "authorAssociation": "OWNER",
+          "body": "- https://mailarchive.ietf.org/arch/msg/rats/TFzusdvG5d0PSl5m0dY3nAeeUyQ/\n- https://datatracker.ietf.org/doc/draft-aylward-aiga-1/\n- https://datatracker.ietf.org/doc/draft-jiang-seat-dynamic-attestation/",
+          "createdAt": "2026-01-22T10:31:28Z",
+          "updatedAt": "2026-01-22T10:31:28Z"
         }
       ]
     },
@@ -273,6 +280,61 @@
           "updatedAt": "2026-01-20T16:01:20Z"
         }
       ]
+    },
+    {
+      "number": 16,
+      "id": "I_kwDOQ5mD8c7k_hJu",
+      "title": "Meiling Chen's review of -02",
+      "url": "https://github.com/muhammad-usama-sardar/seat-intra-vs-post/issues/16",
+      "state": "OPEN",
+      "author": "muhammad-usama-sardar",
+      "authorAssociation": "OWNER",
+      "assignees": [],
+      "labels": [],
+      "body": "[Archive link](https://mailarchive.ietf.org/arch/msg/seat/aW8EYY1Dc3oCRWUYaUll2omkxdc/)\n\n> Hi all,\n> I have reviewed the draft, it seems like Intra-handshake and Post-handshake Attestation Are Complementary. \n> \n> - Intra-handshake attestation is ideal for initial high-assurance authentication (e.g., financial transactions, secure government access), where attestation must be completed before the connection is fully established.\n> - Post-handshake attestation better supports long-lived connections and dynamic attestation, offering flexibility without modifying TLS.\n> \n> No scheme is absolutely perfect, my previous attention had been focused on the post-handshake attestation, When considering the limitations on post-handshake, the following points are also recommended to be taken into consideration\n> \n> - State synchronization challenges, in long connections, if the proving party undergoes a state change (such as being compromised) after the handshake, the relying party needs to promptly detect this and terminate the connection. This may require an additional state synchronization mechanism.\n> - Unclear interaction with TLS session resumption: If the TLS session recovery mechanism is enabled, it is necessary to clarify how to coordinate after the handshake to ensure that the recovered session still support post-handshake attestation.\n> \n> So actually, I didn't quite understand where the core contradiction lay. If both of these two methods are to be continued, maybe  clarify the boundaries, explore hybrid approaches, or solve the problem of evidence replication in the intra-handshake attestation.\n\n",
+      "createdAt": "2026-01-22T08:38:47Z",
+      "updatedAt": "2026-01-22T08:38:51Z",
+      "closedAt": null,
+      "comments": [
+        {
+          "author": "muhammad-usama-sardar",
+          "authorAssociation": "OWNER",
+          "body": "[My response](https://mailarchive.ietf.org/arch/msg/seat/2jokQYPBWdNMhrwBxEYuhb9r-ro/)",
+          "createdAt": "2026-01-22T08:38:51Z",
+          "updatedAt": "2026-01-22T08:38:51Z"
+        }
+      ]
+    },
+    {
+      "number": 17,
+      "id": "I_kwDOQ5mD8c7k_qfS",
+      "title": "Yaroslav review of -02",
+      "url": "https://github.com/muhammad-usama-sardar/seat-intra-vs-post/issues/17",
+      "state": "CLOSED",
+      "author": "muhammad-usama-sardar",
+      "authorAssociation": "OWNER",
+      "assignees": [],
+      "labels": [],
+      "body": "[Archive link](https://mailarchive.ietf.org/arch/msg/seat/gQTdMo0OexLffcB1x39M4J57Ug4/)\n\n> Here is my review as an individual contributor (not wearing any hats).\n> \n> Overall, I find the discussion useful and the concrete implementation feedback (such as latency measurements) very valuable. I do think a few conclusions are currently stated more strongly than the text supports.\n> \n> \n\n- [x] Section 3 (Pre-handshake attestation):\n\n> \n> The current dismissal seems to assume Evidence can be arbitrarily old relative to connection establishment. Many signed artifacts carry issuance time and validity constraints (e.g., JWT iat/exp [0], HTTP Message Signatures created/expires [1], SAML conditions [2]). A timestamp alone is not the same as freshness, but a short validity window plus a trustworthy time source can be an acceptable assurance mechanism in some deployments. Likewise, some schemes can provide stronger freshness via verifier-chosen challenges or monotonic counters. I suggest separating \"not contemporaneous with this TLS connection\" from \"too old to be meaningful\", and discussing under what threat models / deployment assumptions pre-handshake is insufficient.\n> Section 3 does not currently mention potential benefits of pre-handshake (e.g., no modification of TLS, no changes to application protocols, potential caching/scalability advantages). Even if you ultimately judge these insufficient, listing them would make the draft more balanced.\n> \n> \n\n- [x] Section 4 (Intra-handshake attestation):\n\n> \n> I don't think \"embedding evidence in the handshake\" automatically guarantees freshness. Freshness typically depends on an unpredictable, single-use challenge and clear replay handling. If Evidence (or the challenge it is bound to) can be reused, the freshness property doesn't follow merely from being carried in handshake messages.\n> More generally, the text would benefit from explicitly stating what is being bound to what (e.g., transcript hash, exporter, traffic secrets, application traffic secrets) and which concrete mechanisms provide that binding.\n> \n> \n\n- [x] Section 4.1.2 / 4.2.4 (Round trips and latency):\n\n> \n> The argument that avoiding an extra RTT is not a relevant goal may depend heavily on deployment topology (LAN vs same-region vs cross-continent). The data point you include is still helpful.\n> Section 4.2.4 (high handshake latency) seems closely related to 4.1.2; you might consider merging them and broadening the analysis to include \"baseline handshake costs\" (including how PQ transition may change the baseline).\n> \n\n- [x] Section 4.2.1 (Limited claims availability):\n\n> \n> I'm not convinced the limitation is specific to intra-handshake without a clearer definition. What exactly is meant by \"limited claims\"? Which claims are unavailable intra-handshake but available pre- or post-handshake, and why? Concrete examples (even a short list) would help.\n> \n\n- [x]  Section 4.2.2 (Invasive changes in TLS):\n\n> \n> It's not clear to me that intra-handshake attestation inherently requires modifications to the TLS key schedule. Could a design based on standard TLS extensions and explicit transcript/channel binding (via early exporters) satisfy the required security properties? If not, it would be useful to explain in the draft text which properties force more invasive changes.\n> \n\n- [x]  Section 5.1.4 (Latency placement):\n\n> \n> I don't think that moving latency related to attestation into after handshake is always a good thing. In some real-time and streaming applications, a spike after the session is established may be much more disruptive than paying a cost during the handshake. It would help to discuss this as a trade-off.\n> \n\n- [x] Section 5.1.6 (Ease of implementation):\n\n> \n> A working demo is great, but I'm not sure it translates directly into \"ease of implementation\" for production deployments. Production-oriented examples (especially showing Exported Authenticators usage) would make this argument much more compelling.\n> \n\n- [x] Section 5.2.1 (Impact on application layer):\n> \n> This is my biggest concern with the post-handshake approach as currently written. Exported Authenticators define a secure way to serialise and bind authenticators, but each application protocol still needs a way to negotiate, carry, and process those structures. So far, this has not been easy even for HTTP (HTTP working group is still focused only on unsolicited server-side authenticators [3]). I suggest expanding this section into a more concrete discussion of deployment paths, and what is realistically required in applications and/or infrastructure.\n> \n> \n> \n\n- [x] General\n\n> The analysis appears to skip a potentially important design point: an explicit shim or gating layer that performs attestation after the TLS handshake completes but before any application data is exchanged. This is operationally distinct from both intra-handshake attestation and fully application-integrated post-handshake attestation. Such an approach could preserve standard TLS handshake behaviour and latency characteristics, avoid invasive TLS changes, and still prevent application data from flowing until attestation succeeds. It may also mitigate some of the application-layer complexity by localizing attestation handling to a well-defined enforcement point (e.g., a sidecar or connection gate) rather than requiring per-protocol integration.\n> \n> Is there a specific reason this design point was excluded? If not, it may be worth explicitly analysing it as a distinct option, or clarifying whether and why it is considered equivalent to \"post-handshake\" in the current text.\n> \n> \n> Hope this helps.\n\n[0] https://www.rfc-editor.org/rfc/rfc7519.html#section-4.1.6\n[1] https://www.rfc-editor.org/rfc/rfc9421.html#signature-params\n[2] https://docs.oasis-open.org/security/saml/v2.0/saml-core-2.0-os.pdf\n[3] https://datatracker.ietf.org/doc/draft-ietf-httpbis-secondary-server-certs",
+      "createdAt": "2026-01-22T08:49:35Z",
+      "updatedAt": "2026-01-22T16:12:29Z",
+      "closedAt": "2026-01-22T15:36:27Z",
+      "comments": [
+        {
+          "author": "muhammad-usama-sardar",
+          "authorAssociation": "OWNER",
+          "body": "> Section 3 (Pre-handshake attestation):\n\nmainly because nobody has yet submitted a draft on it. In the mean time, add a reference to [security considerations section](https://www.ietf.org/archive/id/draft-usama-seat-intra-vs-post-02.html#section-8). If someone submits a draft, I can expand this discussion.\n\n> Section 4 (Intra-handshake attestation):\n\nAdd a reference to [binding analysis](https://mailarchive.ietf.org/arch/msg/seat/x3eQxFjQFJLceae6l4_NgXnmsDY/)\n\n> Section 4.1.2 / 4.2.4 (Round trips and latency):\n\nAgree. Possibly request Markus for analysis of: \n- within continent\n- cross-continent\n\n> Section 4.2.1 (Limited claims availability):\n\nDynamic TCB (dynamic TE): add examples of agentic AI\n\n> Section 4.2.2 (Invasive changes in TLS):\n\nAdd a reference to [binding analysis](https://mailarchive.ietf.org/arch/msg/seat/x3eQxFjQFJLceae6l4_NgXnmsDY/), which includes early exporters\n\n> Section 5.1.4 (Latency placement):\n\nLayer in between the actual application \n\n`TLS (any implmentation) -> aTLS library -> Application Layer`\n\n> Section 5.1.6 (Ease of implementation):\n\nAdd Google's and SCONE's examples [mentioned later](https://www.ietf.org/archive/id/draft-usama-seat-intra-vs-post-02.html#section-7.2) in this section\n\n> Section 5.2.1 (Impact on application layer):\n\n\"Shim layer\" is still post-handshake as per [definition](https://www.ietf.org/archive/id/draft-usama-seat-intra-vs-post-02.html#section-1). Discussions are happening in CCC in favor of this option.",
+          "createdAt": "2026-01-22T08:59:04Z",
+          "updatedAt": "2026-01-22T09:39:36Z"
+        },
+        {
+          "author": "muhammad-usama-sardar",
+          "authorAssociation": "OWNER",
+          "body": "[Short response](https://mailarchive.ietf.org/arch/msg/seat/snwwZWiyGOVk_QXTKeUpodkv9Lo/)",
+          "createdAt": "2026-01-22T16:12:29Z",
+          "updatedAt": "2026-01-22T16:12:29Z"
+        }
+      ]
     }
   ],
   "pulls": [
@@ -412,6 +474,34 @@
       "mergedBy": "muhammad-usama-sardar",
       "mergeCommit": {
         "oid": "06ee066640f9ed3ed89aa40cb65a6b18e63b4c30"
+      },
+      "comments": [],
+      "reviews": []
+    },
+    {
+      "number": 18,
+      "id": "PR_kwDOQ5mD8c6-vN6v",
+      "title": "#3 and #17",
+      "url": "https://github.com/muhammad-usama-sardar/seat-intra-vs-post/pull/18",
+      "state": "MERGED",
+      "author": "muhammad-usama-sardar",
+      "authorAssociation": "OWNER",
+      "assignees": [],
+      "labels": [],
+      "body": "#3  \r\n#17  ",
+      "createdAt": "2026-01-22T16:30:54Z",
+      "updatedAt": "2026-01-22T16:31:14Z",
+      "baseRepository": "muhammad-usama-sardar/seat-intra-vs-post",
+      "baseRefName": "main",
+      "baseRefOid": "06ee066640f9ed3ed89aa40cb65a6b18e63b4c30",
+      "headRepository": "muhammad-usama-sardar/seat-intra-vs-post",
+      "headRefName": "feedback03",
+      "headRefOid": "2b85809790937b88e812ae2fd9c2bbd35c9ea604",
+      "closedAt": "2026-01-22T16:31:13Z",
+      "mergedAt": "2026-01-22T16:31:13Z",
+      "mergedBy": "muhammad-usama-sardar",
+      "mergeCommit": {
+        "oid": "5afa56bf4b0f752569bb5db13fffcc2fc60d5f15"
       },
       "comments": [],
       "reviews": []
