@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2026-01-25T02:11:10.960825+00:00",
+  "timestamp": "2026-02-17T02:30:10.824599+00:00",
   "repo": "muhammad-usama-sardar/seat-intra-vs-post",
   "labels": [
     {
@@ -335,6 +335,22 @@
           "updatedAt": "2026-01-22T16:12:29Z"
         }
       ]
+    },
+    {
+      "number": 19,
+      "id": "I_kwDOQ5mD8c7rZ0JH",
+      "title": "Markus statement",
+      "url": "https://github.com/muhammad-usama-sardar/seat-intra-vs-post/issues/19",
+      "state": "OPEN",
+      "author": "muhammad-usama-sardar",
+      "authorAssociation": "OWNER",
+      "assignees": [],
+      "labels": [],
+      "body": "https://mailarchive.ietf.org/arch/msg/seat/UfcyE3yBFDV5PvmaUM82mzmECO0/",
+      "createdAt": "2026-02-16T20:20:18Z",
+      "updatedAt": "2026-02-16T20:20:18Z",
+      "closedAt": null,
+      "comments": []
     }
   ],
   "pulls": [
