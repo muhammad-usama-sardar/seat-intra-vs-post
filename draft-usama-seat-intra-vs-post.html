@@ -9,26 +9,29 @@
 <meta content="
        This document presents a taxonomy of extending TLS protocol with remote attestation,
 referred to as attested TLS. It also presents high-level analysis of benefits and limitations of each
-category, namely pre-handshake attestation, intra-handshake attestation and post-handshake attestation. 
+category, namely pre-handshake attestation, intra-handshake attestation and post-handshake attestation.
+It also captures the opinions of the WG participants in order to build consensus towards solutions.
+It also discussed tradeoffs and scalability. 
     " name="description">
-<meta content="xml2rfc 3.31.0" name="generator">
+<meta content="xml2rfc 3.34.0" name="generator">
 <meta content="remote attestation" name="keyword">
 <meta content="TLS 1.3" name="keyword">
 <meta content="attested TLS" name="keyword">
 <meta content="draft-usama-seat-intra-vs-post-latest" name="ietf.draft">
 <!-- Generator version information:
-  xml2rfc 3.31.0
-    Python 3.12.12
-    ConfigArgParse 1.7
+  xml2rfc 3.34.0
+    Python 3.14.5
+    ConfigArgParse 1.7.5
     google-i18n-address 3.1.1
     intervaltree 3.2.1
     Jinja2 3.1.6
-    lxml 6.0.2
-    platformdirs 4.5.1
+    lxml 6.1.1
+    natsort 8.4.0
+    platformdirs 4.10.0
     pycountry 24.6.1
     PyYAML 6.0.3
-    requests 2.32.5
-    wcwidth 0.3.0
+    requests 2.33.1
+    wcwidth 0.8.2
 -->
 <link href="draft-usama-seat-intra-vs-post.xml" rel="alternate" type="application/rfc+xml">
 <link href="#copyright" rel="license">
@@ -169,7 +172,7 @@ category, namely pre-handshake attestation, intra-handshake attestation and post
   font-weight: 400;
   font-display: swap;
   src: local('Oxygen Mono'), local('OxygenMono-Regular'), url('https://martinthomson.github.io/rfc-css/fonts/oxygenmono-regular-latin-ext.woff2') format('woff2');
-  unicode-range: U+0100-024F, U+0259, U+1E00-1EFF, U+2020, U+20A0-20AB, U+20AD-20CF, U+2113, U+2C60-2C7F, U+A720-A7FF;
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
 }
 @font-face {
   font-family: 'Oxygen Mono';
@@ -177,7 +180,8 @@ category, namely pre-handshake attestation, intra-handshake attestation and post
   font-weight: 400;
   font-display: swap;
   src: local('Oxygen Mono'), local('OxygenMono-Regular'), url('https://martinthomson.github.io/rfc-css/fonts/oxygenmono-regular-latin.woff2') format('woff2');
-  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
 }
 
 @font-face {
@@ -294,16 +298,19 @@ h1, h2, h3, h4, h5, h6 {
   font-size-adjust: 0.5;
   color: var(--title-color);
 }
-h1#title {
-  font-size: 32px;
-  line-height: 40px;
-  clear: both;
-}
-h1#title, h1#rfcnum {
-  margin: 1.5em 0 0.2em;
-}
-h1#rfcnum + h1#title {
-  margin: 0.2em 0;
+h1 {
+  &#title {
+    font-size: 32px;
+    line-height: 40px;
+    clear: both;
+    margin: 1.5em 0 0.2em;
+  }
+  &#rfcnum {
+    margin: 1.5em 0 0.2em;
+    & + h1#title {
+      margin: 0.2em 0;
+    }
+  }
 }
 
 h1, h2, h3 {
@@ -323,10 +330,10 @@ h4, h5, h6 {
 #abstract+p {
   font-size: 18px;
   line-height: 24px;
-}
-#abstract+p code, #abstract+p samp, #abstract+p tt {
-  font-size: 16px;
-  line-height: 0;
+  & code, & samp, & tt {
+    font-size: 16px;
+    line-height: 0;
+  }
 }
 
 p {
@@ -337,59 +344,59 @@ p {
 div {
   margin: 0;
 }
-.alignRight.art-text {
-  background-color: var(--highlight-color);
-  border: 1px solid var(--line-color);
-  border-radius: 3px;
-  padding: 0.5em 1em 0;
-  margin-bottom: 0.5em;
-}
-.alignRight.art-text pre {
-  padding: 0;
-  width: auto;
-}
 .alignRight {
   margin: 1em 0;
-}
-.alignRight > *:first-child {
-  border: none;
-  margin: 0;
-  float: right;
-  clear: both;
-}
-.alignRight > *:nth-child(2) {
-  clear: both;
-  display: block;
-  border: none;
+  &.art-text {
+    background-color: var(--highlight-color);
+    border: 1px solid var(--line-color);
+    border-radius: 3px;
+    padding: 0.5em 1em 0;
+    margin-bottom: 0.5em;
+    & pre {
+      padding: 0;
+      width: auto;
+    }
+  }
+  & > *:first-child {
+    border: none;
+    margin: 0;
+    float: right;
+    clear: both;
+  }
+  & > *:nth-child(2) {
+    clear: both;
+    display: block;
+    border: none;
+  }
 }
 svg {
   display: block;
-}
-/* font-family isn't space-separated, but =~ will have to do */
-svg[font-family~="monospace" i], svg [font-family~="monospace" i] {
-  font-family: var(--font-mono);
-}
-.alignCenter.art-text {
-  background-color: var(--highlight-color);
-  border: 1px solid var(--line-color);
-  border-radius: 3px;
-  padding: 0.5em 1em 0;
-  margin-bottom: 0.5em;
-}
-.alignCenter.art-text pre {
-  padding: 0;
-  width: auto;
+  /* font-family isn't space-separated, but =~ will have to do */
+  &[font-family~="monospace" i], & [font-family~="monospace" i] {
+    font-family: var(--font-mono);
+  }
 }
 .alignCenter {
   margin: 1em 0;
-}
-.alignCenter > *:first-child {
-  border: none;
-  /* this isn't optimal, but it's an existence proof.  PrinceXML doesn't
-     support flexbox yet.
-  */
-  display: table;
-  margin: 0 auto;
+  &.art-text {
+    background-color: var(--highlight-color);
+    border: 1px solid var(--line-color);
+    border-radius: 3px;
+    padding: 0.5em 1em 0;
+    margin-bottom: 0.5em;
+    & pre {
+      padding: 0;
+      width: auto;
+    }
+  }
+  & > *:first-child {
+    border: none;
+    /* this isn't optimal, but it's an existence proof.  PrinceXML doesn't
+       support flexbox yet.
+    */
+    display: table;
+    margin: 0 auto;
+  }
 }
 
 /* lists */
@@ -427,26 +434,25 @@ dl {
     --indent: 5ch;
     & > dt {
       min-width: calc(var(--indent) - 2ch);
+      float: none;
     }
-  }
-  &.olPercent > dt {
-    float: none;
   }
 
   dl > dd > & {
     margin-top: 0.5em;
     margin-bottom: 0;
   }
-}
-dl:not(.dlNewline) > dt {
-  float: left;
-  margin-right: 2ch;
-  min-width: 8ch;
-}
-dl > dd {
-  margin-bottom: .8em;
-  margin-left: var(--indent) !important; /* stupid element overrides */
-  min-height: 2ex;
+
+  &:not(.dlNewline) > dt {
+    float: left;
+    margin-right: 2ch;
+    min-width: 8ch;
+  }
+  & > dd {
+    margin-bottom: .8em;
+    margin-left: var(--indent) !important; /* stupid element overrides */
+    min-height: 2ex;
+  }
 }
 :is(dl.compact, .dlCompact) > dd {
   margin-bottom: 0;
@@ -462,20 +468,22 @@ dl > dd {
 }
 
 /* links */
-a, a[href].selfRef:hover {
+a {
   text-decoration: none;
+  &[href] {
+    color: var(--link-color);
+    &:hover { text-decoration: underline; }
+    &.selfRef {
+      color: var(--text-color);
+      &:hover {
+        text-decoration: none;
+        background-color: var(--highlight-color);
+      }
+    }
+  }
 }
-a[href] {
-  color: var(--link-color);
-}
-a[href].selfRef, .iref + a[href].internal {
+.iref + a[href].internal {
   color: var(--text-color);
-}
-a[href]:hover {
-  text-decoration: underline;
-}
-a[href].selfRef:hover {
-  background-color: var(--highlight-color);
 }
 a.xref:is(.cite, .auto), :is(#status-of-memo, #copyright) a {
   white-space: nowrap;
@@ -511,9 +519,9 @@ img {
 figure {
   margin: 0.5em 0;
   padding: 0;
-}
-figure blockquote {
-  margin: 0.8em 0.4em 0.4em;
+  & blockquote {
+    margin: 0.8em 0.4em 0.4em;
+  }
 }
 figcaption, caption {
   font-style: italic;
@@ -523,17 +531,19 @@ figcaption, caption {
 }
 @media screen {
   /* Auto-collapse boilerplate. */
-  :is(#status-of-memo, #copyright) p {
-    margin: -2px 0;
-    max-height: 0;
-    transition: max-height 2s ease, margin 0.5s ease 0.5s;
-    overflow: hidden;
-  }
-  :is(#status-of-memo, #copyright):hover p,
-  :is(#status-of-memo, #copyright) h2:target ~ p {
-    margin: 0.5em 0;
-    max-height: 500px;
-    overflow: auto;
+  :is(#status-of-memo, #copyright) {
+    & p {
+      margin: -2px 0;
+      max-height: 0;
+      transition: max-height 2s ease, margin 0.5s ease 0.5s;
+      overflow: hidden;
+    }
+    &:hover p,
+    & h2:target ~ p {
+      margin: 0.5em 0;
+      max-height: 500px;
+      overflow: auto;
+    }
   }
   pre, svg {
     display: inline-block;
@@ -569,6 +579,7 @@ aside, blockquote {
 }
 blockquote {
   margin: 1em 0;
+  border-left: 2px var(--pilcrow-strong) solid;
 }
 cite {
   display: block;
@@ -582,25 +593,17 @@ table {
   max-width: 100%;
   margin: 0 0 1em;
   border-collapse: collapse;
-}
-table.right {
-  margin-left: auto;
-}
-table.center {
-  margin-left: auto;
-  margin-right: auto;
-}
-table.left {
-  margin-right: auto;
-}
-table .text-left {
-  text-align: left;
-}
-table .text-center {
-  text-align: center;
-}
-table .text-right {
-  text-align: right;
+  &.right { margin-left: auto; }
+  &.center { margin-left: auto; margin-right: auto; }
+  &.left { margin-right: auto; }
+  & .text-left { text-align: left; }
+  & .text-center { text-align: center; }
+  & .text-right { text-align: right; }
+  & caption {
+    margin: 0;
+    padding: 3px 0 3px 1em;
+  }
+  & p { margin: 0; }
 }
 
 thead, tbody {
@@ -620,13 +623,6 @@ th {
 :is(tr:nth-child(2n+1), thead+tbody > tr:nth-child(2n)) > td {
   background-color: var(--highlight-color);
 }
-table caption {
-  margin: 0;
-  padding: 3px 0 3px 1em;
-}
-table p {
-  margin: 0;
-}
 
 /* pilcrow */
 a.pilcrow {
@@ -637,18 +633,16 @@ a.pilcrow {
     color: var(--pilcrow-weak);
     &:hover { text-decoration: none; }
   }
-}
-@media not print {
-  :hover > a.pilcrow {
-    opacity: 1;
+  @media not print {
+    :hover > &, &:focus {
+      opacity: 1;
+    }
+    &[href]:hover {
+      color: var(--pilcrow-strong);
+      background-color: transparent;
+    }
   }
-  a.pilcrow[href]:hover {
-    color: var(--pilcrow-strong);
-    background-color: transparent;
-  }
-}
-@media print {
-  a.pilcrow {
+  @media print {
     display: none;
   }
 }
@@ -707,9 +701,9 @@ sub, sup {
   font-size: 0.9em;
   font-style: italic;
   margin-top: 2em;
-}
-.docInfo .prepared {
-  float: right;
+  & .prepared {
+    float: right;
+  }
 }
 
 /* table of contents */
@@ -799,23 +793,27 @@ hr.addr {
   max-width: calc(100% - 16px);
 }
 @media (min-width: 500px) {
-  #authors-addresses > section {
-    column-count: 2;
-    column-gap: 20px;
-  }
-  #authors-addresses > section > h2 {
-    column-span: all;
-  }
-  /* hack for break-inside: avoid-column */
-  #authors-addresses address {
-    display: inline-block;
-    break-inside: avoid-column;
+  #authors-addresses {
+    & > section {
+      column-count: 2;
+      column-gap: 20px;
+    }
+    & > section > h2 {
+      column-span: all;
+    }
+    /* hack for break-inside: avoid-column */
+    & address {
+      display: inline-block;
+      break-inside: avoid-column;
+    }
   }
 }
 
 /* Comments */
-.rfcEditorRemove p:first-of-type {
-  font-style: italic;
+.rfcEditorRemove {
+  & p:first-of-type {
+    font-style: italic;
+  }
 }
 .cref {
   background-color: rgba(249, 232, 105, 0.3);
@@ -826,19 +824,21 @@ hr.addr {
 }
 
 @media screen {
-  #toc nav {
-    font-family: var(--font-title);
-    font-weight: 360;
-    & > ul { margin-bottom: 2em; }
-    & ul {
-      margin: 0 0 0 4px;
-      & :is(p, li) {
-        margin: 2px 0;
+  #toc {
+    & nav {
+      font-family: var(--font-title);
+      font-weight: 360;
+      & > ul { margin-bottom: 2em; }
+      & ul {
+        margin: 0 0 0 4px;
+        & :is(p, li) {
+          margin: 2px 0;
+        }
       }
     }
-  }
-  #toc a.toplink {
-    float: right;
+    & a.toplink {
+      float: right;
+    }
   }
 }
 @media not screen {
@@ -859,54 +859,54 @@ hr.addr {
     margin: 0;
     border-bottom: 1px solid #ccc;
     opacity: 0.6;
-  }
-  #toc h2 {
-    margin: 0;
-    padding: 2px 0 2px 6px;
-    padding-right: 1em;
-    font-size: 18px;
-    line-height: 24px;
-    min-width: 190px;
-    text-align: right;
-    background-color: #444;
-    color: white;
-    cursor: pointer;
-    &::before { /* css hamburger */
-      float: right;
-      position: relative;
-      width: 1em;
-      height: 1px;
-      left: -164px;
-      margin: 8px 0 0 0;
-      background: white none repeat scroll 0 0;
-      box-shadow: 0 4px 0 0 white, 0 8px 0 0 white;
-      content: "";
+    & h2 {
+      margin: 0;
+      padding: 2px 0 2px 6px;
+      padding-right: 1em;
+      font-size: 18px;
+      line-height: 24px;
+      min-width: 190px;
+      text-align: right;
+      background-color: #444;
+      color: white;
+      cursor: pointer;
+      &::before { /* css hamburger */
+        float: right;
+        position: relative;
+        width: 1em;
+        height: 1px;
+        left: -164px;
+        margin: 8px 0 0 0;
+        background: white none repeat scroll 0 0;
+        box-shadow: 0 4px 0 0 white, 0 8px 0 0 white;
+        content: "";
+      }
     }
-  }
-  #toc nav {
-    display: none;
-    background-color: var(--background-color);
-    padding: 0.5em 1em 1em;
-    overflow: auto;
-    overscroll-behavior: contain;
-    height: calc(100vh - 48px);
-    border-left: 1px solid #ddd;
-  }
-  #toc.active {
-    opacity: 1;
-    & nav { display: block; }
-  }
-  /* Make the collapsed ToC header render white on gray also when it's a link */
-  #toc h2 a,
-  #toc h2 a:is(:link, :focus, :hover),
-  #toc a.toplink,
-  #toc a.toplink:hover {
-    color: white;
-    background-color: #444;
-    text-decoration: none;
-  }
-  #toc a.toplink {
-    margin: 2px 0.5em 0;
+    & nav {
+      display: none;
+      background-color: var(--background-color);
+      padding: 0.5em 1em 1em;
+      overflow: auto;
+      overscroll-behavior: contain;
+      height: calc(100vh - 48px);
+      border-left: 1px solid #ddd;
+    }
+    &.active {
+      opacity: 1;
+      & nav { display: block; }
+    }
+    /* Make the collapsed ToC header render white on gray also when it's a link */
+    & h2 a,
+    & h2 a:is(:link, :focus, :hover),
+    & a.toplink,
+    & a.toplink:hover {
+      color: white;
+      background-color: #444;
+      text-decoration: none;
+    }
+    & a.toplink {
+      margin: 2px 0.5em 0;
+    }
   }
 }
 
@@ -925,26 +925,26 @@ hr.addr {
     margin: 0;
     padding: 0;
     z-index: 1;
-  }
-  #toc h2 {
-    margin: 0;
-    padding: 0.25em 1em 1em 0;
-  }
-  #toc nav {
-    display: block;
-    height: calc(90vh - 84px);
-    bottom: 0;
-    padding: 0.5em 0 2em;
-    overflow: auto;
-    overscroll-behavior: contain;
-    scrollbar-width: thin;
+    & h2 {
+      margin: 0;
+      padding: 0.25em 1em 1em 0;
+    }
+    & nav {
+      display: block;
+      height: calc(90vh - 84px);
+      bottom: 0;
+      padding: 0.5em 0 2em;
+      overflow: auto;
+      overscroll-behavior: contain;
+      scrollbar-width: thin;
+    }
+    & a.toplink {
+      margin: 8px 0.5em 0;
+    }
   }
   img { /* future proofing */
     max-width: 100%;
     height: auto;
-  }
-  #toc a.toplink {
-    margin: 8px 0.5em 0;
   }
 }
 
@@ -960,12 +960,13 @@ hr.addr {
   #n-copyright-notice {
     border-bottom: none;
   }
-  #toc, #n-introduction {
-    page-break-before: always;
-  }
   #toc {
+    page-break-before: always;
     border-top: none;
     padding-top: 0;
+  }
+  #n-introduction {
+    page-break-before: always;
   }
   figure, pre, .vcard {
     page-break-inside: avoid;
@@ -1027,17 +1028,19 @@ hr.addr {
 }
 
 /* SVG Trick: a prefix match works because only black and white are allowed */
-svg :is([stroke="black"], [stroke^="#000"]) {
-  stroke: var(--text-color);
-}
-svg :is([stroke="white"], [stroke^="#fff"]) {
-  stroke: var(--background-color);
-}
-svg :is([fill="black"], [fill^="#000"], :not([fill])) {
-  fill: var(--text-color);
-}
-svg :is([fill="white"], [fill^="#fff"]) {
-  fill: var(--background-color);
+svg {
+  & :is([stroke="black"], [stroke^="#000"]) {
+    stroke: var(--text-color);
+  }
+  & :is([stroke="white"], [stroke^="#fff"]) {
+    stroke: var(--background-color);
+  }
+  & :is([fill="black"], [fill^="#000"], :not([fill])) {
+    fill: var(--text-color);
+  }
+  & :is([fill="white"], [fill^="#fff"]) {
+    fill: var(--background-color);
+  }
 }
 </style>
 
@@ -1047,11 +1050,11 @@ svg :is([fill="white"], [fill^="#fff"]) {
 <thead><tr>
 <td class="left">Internet-Draft</td>
 <td class="center">Intra-vs-post</td>
-<td class="right">January 2026</td>
+<td class="right">July 2026</td>
 </tr></thead>
 <tfoot><tr>
 <td class="left">Sardar</td>
-<td class="center">Expires 26 July 2026</td>
+<td class="center">Expires 7 January 2027</td>
 <td class="right">[Page]</td>
 </tr></tfoot>
 </table>
@@ -1064,12 +1067,12 @@ svg :is([fill="white"], [fill^="#fff"]) {
 <dd class="internet-draft">draft-usama-seat-intra-vs-post-latest</dd>
 <dt class="label-published">Published:</dt>
 <dd class="published">
-<time datetime="2026-01-22" class="published">22 January 2026</time>
+<time datetime="2026-07-06" class="published">6 July 2026</time>
     </dd>
 <dt class="label-intended-status">Intended Status:</dt>
 <dd class="intended-status">Informational</dd>
 <dt class="label-expires">Expires:</dt>
-<dd class="expires"><time datetime="2026-07-26">26 July 2026</time></dd>
+<dd class="expires"><time datetime="2027-01-07">7 January 2027</time></dd>
 <dt class="label-authors">Author:</dt>
 <dd class="authors">
 <div class="author">
@@ -1084,7 +1087,9 @@ svg :is([fill="white"], [fill^="#fff"]) {
       <h2 id="abstract"><a href="#abstract" class="selfRef">Abstract</a></h2>
 <p id="section-abstract-1">This document presents a taxonomy of extending TLS protocol with remote attestation,
 referred to as attested TLS. It also presents high-level analysis of benefits and limitations of each
-category, namely pre-handshake attestation, intra-handshake attestation and post-handshake attestation.<a href="#section-abstract-1" class="pilcrow">¶</a></p>
+category, namely pre-handshake attestation, intra-handshake attestation and post-handshake attestation.
+It also captures the opinions of the WG participants in order to build consensus towards solutions.
+It also discussed tradeoffs and scalability.<a href="#section-abstract-1" class="pilcrow">¶</a></p>
 </section>
 <section class="note rfcEditorRemove" id="section-note.1">
       <h2 id="name-about-this-document">
@@ -1121,7 +1126,7 @@ category, namely pre-handshake attestation, intra-handshake attestation and post
         time. It is inappropriate to use Internet-Drafts as reference
         material or to cite them other than as "work in progress."<a href="#section-boilerplate.1-3" class="pilcrow">¶</a></p>
 <p id="section-boilerplate.1-4">
-        This Internet-Draft will expire on 26 July 2026.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
+        This Internet-Draft will expire on 7 January 2027.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="copyright">
@@ -1502,67 +1507,36 @@ of verification.<a href="#section-4.1.2-3.1" class="pilcrow">¶</a></p>
 preliminary results of experiment based on
 attested TLS implementation in Edgeless Systems Contrast where
 Coordinator is one of the components <span>[<a href="#Markus-19Jan" class="cite xref">Markus-19Jan</a>]</span>:<a href="#section-4.1.2-4" class="pilcrow">¶</a></p>
-<blockquote id="section-4.1.2-5">
-            <p id="section-4.1.2-5.1">I did a quick experiment in our testing lab, running on the
-same machine as the Coordinator:<a href="#section-4.1.2-5.1" class="pilcrow">¶</a></p>
-</blockquote>
-<blockquote id="section-4.1.2-6">
-            <ul class="normal">
-<li class="normal" id="section-4.1.2-6.1.1">
-                <p id="section-4.1.2-6.1.1.1">TCP connections are local, and thus the TCP connection establishment
+<div class="alignLeft art-text artwork" id="section-4.1.2-5">
+<pre>
+  I did a quick experiment in our testing lab, running on the
+same machine as the Coordinator:
+
+  * TCP connections are local, and thus the TCP connection establishment
 unsurprisingly takes only 0.5ms. But even to neighbouring nodes
-in the same cluster, the TCP handshake takes below 2ms.<a href="#section-4.1.2-6.1.1.1" class="pilcrow">¶</a></p>
-</li>
-            </ul>
-</blockquote>
-<blockquote id="section-4.1.2-7">
-            <ul class="normal">
-<li class="normal" id="section-4.1.2-7.1.1">
-                <p id="section-4.1.2-7.1.1.1">I measured generation of evidence including the TLS session
+in the same cluster, the TCP handshake takes below 2ms.
+
+
+ * I measured generation of evidence including the TLS session
 establishment, but with these numbers I don't think it makes a lot
-of difference:<a href="#section-4.1.2-7.1.1.1" class="pilcrow">¶</a></p>
-</li>
-            </ul>
-</blockquote>
-<blockquote id="section-4.1.2-8">
-            <ul class="normal ulEmpty">
-<li class="normal ulEmpty" id="section-4.1.2-8.1.1">
-                <ul class="normal">
-<li class="normal" id="section-4.1.2-8.1.1.1.1">
-                    <p id="section-4.1.2-8.1.1.1.1.1">SNP: Median time of 140ms from TCP SYN to TLS channel established
-and evidence sent to the client.<a href="#section-4.1.2-8.1.1.1.1.1" class="pilcrow">¶</a></p>
-</li>
-                </ul>
-</li>
-            </ul>
-</blockquote>
-<blockquote id="section-4.1.2-9">
-            <ul class="normal ulEmpty">
-<li class="normal ulEmpty" id="section-4.1.2-9.1.1">
-                <ul class="normal">
-<li class="normal" id="section-4.1.2-9.1.1.1.1">
-                    <p id="section-4.1.2-9.1.1.1.1.1">TDX: Median time of 1020ms, same procedure. I don't know why
+of difference:
+
+  &gt;  * SNP: Median time of 140ms from TCP SYN to TLS channel established
+and evidence sent to the client.
+
+  &gt;  * TDX: Median time of 1020ms, same procedure. I don't know why
 it is that slow, it should only be making machine-local remote
-calls, if any.<a href="#section-4.1.2-9.1.1.1.1.1" class="pilcrow">¶</a></p>
-</li>
-                </ul>
-</li>
-            </ul>
-</blockquote>
-<blockquote id="section-4.1.2-10">
-            <ul class="normal">
-<li class="normal" id="section-4.1.2-10.1.1">
-                <p id="section-4.1.2-10.1.1.1">So far, I only managed to measure TDX verification, which adds
+calls, if any.
+
+  * So far, I only managed to measure TDX verification, which adds
 another 340ms. This is bound by remote HTTP requests, afaiu, and could
 be optimized with locally cached collateral, CRL, etc. I'd expect SNP
-to exhibit similar timing, because verification does similar remote calls.<a href="#section-4.1.2-10.1.1.1" class="pilcrow">¶</a></p>
-</li>
-            </ul>
-</blockquote>
-<blockquote id="section-4.1.2-11">
-            <p id="section-4.1.2-11.1">AMD is probably quicker because they're trading off with the appraisal time: the AMD report is not self-contained and can be generated with only the VM and the SP, but for verification you need to fetch the VCEK from somewhere, whereas the Intel quote includes the PCK cert and possibly other things that need to be fetched from a host service, if not the internet.<a href="#section-4.1.2-11.1" class="pilcrow">¶</a></p>
-</blockquote>
-<p id="section-4.1.2-12">We summarize that in the following table:<a href="#section-4.1.2-12" class="pilcrow">¶</a></p>
+to exhibit similar timing, because verification does similar remote calls.
+
+  AMD is probably quicker because they're trading off with the appraisal time: the AMD report is not self-contained and can be generated with only the VM and the SP, but for verification you need to fetch the VCEK from somewhere, whereas the Intel quote includes the PCK cert and possibly other things that need to be fetched from a host service, if not the internet.
+</pre><a href="#section-4.1.2-5" class="pilcrow">¶</a>
+</div>
+<p id="section-4.1.2-6">We summarize that in the following table:<a href="#section-4.1.2-6" class="pilcrow">¶</a></p>
 <span id="name-preliminary-analysis-by-mar"></span><table class="center" id="table-1">
             <caption>
 <a href="#table-1" class="selfRef">Table 1</a>:
@@ -1588,10 +1562,10 @@ to exhibit similar timing, because verification does similar remote calls.<a hre
               </tr>
             </tbody>
           </table>
-<p id="section-4.1.2-14">However, Yaroslav Rosomakho (as individual contributor) raises a concern <span>[<a href="#Yaroslav-22Jan" class="cite xref">Yaroslav-22Jan</a>]</span>:<a href="#section-4.1.2-14" class="pilcrow">¶</a></p>
-<blockquote id="section-4.1.2-15">
-            <p id="section-4.1.2-15.1">The argument that avoiding an extra RTT is not a relevant goal may depend
-heavily on deployment topology (LAN vs same-region vs cross-continent).<a href="#section-4.1.2-15.1" class="pilcrow">¶</a></p>
+<p id="section-4.1.2-8">However, Yaroslav Rosomakho (as individual contributor) raises a concern <span>[<a href="#Yaroslav-22Jan" class="cite xref">Yaroslav-22Jan</a>]</span>:<a href="#section-4.1.2-8" class="pilcrow">¶</a></p>
+<blockquote id="section-4.1.2-9">
+            <p id="section-4.1.2-9.1">The argument that avoiding an extra RTT is not a relevant goal may depend
+heavily on deployment topology (LAN vs same-region vs cross-continent).<a href="#section-4.1.2-9.1" class="pilcrow">¶</a></p>
 </blockquote>
 <div id="request-for-contributions">
 <section id="section-4.1.2.1">
@@ -1646,7 +1620,8 @@ but will not modify, add, or remove any existing protocol messages
 or modify the key schedule.<a href="#section-4.2.2-2.1" class="pilcrow">¶</a></p>
 </blockquote>
 <p id="section-4.2.2-3">A detailed analysis of different binding mechanisms for intra-handshake attestation
-has been shared with the WG <span>[<a href="#RelayAttacks" class="cite xref">RelayAttacks</a>]</span>.<a href="#section-4.2.2-3" class="pilcrow">¶</a></p>
+is available at <span>[<a href="#Intra-handshake.fail" class="cite xref">Intra-handshake.fail</a>]</span> and the corresponding formal analysis is available
+at <span>[<a href="#Intra-handshake.fail-repo" class="cite xref">Intra-handshake.fail-repo</a>]</span>.<a href="#section-4.2.2-3" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="state-after-connection-establishment-not-covered">
@@ -1986,8 +1961,8 @@ whatever reason, e.g. key rotation, it should be possible to repeat the attestat
 <a href="#section-7.1" class="section-number selfRef">7.1. </a><a href="#name-intra-handshake-attestation-2" class="section-name selfRef">Intra-handshake Attestation</a>
         </h3>
 <p id="section-7.1-1">Prominent implementations of intra-handshake attestation are all vulnerable to
-relay attacks <span>[<a href="#RelayAttacks" class="cite xref">RelayAttacks</a>]</span>. Some of them are abusing the extensions of TLS, such as
-SNI and ALPN, for conveyance of attestation nonce <span>[<a href="#RelayAttacks" class="cite xref">RelayAttacks</a>]</span>.<a href="#section-7.1-1" class="pilcrow">¶</a></p>
+relay attacks <span>[<a href="#Intra-handshake.fail" class="cite xref">Intra-handshake.fail</a>]</span>. Some of them are abusing the extensions of TLS, such as
+SNI and ALPN, for conveyance of attestation nonce <span>[<a href="#Intra-handshake.fail" class="cite xref">Intra-handshake.fail</a>]</span>.<a href="#section-7.1-1" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="post-handshake-attestation">
@@ -2011,7 +1986,8 @@ Security Considerations of <span>[<a href="#RFC9334" class="cite xref">RFC9334</
 <ul class="normal">
 <li class="normal" id="section-8-2.1">
           <p id="section-8-2.1.1">Pre-handshake attestation is vulnerable to <strong>replay</strong> <span>[<a href="#RA-TLS" class="cite xref">RA-TLS</a>]</span> and <strong>diversion</strong>
-            <span>[<a href="#ID-Crisis" class="cite xref">ID-Crisis</a>]</span> attacks. Moreover, pre-handshake attestation leads to a single point of
+            <span>[<a href="#ID-Crisis" class="cite xref">ID-Crisis</a>]</span> attacks. See the corresponding formal analysis at <span>[<a href="#ID-Crisis-repo" class="cite xref">ID-Crisis-repo</a>]</span>.
+Moreover, pre-handshake attestation leads to a single point of
 failure.<a href="#section-8-2.1.1" class="pilcrow">¶</a></p>
 </li>
         <li class="normal" id="section-8-2.2">
@@ -2019,11 +1995,12 @@ failure.<a href="#section-8-2.1.1" class="pilcrow">¶</a></p>
 vulnerable to <strong>diversion</strong> attacks <span>[<a href="#ID-Crisis" class="cite xref">ID-Crisis</a>]</span>. We reported these attacks to TLS WG in
 February 2025 <span>[<a href="#Usama-TLS-26Feb25" class="cite xref">Usama-TLS-26Feb25</a>]</span>. A formal proof is available
 <span>[<a href="#ID-Crisis-Repo" class="cite xref">ID-Crisis-Repo</a>]</span> for further research and
-development. Since reporting to TLS WG, these attacks have been practically
-exploited in <a href="https://tee.fail/">TEE.fail</a>, <a href="https://wiretap.fail/">Wiretap.fail</a>, and <a href="https://badram.eu/">BadRAM</a>.
+development. Since reporting to TLS WG, the assumptions required for these attacks have been practically
+demonstrated in <a href="https://tee.fail/">TEE.fail</a>, <a href="https://wiretap.fail/">Wiretap.fail</a>, and <a href="https://badram.eu/">BadRAM</a>.
 More recently, we found that intra-handshake attestation also does not bind the Evidence
-to the application traffic secrets, resulting in <strong>relay</strong> attacks <span>[<a href="#RelayAttacks" class="cite xref">RelayAttacks</a>]</span>.
-A detailed analysis of binding mechanisms is available at <span>[<a href="#RelayAttacks" class="cite xref">RelayAttacks</a>]</span>.<a href="#section-8-2.2.1" class="pilcrow">¶</a></p>
+to the application traffic secrets, resulting in <strong>relay</strong> attacks <span>[<a href="#Intra-handshake.fail" class="cite xref">Intra-handshake.fail</a>]</span>.
+A detailed formal analysis of binding mechanisms is available at <span>[<a href="#Intra-handshake.fail-repo" class="cite xref">Intra-handshake.fail-repo</a>]</span>.
+Analyzed implementations include Meta's AI, Cocos AI, Edgeless Systems Contrast, and CCC Attestation SIG's adopted project attested TLS proof of concept.<a href="#section-8-2.2.1" class="pilcrow">¶</a></p>
 </li>
         <li class="normal" id="section-8-2.3">
           <p id="section-8-2.3.1">No attacks on post-handshake attestation are currently known. Post-handshake attestation
@@ -2042,11 +2019,19 @@ of security of post-handshake attestation are ongoing.<a href="#section-8-2.3.1"
 <p id="section-8.1-1">From the view of the TLS server, post-handshake attestation offers better security
 than intra-handshake attestation when the server acts as the Attester. In intra-handshake
 attestation, due to the inherent asymmetry of the TLS protocol, a malicious TLS client
-could potentially retrieve sensitive hardware-level information from the Evidence <strong>without
+could potentially retrieve sensitive hardware-level and firmware-level information from the server's Evidence <strong>without
 the client's trustworthiness (i.e., authentication) first being established by the server</strong>.
-This information (e.g., vulnerable firmware version) can be exploited for attacks.
-In post-handshake attestation, the server can ask for client authentication and only
+This information (e.g., vulnerable firmware version) can be exploited for attacks on the server.
+In post-handshake attestation, the server can ask for client authentication during the handshake and only
 send the Evidence after successful client authentication.<a href="#section-8.1-1" class="pilcrow">¶</a></p>
+<p id="section-8.1-2">We believe this regression of intra-handshake attestation violates <span>[<a href="#SEAT-Charter" class="cite xref">SEAT-Charter</a>]</span>:<a href="#section-8.1-2" class="pilcrow">¶</a></p>
+<div class="alignLeft art-text artwork" id="section-8.1-3">
+<pre>
+The effort will not create solutions that decrease the privacy
+or security properties of generic (D)TLS connections.
+</pre><a href="#section-8.1-3" class="pilcrow">¶</a>
+</div>
+<p id="section-8.1-4">Additionally, we are not convinced that these non-trivial changes in intra-handshake attestation will not break the well-established computational security properties of TLS in CryptoVerif (cf. <a href="https://github.com/Inria-Prosecco/reftls/blob/master/paper/RR-9040.pdf">this</a>), as mentioned in Appendix F.1.6. of <span>[<a href="#I-D.ietf-tls-rfc8446bis" class="cite xref">I-D.ietf-tls-rfc8446bis</a>]</span>.<a href="#section-8.1-4" class="pilcrow">¶</a></p>
 </section>
 </div>
 </section>
@@ -2113,15 +2098,27 @@ send the Evidence after successful client authentication.<a href="#section-8.1-1
 <dd class="break"></dd>
 <dt id="I-D.mihalcea-seat-use-cases">[I-D.mihalcea-seat-use-cases]</dt>
         <dd>
-<span class="refAuthor">Mihalcea, I.</span>, <span class="refAuthor">Sardar, M. U.</span>, <span class="refAuthor">Fossati, T.</span>, <span class="refAuthor">Reddy.K, T.</span>, <span class="refAuthor">Jiang, Y.</span>, and <span class="refAuthor">M. Chen</span>, <span class="refTitle">"Use Cases and Properties for Integrating Remote Attestation with Secure Channel Protocols"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-mihalcea-seat-use-cases-01</span>, <time datetime="2026-01-19" class="refDate">19 January 2026</time>, <span>&lt;<a href="https://datatracker.ietf.org/doc/html/draft-mihalcea-seat-use-cases-01">https://datatracker.ietf.org/doc/html/draft-mihalcea-seat-use-cases-01</a>&gt;</span>. </dd>
+<span class="refAuthor">Mihalcea, I.</span>, <span class="refAuthor">Sardar, M. U.</span>, <span class="refAuthor">Fossati, T.</span>, <span class="refAuthor">Reddy.K, T.</span>, <span class="refAuthor">Jiang, Y.</span>, and <span class="refAuthor">M. Chen</span>, <span class="refTitle">"Security Goals and Use Cases for Integrating Remote Attestation with Secure Channel Protocols"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-mihalcea-seat-use-cases-03</span>, <time datetime="2026-06-16" class="refDate">16 June 2026</time>, <span>&lt;<a href="https://datatracker.ietf.org/doc/html/draft-mihalcea-seat-use-cases-03">https://datatracker.ietf.org/doc/html/draft-mihalcea-seat-use-cases-03</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 <dt id="ID-Crisis">[ID-Crisis]</dt>
         <dd>
-<span class="refAuthor">Sardar, M. U.</span>, <span class="refAuthor">Moustafa, M.</span>, and <span class="refAuthor">T. Aura</span>, <span class="refTitle">"Identity Crisis in Confidential Computing: Formal Analysis of Attested TLS"</span>, <time datetime="2025-11" class="refDate">November 2025</time>, <span>&lt;<a href="https://www.researchgate.net/publication/398839141_Identity_Crisis_in_Confidential_Computing_Formal_Analysis_of_Attested_TLS">https://www.researchgate.net/publication/398839141_Identity_Crisis_in_Confidential_Computing_Formal_Analysis_of_Attested_TLS</a>&gt;</span>. </dd>
+<span class="refAuthor">Sardar, M.</span>, <span class="refAuthor">Moustafa, M.</span>, and <span class="refAuthor">T. Aura</span>, <span class="refTitle">"Identity Crisis in Confidential Computing: Formal Analysis of Attested TLS"</span>, <span class="refContent">ACM</span>, <span class="seriesInfo">Proceedings of the ACM Asia Conference on Computer and Communications Security pp. 547-560</span>, <span class="seriesInfo">DOI 10.1145/3779208.3785387</span>, <time datetime="2026-06" class="refDate">June 2026</time>, <span>&lt;<a href="https://doi.org/10.1145/3779208.3785387">https://doi.org/10.1145/3779208.3785387</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="ID-Crisis-repo">[ID-Crisis-repo]</dt>
+        <dd>
+<span class="refAuthor">Sardar, M. U.</span>, <span class="refAuthor">Moustafa, M.</span>, and <span class="refAuthor">T. Aura</span>, <span class="refTitle">"Identity Crisis in Confidential Computing: Formal Analysis of Attested TLS"</span>, <time datetime="2025-11" class="refDate">November 2025</time>, <span>&lt;<a href="https://github.com/CCC-Attestation/formal-spec-id-crisis">https://github.com/CCC-Attestation/formal-spec-id-crisis</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 <dt id="ID-Crisis-Repo">[ID-Crisis-Repo]</dt>
         <dd>
 <span class="refAuthor">Muhammad Usama Sardar</span>, <span class="refTitle">"Identity Crisis in Confidential Computing: Formal analysis of attested TLS protocols"</span>, <span>&lt;<a href="https://github.com/CCC-Attestation/formal-spec-id-crisis">https://github.com/CCC-Attestation/formal-spec-id-crisis</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="Intra-handshake.fail">[Intra-handshake.fail]</dt>
+        <dd>
+<span class="refAuthor">Sardar, M. U.</span>, <span class="refAuthor">Dubeyko, V.</span>, and <span class="refAuthor">J.-M. Jacquet</span>, <span class="refTitle">"Intra-handshake.fail (CVE-2026-33697): High-severity CVE in Attested TLS"</span>, <time datetime="2026-06" class="refDate">June 2026</time>, <span>&lt;<a href="https://www.researchgate.net/publication/408219182_Intra-handshakefail_CVE-2026-33697_High-severity_CVE_in_Attested_TLS">https://www.researchgate.net/publication/408219182_Intra-handshakefail_CVE-2026-33697_High-severity_CVE_in_Attested_TLS</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="Intra-handshake.fail-repo">[Intra-handshake.fail-repo]</dt>
+        <dd>
+<span class="refAuthor">Sardar, M. U.</span>, <span class="refAuthor">Dubeyko, V.</span>, and <span class="refAuthor">J.-M. Jacquet</span>, <span class="refTitle">"Intra-handshake.fail (CVE-2026-33697): High-severity CVE in Attested TLS"</span>, <time datetime="2026-06" class="refDate">June 2026</time>, <span>&lt;<a href="https://github.com/CCC-Attestation/formal-spec-KBS">https://github.com/CCC-Attestation/formal-spec-KBS</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 <dt id="Keith-STET-CCC">[Keith-STET-CCC]</dt>
         <dd>
@@ -2149,11 +2146,7 @@ send the Evidence after successful client authentication.<a href="#section-8.1-1
 <dd class="break"></dd>
 <dt id="RA-TLS">[RA-TLS]</dt>
         <dd>
-<span class="refAuthor">Sardar, M. U.</span>, <span class="refAuthor">Niemi, A.</span>, <span class="refAuthor">Tschofenig, H.</span>, and <span class="refAuthor">T. Fossati</span>, <span class="refTitle">"Towards Validation of TLS 1.3 Formal Model and Vulnerabilities in Intel's RA-TLS Protocol"</span>, <time datetime="2024-11" class="refDate">November 2024</time>, <span>&lt;<a href="https://www.researchgate.net/publication/385384309_Towards_Validation_of_TLS_13_Formal_Model_and_Vulnerabilities_in_Intel's_RA-TLS_Protocol">https://www.researchgate.net/publication/385384309_Towards_Validation_of_TLS_13_Formal_Model_and_Vulnerabilities_in_Intel's_RA-TLS_Protocol</a>&gt;</span>. </dd>
-<dd class="break"></dd>
-<dt id="RelayAttacks">[RelayAttacks]</dt>
-        <dd>
-<span class="refAuthor">Sardar, M. U.</span>, <span class="refTitle">"Relay Attacks in Intra-handshake Attestation for Confidential Agentic AI Systems"</span>, <time datetime="2026-01" class="refDate">January 2026</time>, <span>&lt;<a href="https://mailarchive.ietf.org/arch/msg/seat/x3eQxFjQFJLceae6l4_NgXnmsDY/">https://mailarchive.ietf.org/arch/msg/seat/x3eQxFjQFJLceae6l4_NgXnmsDY/</a>&gt;</span>. </dd>
+<span class="refAuthor">Sardar, M.</span>, <span class="refAuthor">Niemi, A.</span>, <span class="refAuthor">Tschofenig, H.</span>, and <span class="refAuthor">T. Fossati</span>, <span class="refTitle">"Towards Validation of TLS 1.3 Formal Model and Vulnerabilities in Intel’s RA-TLS Protocol"</span>, <span class="refContent">Institute of Electrical and Electronics Engineers (IEEE)</span>, <span class="seriesInfo">IEEE Access vol. 12, pp. 173670-173685</span>, <span class="seriesInfo">DOI 10.1109/access.2024.3497184</span>, <time datetime="2024" class="refDate">2024</time>, <span>&lt;<a href="https://doi.org/10.1109/access.2024.3497184">https://doi.org/10.1109/access.2024.3497184</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 <dt id="RFC7519">[RFC7519]</dt>
         <dd>
