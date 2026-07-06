@@ -42,29 +42,32 @@ informative:
      author:
       - ins: M. U. Sardar
   I-D.ietf-tls-rfc8446bis:
-  ID-Crisis:
+  ID-Crisis: DOI.10.1145/3779208.3785387
+  ID-Crisis-repo:
     title: "Identity Crisis in Confidential Computing: Formal Analysis of Attested TLS"
     date: November 2025,
-    target: https://www.researchgate.net/publication/398839141_Identity_Crisis_in_Confidential_Computing_Formal_Analysis_of_Attested_TLS
+    target: https://github.com/CCC-Attestation/formal-spec-id-crisis
     author:
       - ins: M. U. Sardar
       - ins: M. Moustafa
       - ins: T. Aura
-  RA-TLS:
-    title: "Towards Validation of TLS 1.3 Formal Model and Vulnerabilities in Intel's RA-TLS Protocol"
-    date: 13 November 2024,
-    target: https://www.researchgate.net/publication/385384309_Towards_Validation_of_TLS_13_Formal_Model_and_Vulnerabilities_in_Intel's_RA-TLS_Protocol
+  Intra-handshake.fail:
+    title: "Intra-handshake.fail (CVE-2026-33697): High-severity CVE in Attested TLS"
+    date: June 2026,
+    target: https://www.researchgate.net/publication/408219182_Intra-handshakefail_CVE-2026-33697_High-severity_CVE_in_Attested_TLS
     author:
       - ins: M. U. Sardar
-      - ins: A. Niemi
-      - ins: H. Tschofenig
-      - ins: T. Fossati
-  RelayAttacks:
-     title: "Relay Attacks in Intra-handshake Attestation for Confidential Agentic AI Systems"
-     date: 11 January 2026,
-     target: https://mailarchive.ietf.org/arch/msg/seat/x3eQxFjQFJLceae6l4_NgXnmsDY/
-     author:
-     - ins: M. U. Sardar
+      - ins: V. Dubeyko
+      - ins: J-M. Jacquet
+  Intra-handshake.fail-repo:
+    title: "Intra-handshake.fail (CVE-2026-33697): High-severity CVE in Attested TLS"
+    date: June 2026,
+    target: https://github.com/CCC-Attestation/formal-spec-KBS
+    author:
+      - ins: M. U. Sardar
+      - ins: V. Dubeyko
+      - ins: J-M. Jacquet
+  RA-TLS: DOI.10.1109/ACCESS.2024.3497184
   I-D.jiang-seat-dynamic-attestation:
   SEAT-Charter:
      title: "Secure Evidence and Attestation Transport (SEAT): Charter for Working Group"
@@ -176,6 +179,8 @@ informative:
 This document presents a taxonomy of extending TLS protocol with remote attestation,
 referred to as attested TLS. It also presents high-level analysis of benefits and limitations of each
 category, namely pre-handshake attestation, intra-handshake attestation and post-handshake attestation.
+It also captures the opinions of the WG participants in order to build consensus towards solutions.
+It also discussed tradeoffs and scalability.
 
 
 --- middle
@@ -331,37 +336,33 @@ preliminary results of experiment based on
 attested TLS implementation in Edgeless Systems Contrast where
 Coordinator is one of the components {{Markus-19Jan}}:
 
-{:quote}
->  I did a quick experiment in our testing lab, running on the
+~~~
+  I did a quick experiment in our testing lab, running on the
 same machine as the Coordinator:
 
-{:quote}
->  * TCP connections are local, and thus the TCP connection establishment
+  * TCP connections are local, and thus the TCP connection establishment
 unsurprisingly takes only 0.5ms. But even to neighbouring nodes
 in the same cluster, the TCP handshake takes below 2ms.
 
-{:quote}
->  * I measured generation of evidence including the TLS session
+
+ * I measured generation of evidence including the TLS session
 establishment, but with these numbers I don't think it makes a lot
 of difference:
 
-{:quote}
->  >  * SNP: Median time of 140ms from TCP SYN to TLS channel established
+  >  * SNP: Median time of 140ms from TCP SYN to TLS channel established
 and evidence sent to the client.
 
-{:quote}
->  >  * TDX: Median time of 1020ms, same procedure. I don't know why
+  >  * TDX: Median time of 1020ms, same procedure. I don't know why
 it is that slow, it should only be making machine-local remote
 calls, if any.
 
-{:quote}
->  * So far, I only managed to measure TDX verification, which adds
+  * So far, I only managed to measure TDX verification, which adds
 another 340ms. This is bound by remote HTTP requests, afaiu, and could
 be optimized with locally cached collateral, CRL, etc. I'd expect SNP
 to exhibit similar timing, because verification does similar remote calls.
 
-{:quote}
->  AMD is probably quicker because they're trading off with the appraisal time: the AMD report is not self-contained and can be generated with only the VM and the SP, but for verification you need to fetch the VCEK from somewhere, whereas the Intel quote includes the PCK cert and possibly other things that need to be fetched from a host service, if not the internet.
+  AMD is probably quicker because they're trading off with the appraisal time: the AMD report is not self-contained and can be generated with only the VM and the SP, but for verification you need to fetch the VCEK from somewhere, whereas the Intel quote includes the PCK cert and possibly other things that need to be fetched from a host service, if not the internet.
+~~~
 
 We summarize that in the following table:
 
@@ -410,7 +411,8 @@ but will not modify, add, or remove any existing protocol messages
 or modify the key schedule.
 
 A detailed analysis of different binding mechanisms for intra-handshake attestation
-has been shared with the WG {{RelayAttacks}}.
+is available at {{Intra-handshake.fail}} and the corresponding formal analysis is available
+at {{Intra-handshake.fail-repo}}.
 
 ### State After Connection Establishment Not Covered
 It provides no guarantees about the state of Attester during the Lifetime
@@ -670,8 +672,8 @@ whatever reason, e.g. key rotation, it should be possible to repeat the attestat
 
 ## Intra-handshake Attestation
 Prominent implementations of intra-handshake attestation are all vulnerable to
-relay attacks {{RelayAttacks}}. Some of them are abusing the extensions of TLS, such as
-SNI and ALPN, for conveyance of attestation nonce {{RelayAttacks}}.
+relay attacks {{Intra-handshake.fail}}. Some of them are abusing the extensions of TLS, such as
+SNI and ALPN, for conveyance of attestation nonce {{Intra-handshake.fail}}.
 
 ## Post-handshake Attestation
 Google {{Keith-STET-CCC}}, Microsoft {{Stunes-vTPM-CCC}}, and SCONE {{SoK-Attestation}}
@@ -685,18 +687,20 @@ Most of the document is about security considerations. Also,
 Security Considerations of {{-rfc9334}} and {{I-D.ietf-tls-rfc8446bis}} apply. In addition:
 
 * Pre-handshake attestation is vulnerable to **replay** {{RA-TLS}} and **diversion**
-{{ID-Crisis}} attacks. Moreover, pre-handshake attestation leads to a single point of
+{{ID-Crisis}} attacks. See the corresponding formal analysis at {{ID-Crisis-repo}}.
+Moreover, pre-handshake attestation leads to a single point of
 failure.
 
 * Without significant changes to the TLS protocol: Intra-handshake attestation is
 vulnerable to **diversion** attacks {{ID-Crisis}}. We reported these attacks to TLS WG in
 February 2025 {{Usama-TLS-26Feb25}}. A formal proof is available
 {{ID-Crisis-Repo}} for further research and
-development. Since reporting to TLS WG, these attacks have been practically
-exploited in [TEE.fail](https://tee.fail/), [Wiretap.fail](https://wiretap.fail/), and [BadRAM](https://badram.eu/).
+development. Since reporting to TLS WG, the assumptions required for these attacks have been practically
+demonstrated in [TEE.fail](https://tee.fail/), [Wiretap.fail](https://wiretap.fail/), and [BadRAM](https://badram.eu/).
 More recently, we found that intra-handshake attestation also does not bind the Evidence
-to the application traffic secrets, resulting in **relay** attacks {{RelayAttacks}}.
-A detailed analysis of binding mechanisms is available at {{RelayAttacks}}.
+to the application traffic secrets, resulting in **relay** attacks {{Intra-handshake.fail}}.
+A detailed formal analysis of binding mechanisms is available at {{Intra-handshake.fail-repo}}.
+Analyzed implementations include Meta's AI, Cocos AI, Edgeless Systems Contrast, and CCC Attestation SIG's adopted project attested TLS proof of concept.
 
 * No attacks on post-handshake attestation are currently known. Post-handshake attestation
 avoids replay attacks by using fresh attestation nonce. Moreover, it avoids diversion and relay attacks
@@ -710,12 +714,20 @@ of security of post-handshake attestation are ongoing.
 From the view of the TLS server, post-handshake attestation offers better security
 than intra-handshake attestation when the server acts as the Attester. In intra-handshake
 attestation, due to the inherent asymmetry of the TLS protocol, a malicious TLS client
-could potentially retrieve sensitive hardware-level information from the Evidence **without
+could potentially retrieve sensitive hardware-level and firmware-level information from the server's Evidence **without
 the client's trustworthiness (i.e., authentication) first being established by the server**.
-This information (e.g., vulnerable firmware version) can be exploited for attacks.
-In post-handshake attestation, the server can ask for client authentication and only
+This information (e.g., vulnerable firmware version) can be exploited for attacks on the server.
+In post-handshake attestation, the server can ask for client authentication during the handshake and only
 send the Evidence after successful client authentication.
 
+We believe this regression of intra-handshake attestation violates {{SEAT-Charter}}:
+
+~~~
+The effort will not create solutions that decrease the privacy
+or security properties of generic (D)TLS connections.
+~~~
+
+Additionally, we are not convinced that these non-trivial changes in intra-handshake attestation will not break the well-established computational security properties of TLS in CryptoVerif (cf. [this](https://github.com/Inria-Prosecco/reftls/blob/master/paper/RR-9040.pdf)), as mentioned in Appendix F.1.6. of {{I-D.ietf-tls-rfc8446bis}}.
 
 # IANA Considerations
 
