@@ -4,8 +4,8 @@
 
 Secure Evidence and Attestation Transport                   M. U. Sardar
 Internet-Draft                                                TU Dresden
-Intended status: Informational                               6 July 2026
-Expires: 7 January 2027
+Intended status: Informational                           2 November 2026
+Expires: 6 May 2027
 
 
               Pre-, Intra- and Post-handshake Attestation
@@ -54,7 +54,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 7 January 2027.
+   This Internet-Draft will expire on 6 May 2027.
 
 Copyright Notice
 
@@ -110,6 +110,7 @@ Table of Contents
      7.2.  Post-handshake Attestation
    8.  Security Considerations
      8.1.  Exploit of Sensitive Hardware-level Information
+     8.2.  Detailed Security Analysis
    9.  IANA Considerations
    10. References
      10.1.  Normative References
@@ -319,6 +320,10 @@ to exhibit similar timing, because verification does similar remote calls.
      +------------------------------+-----------+--------------------+
 
       Table 1: Preliminary analysis by Markus Rudy (Median time in ms)
+
+   Note that since continuous attestation is generally required
+   [CSA-eBPF] [MITRE-Continuous-Attestation], early attestation adds
+   *unnecessary complexity*.
 
    However, Yaroslav Rosomakho (as individual contributor) raises a
    concern [Yaroslav-22Jan]:
@@ -714,6 +719,11 @@ to exhibit similar timing, because verification does similar remote calls.
    9040.pdf)), as mentioned in Appendix F.1.6. of
    [I-D.ietf-tls-rfc8446bis].
 
+8.2.  Detailed Security Analysis
+
+   A thorough security analysis is presented in
+   [I-D.intra-handshake-fail].
+
 9.  IANA Considerations
 
    This document has no IANA actions.
@@ -738,6 +748,12 @@ to exhibit similar timing, because verification does similar remote calls.
               usama-seat-intra-vs-post-00.txt", January 2026,
               <https://mailarchive.ietf.org/arch/msg/seat/8eynK9ky5F-
               TcnL_UPbSRDKuK1E/>.
+
+   [CSA-eBPF] Cloud Security Alliance, "MITRE's New Framework: Securing
+              the eBPF Layer Your AI Depends On", September 2026,
+              <https://cloudsecurityalliance.org/blog/2026/09/09/mitre-
+              s-new-framework-securing-the-ebpf-layer-your-ai-depends-
+              on>.
 
    [Edward-20Jan]
               Edward Aylward, "[Use Case] RATS for Hardware-Enforced
@@ -764,6 +780,21 @@ to exhibit similar timing, because verification does similar remote calls.
               ietf-tls-rfc8446bis-14, 13 September 2025,
               <https://datatracker.ietf.org/doc/html/draft-ietf-tls-
               rfc8446bis-14>.
+
+   [I-D.intra-handshake-fail]
+              Sardar, M. U., Dubeyko, V., Jacquet, J., Bu, S., Huang,
+              C., Song, H., Ercihan, K., Küçük, K. A., Bellemare, S.,
+              Willems, E., SAINTEN, J. D., Brighindi, M., Quintyne-
+              Collins, M., Schrock, I., Aboubakarov, I., Gul, A., and V.
+              Malladi, "Early Attestation Considered Very Harmful (CVE-
+              2026-100833, CVE-2026-100835,CVE-2026-108265, CVE-
+              2026-108266, CVE-2026-108267, CVE-2026-108268, CVE-
+              2026-108269, CVE-2026-92701, CVE-2026-92702, CVE-
+              2026-108362, CVE-2026-33697, CVE-2026-108361 and others)",
+              Work in Progress, Internet-Draft, draft-intra-handshake-
+              fail-61, 2 November 2026,
+              <https://datatracker.ietf.org/doc/html/draft-intra-
+              handshake-fail-61>.
 
    [I-D.jiang-seat-dynamic-attestation]
               Jiang, Y. and Wangdonghui, "Dynamic Attestation for AI
@@ -848,6 +879,12 @@ to exhibit similar timing, because verification does similar remote calls.
               categories for attested TLS", January 2026,
               <https://lists.confidentialcomputing.io/g/attestation/
               message/276>.
+
+   [MITRE-Continuous-Attestation]
+              MITRE's Confidential Computing Layered Attestation Working
+              Group, "Framework for Continuous Remote Attestation", July
+              2026, <https://www.mitre.org/news-insights/publication/
+              framework-continuous-remote-attestation>.
 
    [RA-TLS]   Sardar, M., Niemi, A., Tschofenig, H., and T. Fossati,
               "Towards Validation of TLS 1.3 Formal Model and
