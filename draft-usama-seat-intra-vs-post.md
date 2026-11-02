@@ -171,6 +171,19 @@ informative:
      target: https://docs.oasis-open.org/security/saml/v2.0/saml-core-2.0-os.pdf
      author:
       - ins: Cantor et al.
+  CSA-eBPF:
+    title: "MITRE's New Framework: Securing the eBPF Layer Your AI Depends On"
+    date: 9 September 2026
+    target: https://cloudsecurityalliance.org/blog/2026/09/09/mitre-s-new-framework-securing-the-ebpf-layer-your-ai-depends-on
+    author:
+      - ins: Cloud Security Alliance
+  MITRE-Continuous-Attestation:
+    title: "Framework for Continuous Remote Attestation"
+    date: 16 July 2026
+    target: https://www.mitre.org/news-insights/publication/framework-continuous-remote-attestation
+    author:
+      - ins: MITRE's Confidential Computing Layered Attestation Working Group
+  I-D.intra-handshake-fail:
 
 ...
 
@@ -370,6 +383,8 @@ We summarize that in the following table:
 | Generation of Evidence + TLS      |   1020   | 140  |
 | Appraisal of Evidence      |  340    |  not available (expected ca. 340)   |
 {: title="Preliminary analysis by Markus Rudy (Median time in ms)"}
+
+Note that since continuous attestation is generally required {{CSA-eBPF}} {{MITRE-Continuous-Attestation}}, early attestation adds **unnecessary complexity**.
 
 However, Yaroslav Rosomakho (as individual contributor) raises a concern {{Yaroslav-22Jan}}:
 
@@ -728,6 +743,10 @@ or security properties of generic (D)TLS connections.
 ~~~
 
 Additionally, we are not convinced that these non-trivial changes in intra-handshake attestation will not break the well-established computational security properties of TLS in CryptoVerif (cf. [this](https://github.com/Inria-Prosecco/reftls/blob/master/paper/RR-9040.pdf)), as mentioned in Appendix F.1.6. of {{I-D.ietf-tls-rfc8446bis}}.
+
+## Detailed Security Analysis
+
+A thorough security analysis is presented in {{I-D.intra-handshake-fail}}.
 
 # IANA Considerations
 
